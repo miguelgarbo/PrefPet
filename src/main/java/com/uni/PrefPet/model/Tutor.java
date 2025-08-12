@@ -14,6 +14,8 @@ public class Tutor {
     private Long id;
     private String nome;
     private String CPF;
+    private String telefone;
+
 
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Animal> animais;
