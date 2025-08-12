@@ -1,7 +1,5 @@
 package com.uni.PrefPet.model;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
 import java.util.List;
@@ -10,6 +8,9 @@ import java.util.List;
 @Entity
 public class Animal {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nome;
     private String registroGeral;
     private String especie;
