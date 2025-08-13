@@ -1,4 +1,5 @@
 package com.uni.PrefPet.model;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDate;
@@ -23,4 +24,13 @@ public class Animal {
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Tutor tutor;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "animal_vacina",
+            joinColumns = @JoinColumn(name = "animal_id"),
+            inverseJoinColumns = @JoinColumn(name = "vacina_id")
+    )
+    @JsonIgnoreProperties("vacinas")
+    private List<Vacina> vacinas;
 }

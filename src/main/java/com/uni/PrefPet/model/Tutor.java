@@ -7,15 +7,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class Tutor {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String nome;
-    private String CPF;
-    private String telefone;
-
+public class Tutor extends Usuario{
 
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Animal> animais;
