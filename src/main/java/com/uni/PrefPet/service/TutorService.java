@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TutorService {
@@ -24,11 +25,9 @@ public class TutorService {
         if (tutorRepository.findByNome(tutor.getNome()).isPresent()) {
             throw new IllegalArgumentException("Já existe um tutor com este nome.");
         }
-
         if (tutorRepository.findByCPF(tutor.getCPF()).isPresent()) {
             throw new IllegalArgumentException("Já existe um tutor com este CPF.");
         }
-
         if (tutorRepository.findByTelefone(tutor.getTelefone()).isPresent()) {
             throw new IllegalArgumentException("Já existe um tutor com este telefone.");
         }
@@ -59,5 +58,14 @@ public class TutorService {
         return tutorRepository.save(existente);
     }
 
+    public Tutor findByNome(String nome) {
+        return tutorRepository.findByNome(nome).orElseThrow(() -> new EntityNotFoundException(
+                "Nenhum tutor encontrado com o nome '" + nome + "'"
+        ));
+    }
+    public void delete(Long id){
+        Tutor tutor = findById(id);
+        tutorRepository.delete(tutor);
+    }
 }
 
