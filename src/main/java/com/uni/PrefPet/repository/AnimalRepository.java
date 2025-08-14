@@ -2,6 +2,7 @@ package com.uni.PrefPet.repository;
 
 import com.uni.PrefPet.model.Animal;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -14,4 +15,5 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
     Optional<Animal> findByNome(String nome);
     Optional<Animal> findByCPF(String cpf);
     Optional<Animal> findByTelefone(String telefone);
+
 }
