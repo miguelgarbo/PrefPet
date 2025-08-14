@@ -1,6 +1,7 @@
 package com.uni.PrefPet.service;
 
 import com.uni.PrefPet.model.Denuncia;
+import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.repository.DenunciaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,18 @@ public class DenunciaService {
     ///crud basico
 
     public Denuncia save(Denuncia denuncia){
+
+        if(denuncia.getUsuario()==null){
+            Usuario usuarioAnonimo = new Usuario();
+            usuarioAnonimo.setNome("Usuário Anônimo");
+            denuncia.setUsuario(usuarioAnonimo);
+            denuncia.
+        }
+
+        if (denunciaRepository(usuario.getCPF()).isPresent()) {
+            throw new IllegalArgumentException("Já existe um usuário com este CPF.");
+        }
+
         return denunciaRepository.save(denuncia);
     }
 
@@ -53,6 +66,8 @@ public class DenunciaService {
         Denuncia denunciaSelecionada = denunciaRepository.findById(id).orElseThrow(()->
                 new EntityNotFoundException("denuncia  Não Encontrada")
         );
+
+
 
         if (denunciaAtualizada.getUsuario() != null) {
             denunciaSelecionada.setUsuario(denunciaAtualizada.getUsuario());
@@ -91,6 +106,8 @@ public class DenunciaService {
     ///fim crud basico
 
     //serviços especificos:
+
+
 
 
     //

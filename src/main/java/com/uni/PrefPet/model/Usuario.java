@@ -1,5 +1,7 @@
 package com.uni.PrefPet.model;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 import java.util.List;
@@ -14,12 +16,13 @@ public class Usuario {
     private Long id;
     private String nome;
 
-    @Column(unique = true, nullable = false)
+    @NotBlank(message = "Cpf  ")
+    @Column(unique = true)
     private String CPF;
-
     private String telefone;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
+    @Email
     private String email;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)

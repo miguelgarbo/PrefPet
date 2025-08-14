@@ -17,9 +17,9 @@ public class UsuarioService {
     }
 
     public Usuario save(Usuario usuario) {
-        if (usuarioRepository.findByNome(usuario.getNome()).isPresent()) {
-            throw new IllegalArgumentException("Já existe um usuário com este nome.");
-        }
+//        if (usuarioRepository.findByNome(usuario.getNome()).isPresent()) {
+//            throw new IllegalArgumentException("Já existe um usuário com este nome.");
+//        }
 
         if (usuarioRepository.findByCPF(usuario.getCPF()).isPresent()) {
             throw new IllegalArgumentException("Já existe um usuário com este CPF.");
