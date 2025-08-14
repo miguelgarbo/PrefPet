@@ -2,6 +2,7 @@ package com.uni.PrefPet.controller;
 
 import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class UsuarioController {
 
     @PostMapping("/save")
     public ResponseEntity<Usuario> save(
-            @RequestBody Usuario livro) {
+            @RequestBody @Valid Usuario livro) {
         try {
             var result = usuarioService.save(livro);
             return new ResponseEntity<>(result,

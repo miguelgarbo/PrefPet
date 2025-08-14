@@ -33,6 +33,9 @@ public class Denuncia{
 
     private LocalDateTime dataCriacao;
 
+    @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL)
+    private List<MidiaDenuncia> midias;
+
     @ManyToMany
     @JoinTable(
             name = "denuncia_contato",

@@ -16,7 +16,7 @@ public class Usuario {
     private Long id;
     private String nome;
 
-    @NotBlank(message = "Cpf  ")
+    @NotBlank(message = "Cpf Não pode estar vazio")
     @Column(unique = true)
     private String CPF;
     private String telefone;
