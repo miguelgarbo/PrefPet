@@ -2,11 +2,9 @@ package com.uni.PrefPet.service;
 
 import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.repository.AnimalRepository;
-
 import com.uni.PrefPet.repository.TutorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -72,8 +70,6 @@ public class AnimalService  {
 
         return animalRepository.save(animal);
     }
-
-
     public Animal update(Long id, Animal animalAtualizado) {
         Animal animalExistente = findById(id);
         if (animalAtualizado.getNome() == null || animalAtualizado.getNome().trim().isEmpty()) {
@@ -107,7 +103,6 @@ public class AnimalService  {
         if (!tutorExiste) {
             throw new EntityNotFoundException("Tutor com ID " + animalAtualizado.getTutor().getId() + " não encontrado.");
         }
-
         animalExistente.setNome(animalAtualizado.getNome());
         animalExistente.setEspecie(animalAtualizado.getEspecie());
         animalExistente.setSexo(animalAtualizado.getSexo());
@@ -120,7 +115,4 @@ public class AnimalService  {
         animalExistente.setTutor(animalAtualizado.getTutor());
         return animalRepository.save(animalExistente);
     }
-
-
-
 }

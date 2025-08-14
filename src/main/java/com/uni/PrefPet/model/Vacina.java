@@ -16,6 +16,7 @@ public class Vacina {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
     private String nome;
+    private String data;
 
     @ToString.Exclude
     @ManyToMany(mappedBy = "vacinas")
