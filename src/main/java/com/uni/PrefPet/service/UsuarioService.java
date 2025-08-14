@@ -1,11 +1,9 @@
 package com.uni.PrefPet.service;
-
 import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -60,7 +58,6 @@ public class UsuarioService {
         existente.setCPF(usuarioAtualizado.getCPF());
         existente.setTelefone(usuarioAtualizado.getTelefone());
         existente.setAnimais(usuarioAtualizado.getAnimais());
-
         return usuarioRepository.save(existente);
     }
 
@@ -68,10 +65,7 @@ public class UsuarioService {
         if (!usuarioRepository.existsById(id)) {
             throw new EntityNotFoundException("Usuário com id " + id + " não encontrado.");
         }
-
         usuarioRepository.deleteById(id);
         return "Usuário com id " + id + " foi excluído com sucesso.";
     }
-
-
 }

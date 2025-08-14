@@ -24,6 +24,5 @@ public class Contato {
 
     @ManyToMany(mappedBy = "contatosNotificados")
     private List<Denuncia> denunciasRecebidas;
-
 }
 

@@ -40,5 +40,4 @@ public class Denuncia{
             inverseJoinColumns = @JoinColumn(name = "contato_id")
     )
     private List<Contato> contatosNotificados;
-
 }
