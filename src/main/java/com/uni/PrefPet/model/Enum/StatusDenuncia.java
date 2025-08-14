@@ -1,5 +1,5 @@
 package com.uni.PrefPet.model.Enum;
 
-public enum StatusOcorrencia {
+public enum StatusDenuncia {
     ABERTA, ANDAMENTO, FINALIZADA
 }

@@ -1,8 +1,7 @@
 package com.uni.PrefPet.service;
-
 import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.repository.AnimalRepository;
-import com.uni.PrefPet.repository.TutorRepository;
+import com.uni.PrefPet.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -11,16 +10,11 @@ import java.util.List;
 @Service
 public class AnimalService  {
     private final AnimalRepository animalRepository;
-    private final TutorRepository tutorRepository;
+    private final UsuarioRepository tutorRepository;
 
-    public AnimalService(AnimalRepository animalRepository, TutorRepository tutorRepository) {
+    public AnimalService(AnimalRepository animalRepository, UsuarioRepository tutorRepository) {
         this.animalRepository = animalRepository;
         this.tutorRepository = tutorRepository;
-    }
-
-    public void delete(Long id){
-        Animal animal = findById(id);
-        animalRepository.delete(animal);
     }
 
     public Animal findById(Long id){
@@ -60,12 +54,12 @@ public class AnimalService  {
             throw new IllegalArgumentException("A data de nascimento não pode ser no futuro.");
         }
 
-        if (animal.getTutor() == null || animal.getTutor().getId() == null) {
+        if (animal.getUsuario() == null || animal.getUsuario().getId() == null) {
             throw new IllegalArgumentException("O animal deve estar vinculado a um tutor.");
         }
-        boolean tutorExiste = tutorRepository.existsById(animal.getTutor().getId());
+        boolean tutorExiste = tutorRepository.existsById(animal.getUsuario().getId());
         if (!tutorExiste) {
-            throw new EntityNotFoundException("Tutor com ID " + animal.getTutor().getId() + " não encontrado.");
+            throw new EntityNotFoundException("Tutor com ID " + animal.getUsuario().getId() + " não encontrado.");
         }
 
         return animalRepository.save(animal);
@@ -96,12 +90,12 @@ public class AnimalService  {
         if (animalAtualizado.getDataNascimento() != null && animalAtualizado.getDataNascimento().isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("A data de nascimento não pode ser no futuro.");
         }
-        if (animalAtualizado.getTutor() == null || animalAtualizado.getTutor().getId() == null) {
+        if (animalAtualizado.getUsuario() == null || animalAtualizado.getUsuario().getId() == null) {
             throw new IllegalArgumentException("O animal deve estar vinculado a um tutor.");
         }
-        boolean tutorExiste = tutorRepository.existsById(animalAtualizado.getTutor().getId());
+        boolean tutorExiste = tutorRepository.existsById(animalAtualizado.getUsuario().getId());
         if (!tutorExiste) {
-            throw new EntityNotFoundException("Tutor com ID " + animalAtualizado.getTutor().getId() + " não encontrado.");
+            throw new EntityNotFoundException("Tutor com ID " + animalAtualizado.getUsuario().getId() + " não encontrado.");
         }
         animalExistente.setNome(animalAtualizado.getNome());
         animalExistente.setEspecie(animalAtualizado.getEspecie());
@@ -112,7 +106,18 @@ public class AnimalService  {
         animalExistente.setMicrochip(animalAtualizado.getMicrochip());
         animalExistente.setDataNascimento(animalAtualizado.getDataNascimento());
         animalExistente.setNaturalidade(animalAtualizado.getNaturalidade());
-        animalExistente.setTutor(animalAtualizado.getTutor());
+        animalExistente.setUsuario(animalAtualizado.getUsuario());
         return animalRepository.save(animalExistente);
     }
+
+    public String delete(Long id) {
+        if (!animalRepository.existsById(id)) {
+            throw new EntityNotFoundException("Animal com id " + id + " não encontrado.");
+        }
+
+        animalRepository.deleteById(id);
+        return "Animal com id " + id + " foi excluído com sucesso.";
+    }
+
+
 }

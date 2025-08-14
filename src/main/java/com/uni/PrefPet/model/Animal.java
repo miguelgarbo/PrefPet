@@ -23,7 +23,10 @@ public class Animal {
     private String naturalidade;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    private Tutor tutor;
+    private Usuario usuario;
+
+    @OneToMany
+    private List<InscricaoCampanha> inscricaoCampanhas;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
@@ -34,3 +37,6 @@ public class Animal {
     @JsonIgnoreProperties("vacinas")
     private List<Vacina> vacinas;
 }
+
+
+

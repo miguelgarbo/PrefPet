@@ -1,0 +1,44 @@
+package com.uni.PrefPet.model;
+
+import com.uni.PrefPet.model.Enum.StatusDenuncia;
+import com.uni.PrefPet.model.Enum.TipoDenuncia;
+import jakarta.persistence.*;
+import lombok.Data;
+import java.time.LocalDateTime;
+import java.util.List;
+
+@Data
+@Entity
+public class Denuncia{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Enumerated(EnumType.STRING)
+    private TipoDenuncia tipo; // MAUS_TRATOS ou ANIMAL_SILVESTRE
+
+    @ManyToOne
+    private Usuario usuario;
+
+    private String especie;
+
+    private String descricao;
+
+    @Embedded
+    private Localizacao localizacao;
+
+    @Enumerated(EnumType.STRING)
+    private StatusDenuncia status;
+
+    private LocalDateTime dataCriacao;
+
+    @ManyToMany
+    @JoinTable(
+            name = "denuncia_contato",
+            joinColumns = @JoinColumn(name = "denuncia_id"),
+            inverseJoinColumns = @JoinColumn(name = "contato_id")
+    )
+    private List<Contato> contatosNotificados;
+
+}
