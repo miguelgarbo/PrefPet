@@ -15,11 +15,11 @@ public class Contato {
     @NotBlank(message = "Nome não pode ser nulo")
     private String nomeOrgao;
 
-
     private String apiUrl;
 
     private String telefone;
     private String email;
+
     private Boolean ativo;
 
     @ManyToMany(mappedBy = "contatosNotificados")

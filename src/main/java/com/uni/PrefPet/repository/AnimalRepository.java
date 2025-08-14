@@ -10,10 +10,7 @@ import java.util.Optional;
 @Repository
 public interface AnimalRepository extends JpaRepository<Animal, Long> {
 
-    boolean existsByRegistroGeralSemId(String registroGeral, Long id);
     boolean existsByRegistroGeral(String registroGeral);
     Optional<Animal> findByNome(String nome);
-    Optional<Animal> findByCPF(String cpf);
-    Optional<Animal> findByTelefone(String telefone);
 
 }

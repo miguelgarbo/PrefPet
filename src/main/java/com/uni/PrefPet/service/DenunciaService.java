@@ -20,22 +20,14 @@ public class DenunciaService {
 
     ///crud basico
 
-    public Denuncia save(Denuncia denuncia){
-
-        if(denuncia.getUsuario()==null){
-            Usuario usuarioAnonimo = new Usuario();
-            usuarioAnonimo.setNome("Usuário Anônimo");
-            usuarioAnonimo.setCPF(null);
-            usuarioAnonimo = usuarioRepository.save(usuarioAnonimo);
-            denuncia.setUsuario(usuarioAnonimo);
-        }
-
-        if (denunciaRepository(usuariogetCPF()).isPresent()) {
-            throw new IllegalArgumentException("Já existe um usuário com este CPF.");
+    public Denuncia save(Denuncia denuncia) {
+        if (denuncia.getUsuario() == null) {
+            denuncia.setAnonima(true);
         }
 
         return denunciaRepository.save(denuncia);
     }
+
 
     public Denuncia findById(Long id){
         return denunciaRepository.findById(id).orElseThrow(()->

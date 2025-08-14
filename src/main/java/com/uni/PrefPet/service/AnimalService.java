@@ -79,14 +79,13 @@ public class AnimalService  {
         if (!sexo.equals("macho") && !sexo.equals("fêmea") && !sexo.equals("m") && !sexo.equals("f")) {
             throw new IllegalArgumentException("Sexo inválido. Use 'Macho', 'Fêmea', 'M' ou 'F'.");
         }
-        if (animalAtualizado.getRegistroGeral() != null && !animalAtualizado.getRegistroGeral().trim().isEmpty()) {
-            boolean rgExiste = animalRepository.existsByRegistroGeralSemId(
-                    animalAtualizado.getRegistroGeral().trim(),
-                    id);
-            if (rgExiste) {
-                throw new IllegalArgumentException("Já existe outro animal com este Registro Geral.");
-            }
-        }
+//        if (animalAtualizado.getRegistroGeral() != null && !animalAtualizado.getRegistroGeral().trim().isEmpty()) {
+//            boolean rgExiste = animalRepository.existsByRegistroGeral(
+//                    animalAtualizado.getRegistroGeral().trim(), id);
+//            if (rgExiste) {
+//                throw new IllegalArgumentException("Já existe outro animal com este Registro Geral.");
+//            }
+//        }
         if (animalAtualizado.getDataNascimento() != null && animalAtualizado.getDataNascimento().isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("A data de nascimento não pode ser no futuro.");
         }

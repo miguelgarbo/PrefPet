@@ -36,6 +36,8 @@ public class Denuncia{
     @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL)
     private List<MidiaDenuncia> midias;
 
+    private Boolean anonima;
+
     @ManyToMany
     @JoinTable(
             name = "denuncia_contato",
