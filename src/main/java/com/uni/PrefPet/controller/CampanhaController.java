@@ -15,7 +15,7 @@ public class CampanhaController {
     @Autowired
     private CampanhaService campanhaService;
 
-    @PostMapping
+    @PostMapping("/save")
     public ResponseEntity<Campanha> save(@RequestBody Campanha campanha) {
         Campanha novaCampanha = campanhaService.save(campanha);
         return ResponseEntity.ok(novaCampanha);
