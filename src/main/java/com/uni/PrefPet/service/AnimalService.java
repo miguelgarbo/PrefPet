@@ -120,7 +120,4 @@ public class AnimalService  {
         animalExistente.setTutor(animalAtualizado.getTutor());
         return animalRepository.save(animalExistente);
     }
-
-
-
 }

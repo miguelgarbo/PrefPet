@@ -15,6 +15,5 @@ public class Contato {
     private Long id;
     private String nome;
     private String numero;
-
 }
 

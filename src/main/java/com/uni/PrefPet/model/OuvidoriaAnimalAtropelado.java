@@ -6,4 +6,3 @@ import jakarta.persistence.Entity;
 public class OuvidoriaAnimalAtropelado extends Ouvidoria {
     private Boolean ambulanciaVeterinariaAcionada;
 }
-

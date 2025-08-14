@@ -15,5 +15,4 @@ public class Tutor extends Usuario{
 
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Animal> animais;
-
 }
