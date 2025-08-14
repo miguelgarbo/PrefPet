@@ -28,10 +28,12 @@ public class DenunciaService {
             usuarioAnonimo.setCPF(null);
             usuarioAnonimo = usuarioRepository.save(usuarioAnonimo);
             denuncia.setUsuario(usuarioAnonimo);
-        }
-
-        if (denunciaRepository(usuariogetCPF()).isPresent()) {
-            throw new IllegalArgumentException("Já existe um usuário com este CPF.");
+        }else {
+            // Se houver usuário, verifica se já existe um CPF igual
+            String cpf = denuncia.getUsuario().getCPF();
+            if (cpf != null && usuarioRepository.findByCPF(cpf).isPresent()) {
+                throw new IllegalArgumentException("Já existe um usuário com este CPF.");
+            }
         }
 
         return denunciaRepository.save(denuncia);
