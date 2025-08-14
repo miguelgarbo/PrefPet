@@ -2,11 +2,15 @@ package com.uni.PrefPet.model;
 
 import com.uni.PrefPet.model.Enum.StatusInscricao;
 import jakarta.persistence.*;
-
-import java.time.LocalDate;
+import lombok.Data;
 import java.time.LocalDateTime;
 
+@Data
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"animal_id", "campanha_id"})
+})
+
 public class InscricaoCampanha {
 
     @Id

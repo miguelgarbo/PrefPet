@@ -13,8 +13,14 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+
+    @Column(unique = true, nullable = false)
     private String CPF;
+
     private String telefone;
+
+    @Column(unique = true, nullable = false)
+    private String email;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<InscricaoCampanha> inscricaoCampanhas;

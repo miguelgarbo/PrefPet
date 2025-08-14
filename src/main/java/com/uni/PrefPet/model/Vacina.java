@@ -17,8 +17,6 @@ public class Vacina {
     private  Long id;
     private String nome;
     private String data;
-    @Embedded
-    private Localizacao localizacao;
 
     @ToString.Exclude
     @ManyToMany(mappedBy = "vacinas")
