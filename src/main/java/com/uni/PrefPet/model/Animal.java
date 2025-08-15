@@ -21,6 +21,7 @@ public class Animal {
     private Boolean microchip;
     private LocalDate dataNascimento;
     private String naturalidade;
+    private String imagemUrl;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Usuario usuario;

@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 @Table(uniqueConstraints = {
         @UniqueConstraint(columnNames = {"animal_id", "campanha_id"})
 })
-
 public class InscricaoCampanha {
 
     @Id
@@ -18,12 +17,15 @@ public class InscricaoCampanha {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "campanha_id")
     private Campanha campanha;
 
     @ManyToOne
+    @JoinColumn(name = "animal_id")
     private Animal animal;
 
     @ManyToOne
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
     private LocalDateTime dataInscricao;

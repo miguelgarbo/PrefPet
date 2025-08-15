@@ -19,6 +19,7 @@ public class Denuncia{
     private TipoDenuncia tipo; // MAUS_TRATOS ou ANIMAL_SILVESTRE
 
     @ManyToOne
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
     private String especie;
@@ -32,6 +33,11 @@ public class Denuncia{
     private StatusDenuncia status;
 
     private LocalDateTime dataCriacao;
+
+    @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL)
+    private List<MidiaDenuncia> midias;
+
+    private Boolean anonima;
 
     @ManyToMany
     @JoinTable(

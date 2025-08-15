@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -17,10 +18,13 @@ public class Vacina {
     private  Long id;
     private String nome;
     private String data;
+    private String lote;
+    private LocalDateTime validade;
 
     @ToString.Exclude
     @ManyToMany(mappedBy = "vacinas")
     @JsonIgnoreProperties("vacinas")
     private List<Animal> animais;
+
 
 }

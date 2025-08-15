@@ -4,7 +4,6 @@ import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.Campanha;
 import com.uni.PrefPet.model.Enum.StatusInscricao;
 import com.uni.PrefPet.model.InscricaoCampanha;
-import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.repository.InscricaoCampanhaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +41,9 @@ public class InscricaoCampanhaService {
     }
 
     public String delete(Long id){
-
         if(!existById(id)){
         }
         inscricaoCampanhaRepository.deleteById(id);
-
         return "Inscricao Campanha Deletada com Sucesso";
     }
 
@@ -56,7 +53,6 @@ public class InscricaoCampanhaService {
         }
         return true;
     }
-
 
     public InscricaoCampanha update(Long id, InscricaoCampanha inscricaoCampanhaAtualizada) {
 
@@ -85,8 +81,6 @@ public class InscricaoCampanhaService {
         }
 
         return inscricaoCampanhaRepository.save(inscricaoCampanhaSelecionada);    }
-
-    ///fim crud basico
 
     //serviços especificos:
 

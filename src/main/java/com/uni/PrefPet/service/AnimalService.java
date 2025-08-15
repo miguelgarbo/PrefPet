@@ -81,9 +81,8 @@ public class AnimalService  {
             throw new IllegalArgumentException("Sexo inválido. Use 'Macho', 'Fêmea', 'M' ou 'F'.");
         }
         if (animalAtualizado.getRegistroGeral() != null && !animalAtualizado.getRegistroGeral().trim().isEmpty()) {
-            boolean rgExiste = animalRepository.existsByRegistroGeralAndIdNot(
-                    animalAtualizado.getRegistroGeral().trim(),
-                    id);
+            boolean rgExiste = animalRepository.existsByRegistroGeral(
+                    animalAtualizado.getRegistroGeral().trim());
             if (rgExiste) {
                 throw new IllegalArgumentException("Já existe outro animal com este Registro Geral.");
             }
