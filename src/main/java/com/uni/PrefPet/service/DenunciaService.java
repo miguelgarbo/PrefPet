@@ -20,28 +20,24 @@ public class DenunciaService {
 
     ///crud basico
 
-    public Denuncia save(Denuncia denuncia){
 
-        if(denuncia.getUsuario()==null){
-            Usuario usuarioAnonimo = new Usuario();
-            usuarioAnonimo.setNome("Usuário Anônimo");
-            usuarioAnonimo.setCPF(null);
-            usuarioAnonimo = usuarioRepository.save(usuarioAnonimo);
-            denuncia.setUsuario(usuarioAnonimo);
-        }else {
+
+    public Denuncia save(Denuncia denuncia){
+        if (denuncia.getUsuario() == null) {
+            denuncia.setAnonima(true);
+        } else {
             // Se houver usuário, verifica se já existe um CPF igual
             String cpf = denuncia.getUsuario().getCPF();
             if (cpf != null && usuarioRepository.findByCPF(cpf).isPresent()) {
                 throw new IllegalArgumentException("Já existe um usuário com este CPF.");
             }
         }
+        return denunciaRepository.save(denuncia);}
 
-        return denunciaRepository.save(denuncia);
-    }
 
     public Denuncia findById(Long id){
         return denunciaRepository.findById(id).orElseThrow(()->
-                new EntityNotFoundException("Denuncia Não Encontradaa")
+                new EntityNotFoundException("Denuncia Não Encontrada")
         );
     }
 
@@ -51,11 +47,10 @@ public class DenunciaService {
 
     public String delete(Long id){
 
-        if(!existById(id)){
-        }
+        if(!existById(id)){}
         denunciaRepository.deleteById(id);
 
-        return "denuncia  Deletada com Sucesso";
+        return "Denuncia  Deletada com Sucesso";
     }
 
     public boolean existById(Long id) {
@@ -71,8 +66,6 @@ public class DenunciaService {
         Denuncia denunciaSelecionada = denunciaRepository.findById(id).orElseThrow(()->
                 new EntityNotFoundException("denuncia  Não Encontrada")
         );
-
-
 
         if (denunciaAtualizada.getUsuario() != null) {
             denunciaSelecionada.setUsuario(denunciaAtualizada.getUsuario());
