@@ -1,7 +1,8 @@
 package com.uni.PrefPet.service;
 
-import com.uni.PrefPet.model.Usuario;
-import com.uni.PrefPet.model.Vacina;
+import com.uni.PrefPet.model.Animal;
+import com.uni.PrefPet.model.*;
+import com.uni.PrefPet.repository.AnimalRepository;
 import com.uni.PrefPet.repository.VacinaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,15 +15,17 @@ public class VacinaService {
     @Autowired
     private VacinaRepository vacinaRepository;
 
-    ///crud basico
+    @Autowired
+    private AnimalService animalService;
 
+    ///crud basico
     public Vacina save(Vacina vacina){
         return vacinaRepository.save(vacina);
     }
 
     public Vacina findById(Long id){
             return vacinaRepository.findById(id).orElseThrow(()->
-                new EntityNotFoundException("Vacina Não Encontradaa")
+                new EntityNotFoundException("Vacina Não Encontrada")
             );
     }
 
@@ -33,6 +36,7 @@ public class VacinaService {
     public String delete(Long id){
 
         if(!existById(id)){
+            throw new EntityNotFoundException("");
         }
         vacinaRepository.deleteById(id);
 
@@ -63,15 +67,5 @@ public class VacinaService {
         return vacinaRepository.save(vacinaSelecionada);    }
 
     ///fim crud basico
-
-    //serviços especificos:
-
-
-    //
-
-
-
-
-
 
 }

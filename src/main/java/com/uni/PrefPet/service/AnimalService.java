@@ -17,6 +17,7 @@ public class AnimalService  {
         this.tutorRepository = tutorRepository;
     }
 
+    // crud simples
     public Animal findById(Long id){
         return animalRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
@@ -80,7 +81,7 @@ public class AnimalService  {
             throw new IllegalArgumentException("Sexo inválido. Use 'Macho', 'Fêmea', 'M' ou 'F'.");
         }
         if (animalAtualizado.getRegistroGeral() != null && !animalAtualizado.getRegistroGeral().trim().isEmpty()) {
-            boolean rgExiste = animalRepository.existsByRegistroGeralSemId(
+            boolean rgExiste = animalRepository.existsByRegistroGeralAndIdNot(
                     animalAtualizado.getRegistroGeral().trim(),
                     id);
             if (rgExiste) {
@@ -118,6 +119,5 @@ public class AnimalService  {
         animalRepository.deleteById(id);
         return "Animal com id " + id + " foi excluído com sucesso.";
     }
-
-
+    // servicos especificos
 }
