@@ -86,8 +86,6 @@ public class InscricaoCampanhaService {
 
         return inscricaoCampanhaRepository.save(inscricaoCampanhaSelecionada);    }
 
-    ///fim crud basico
-
     //serviços especificos:
 
     public void validarAnimalInscritoCampanha(Animal animal, Campanha campanha) {
