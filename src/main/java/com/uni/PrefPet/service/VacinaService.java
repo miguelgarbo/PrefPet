@@ -1,6 +1,4 @@
 package com.uni.PrefPet.service;
-
-import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.model.Vacina;
 import com.uni.PrefPet.repository.VacinaRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,7 +13,6 @@ public class VacinaService {
     private VacinaRepository vacinaRepository;
 
     ///crud basico
-
     public Vacina save(Vacina vacina){
         return vacinaRepository.save(vacina);
     }
@@ -65,6 +62,8 @@ public class VacinaService {
     ///fim crud basico
 
     //serviços especificos:
+
+
 
 
     //

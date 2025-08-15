@@ -25,4 +25,6 @@ public class Vacina {
     @ManyToMany(mappedBy = "vacinas")
     @JsonIgnoreProperties("vacinas")
     private List<Animal> animais;
+
+
 }

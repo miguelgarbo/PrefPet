@@ -19,6 +19,7 @@ public class Denuncia{
     private TipoDenuncia tipo; // MAUS_TRATOS ou ANIMAL_SILVESTRE
 
     @ManyToOne
+    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
     private String especie;

@@ -21,6 +21,8 @@ public class Usuario {
     private String CPF;
     private String telefone;
 
+    private String senha;
+
     @Column(unique = true)
     @Email
     private String email;
