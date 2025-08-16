@@ -7,6 +7,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -24,25 +25,26 @@ public class DenunciaService {
             Usuario usuarioAnonimo = new Usuario();
             usuarioAnonimo.setNome("Usuário Anônimo");
             denuncia.setUsuario(usuarioAnonimo);
-            denuncia.
         }
 
-        if (denunciaRepository(usuario.getCPF()).isPresent()) {
-            throw new IllegalArgumentException("Já existe um usuário com este CPF.");
-        }
+        denuncia.setDataCriacao(LocalDateTime.now());
 
         return denunciaRepository.save(denuncia);
     }
 
+
+/// BUSCA
     public Denuncia findById(Long id){
         return denunciaRepository.findById(id).orElseThrow(()->
-                new EntityNotFoundException("Denuncia Não Encontradaa")
+                new EntityNotFoundException("Denuncia Não Encontrada")
         );
     }
 
     public List<Denuncia> findAll(){
         return denunciaRepository.findAll();
     }
+
+    /// DELETA
 
     public String delete(Long id){
 
@@ -60,6 +62,7 @@ public class DenunciaService {
         return true;
     }
 
+    /// ATUALIZA
 
     public Denuncia update(Long id, Denuncia denunciaAtualizada) {
 
@@ -102,14 +105,4 @@ public class DenunciaService {
 
 
         return denunciaRepository.save(denunciaSelecionada);    }
-
-    ///fim crud basico
-
-    //serviços especificos:
-
-
-
-
-    //
-    
 }
