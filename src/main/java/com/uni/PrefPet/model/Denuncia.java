@@ -18,6 +18,17 @@ public class Denuncia{
     @Enumerated(EnumType.STRING)
     private TipoDenuncia tipo; // MAUS_TRATOS ou ANIMAL_SILVESTRE
 
+    @Enumerated(EnumType.STRING)
+    private StatusDenuncia status;
+
+    public enum TipoDenuncia {
+        MAUS_TRATOS, ANIMAL_SILVESTRE
+    }
+
+    public enum StatusDenuncia {
+        ABERTA, EM_ANDAMENTO, FINALIZADA
+    }
+
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
@@ -29,8 +40,7 @@ public class Denuncia{
     @Embedded
     private Localizacao localizacao;
 
-    @Enumerated(EnumType.STRING)
-    private StatusDenuncia status;
+
 
     private LocalDateTime dataCriacao;
 

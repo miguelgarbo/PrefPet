@@ -3,11 +3,11 @@ package com.uni.PrefPet.service;
 import com.uni.PrefPet.model.Denuncia;
 import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.repository.DenunciaRepository;
-import com.uni.PrefPet.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -16,25 +16,24 @@ public class DenunciaService {
 
     @Autowired
     private DenunciaRepository denunciaRepository;
-    private UsuarioRepository usuarioRepository;
 
     ///crud basico
 
-
-
     public Denuncia save(Denuncia denuncia){
-        if (denuncia.getUsuario() == null) {
-            denuncia.setAnonima(true);
-        } else {
-            // Se houver usuário, verifica se já existe um CPF igual
-            String cpf = denuncia.getUsuario().getCPF();
-            if (cpf != null && usuarioRepository.findByCPF(cpf).isPresent()) {
-                throw new IllegalArgumentException("Já existe um usuário com este CPF.");
-            }
+
+        if(denuncia.getUsuario()==null){
+            Usuario usuarioAnonimo = new Usuario();
+            usuarioAnonimo.setNome("Usuário Anônimo");
+            denuncia.setUsuario(usuarioAnonimo);
         }
-        return denunciaRepository.save(denuncia);}
+
+        denuncia.setDataCriacao(LocalDateTime.now());
+
+        return denunciaRepository.save(denuncia);
+    }
 
 
+/// BUSCA
     public Denuncia findById(Long id){
         return denunciaRepository.findById(id).orElseThrow(()->
                 new EntityNotFoundException("Denuncia Não Encontrada")
@@ -45,12 +44,15 @@ public class DenunciaService {
         return denunciaRepository.findAll();
     }
 
+    /// DELETA
+
     public String delete(Long id){
 
-        if(!existById(id)){}
+        if(!existById(id)){
+        }
         denunciaRepository.deleteById(id);
 
-        return "Denuncia  Deletada com Sucesso";
+        return "denuncia  Deletada com Sucesso";
     }
 
     public boolean existById(Long id) {
@@ -60,12 +62,15 @@ public class DenunciaService {
         return true;
     }
 
+    /// ATUALIZA
 
     public Denuncia update(Long id, Denuncia denunciaAtualizada) {
 
         Denuncia denunciaSelecionada = denunciaRepository.findById(id).orElseThrow(()->
                 new EntityNotFoundException("denuncia  Não Encontrada")
         );
+
+
 
         if (denunciaAtualizada.getUsuario() != null) {
             denunciaSelecionada.setUsuario(denunciaAtualizada.getUsuario());
@@ -100,14 +105,4 @@ public class DenunciaService {
 
 
         return denunciaRepository.save(denunciaSelecionada);    }
-
-    ///fim crud basico
-
-    //serviços especificos:
-
-
-
-
-    //
-    
 }
