@@ -1,5 +1,7 @@
 package com.uni.PrefPet.model;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,8 +16,14 @@ public class Campanha {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "O título da campanha é obrigatório")
     private String titulo;
+
+    @NotBlank(message = "A descrição é obrigatória")
     private String descricao;
+
+    @NotNull(message = "A data de início é obrigatória")
     private LocalDate dataCriacao;
 
     @OneToMany(mappedBy = "campanha", cascade = CascadeType.ALL)

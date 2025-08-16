@@ -2,6 +2,8 @@ package com.uni.PrefPet.controller;
 
 import com.uni.PrefPet.model.InscricaoCampanha;
 import com.uni.PrefPet.service.InscricaoCampanhaService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,27 +17,54 @@ public class InscricaoCampanhaController {
 
 
     @PostMapping("/save")
-    public ResponseEntity<InscricaoCampanha> save(@RequestBody InscricaoCampanha inscricaoCampanha){
-        return ResponseEntity.ok(inscricaoCampanhaService.save(inscricaoCampanha));
+    public ResponseEntity<InscricaoCampanha> save(@Valid @RequestBody InscricaoCampanha inscricaoCampanha) {
+        try {
+            var result = inscricaoCampanhaService.save(inscricaoCampanha);
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/findById/{id}")
-    public  ResponseEntity<InscricaoCampanha> save(@PathVariable Long id){
-        return ResponseEntity.ok(inscricaoCampanhaService.findById(id));
+    public ResponseEntity<InscricaoCampanha> findById(@PathVariable Long id) {
+        try {
+            var result = inscricaoCampanhaService.findById(id);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
 
     @GetMapping("/listAll")
-        public ResponseEntity<List<InscricaoCampanha>> listAll(){
-            return ResponseEntity.ok(inscricaoCampanhaService.findAll());
+    public ResponseEntity<List<InscricaoCampanha>> listAll() {
+        try {
+            var result = inscricaoCampanhaService.findAll();
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
+    }
 
     @PutMapping("/update/{id}")
-        public ResponseEntity<InscricaoCampanha> update(@PathVariable Long id, InscricaoCampanha inscricaoCampanha){
-            return  ResponseEntity.ok(inscricaoCampanhaService.update(id, inscricaoCampanha));
+    public ResponseEntity<InscricaoCampanha> update(@PathVariable Long id,
+                                                    @Valid @RequestBody InscricaoCampanha inscricaoCampanha) {
+        try {
+            var updated = inscricaoCampanhaService.update(id, inscricaoCampanha);
+            return new ResponseEntity<>(updated, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
     }
+
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
-        return ResponseEntity.ok(inscricaoCampanhaService.delete(id));
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        try {
+            inscricaoCampanhaService.delete(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 
