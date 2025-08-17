@@ -66,6 +66,28 @@ public class EspecieController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
+    //
+
+    @GetMapping("/existsByNome")
+    public ResponseEntity<Boolean> existsByNome(@RequestParam String nome) {
+        try {
+            boolean exists = especieService.existsByNome(nome);
+            return new ResponseEntity<>(exists, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/findByNome")
+    public ResponseEntity<List<Especie>> findByNome(@RequestParam String nome) {
+        try {
+            List<Especie> especies = especieService.findByNomeContaining(nome);
+            return new ResponseEntity<>(especies, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
     
     
     
