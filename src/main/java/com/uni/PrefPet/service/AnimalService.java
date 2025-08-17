@@ -1,5 +1,6 @@
 package com.uni.PrefPet.service;
 import com.uni.PrefPet.model.Animal;
+import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.repository.AnimalRepository;
 import com.uni.PrefPet.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -104,7 +105,6 @@ public class AnimalService  {
         LocalDate limite = LocalDate.now().minusYears(idade);
         return animalRepository.findAnimaisIdadeAcima(limite);
     }
-    //
 
     public List<Animal> findAnimaisEntreIdade(int idadeMax, int idadeMin){
 
@@ -115,6 +115,53 @@ public class AnimalService  {
         return animalRepository.findAnimaisIdadeEntre(anoMax, anoMin);
 
     }
+
+    public List<Animal> findByNome(String nome){
+        return animalRepository.findByNomeContainingIgnoreCase(nome).orElseThrow(()->
+                 new EntityNotFoundException("Esse Animal Não Foi Encontrado"));
+    }
+    public List<Animal> findByEspecieNome(String especie) {
+        return animalRepository.findByEspecieNomeIgnoreCase(especie)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum animal com a espécie informada foi encontrado"));
+    }
+
+    public List<Animal> findByCor(String cor) {
+        return animalRepository.findByCorIgnoreCase(cor)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum animal com a cor informada foi encontrado"));
+    }
+
+    public List<Animal> findBySexo(String sexo) {
+        return animalRepository.findBySexoIgnoreCase(sexo)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum animal com o sexo informado foi encontrado"));
+    }
+
+    public List<Animal> findByCastrado(Boolean castrado) {
+        return animalRepository.findByCastrado(castrado)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum animal com o status de castrado informado foi encontrado"));
+    }
+
+    public List<Animal> findByMicrochip(Boolean microchip) {
+        return animalRepository.findByMicrochip(microchip)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum animal com o status de microchip informado foi encontrado"));
+    }
+
+    public List<Animal> findByUsuario(Usuario usuario) {
+        return animalRepository.findByUsuario(usuario)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum animal encontrado para o usuário informado"));
+    }
+
+    public List<Animal> findByDataNascimento(LocalDate dataNascimento) {
+        return animalRepository.findByDataNascimento(dataNascimento)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum animal encontrado com a data de nascimento informada"));
+    }
+
+    public List<Animal> findByRegistroGeral(String registroGeral) {
+        return animalRepository.findByRegistroGeral(registroGeral)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum animal encontrado com o registro geral informado"));
+    }
+
+
+    //fim serviços especificios
 
 
 }
