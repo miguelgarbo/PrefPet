@@ -1,13 +1,17 @@
 package com.uni.PrefPet.controller;
 
 import com.uni.PrefPet.model.Animal;
+import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.service.AnimalService;
+import com.uni.PrefPet.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -16,6 +20,8 @@ public class AnimalController {
 
     @Autowired
     private AnimalService animalService;
+    @Autowired
+    private UsuarioService usuarioService;
 
     @PostMapping("/save")
     public ResponseEntity<Animal> save(@RequestBody Animal animal
@@ -64,5 +70,118 @@ public class AnimalController {
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             }
         }
-    }
+
+
+        @GetMapping("/findByNome")
+        public ResponseEntity<List<Animal>> findByNome(@RequestParam String nome) {
+            try {
+                var result = animalService.findByNome(nome);
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        @GetMapping("/findByEspecie")
+        public ResponseEntity<List<Animal>> findByEspecie(@RequestParam String especie) {
+            try {
+                var result = animalService.findByEspecieNome(especie);
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        @GetMapping("/findByCor")
+        public ResponseEntity<List<Animal>> findByCor(@RequestParam String cor) {
+            try {
+                var result = animalService.findByCor(cor);
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        @GetMapping("/findBySexo")
+        public ResponseEntity<List<Animal>> findBySexo(@RequestParam String sexo) {
+            try {
+                var result = animalService.findBySexo(sexo);
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        @GetMapping("/findByCastrado")
+        public ResponseEntity<List<Animal>> findByCastrado(@RequestParam Boolean castrado) {
+            try {
+                var result = animalService.findByCastrado(castrado);
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        @GetMapping("/findByMicrochip")
+        public ResponseEntity<List<Animal>> findByMicrochip(@RequestParam Boolean microchip) {
+            try {
+                var result = animalService.findByMicrochip(microchip);
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        @GetMapping("/findByUsuario")
+        public ResponseEntity<List<Animal>> findByUsuario(@RequestParam Long usuarioId) {
+            try {
+
+                Usuario usuarioInformado = usuarioService.findById(usuarioId);
+                var result = animalService.findByUsuario(usuarioInformado);
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        @GetMapping("/findByDataNascimento")
+        public ResponseEntity<List<Animal>> findByDataNascimento(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataNascimento) {
+            try {
+                var result = animalService.findByDataNascimento(dataNascimento);
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        @GetMapping("/findByRegistroGeral")
+        public ResponseEntity<List<Animal>> findByRegistroGeral(@RequestParam String registroGeral) {
+            try {
+                var result = animalService.findByRegistroGeral(registroGeral);
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        @GetMapping("/findAnimaisIdadeAcima")
+        public ResponseEntity<List<Animal>> findAnimaisIdadeAcima(@RequestParam int idade) {
+            try {
+                var result = animalService.findAnimaisIdadeAcima(idade);
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+        }
+
+        @GetMapping("/findAnimaisEntreIdade")
+        public ResponseEntity<List<Animal>> findAnimaisEntreIdade(@RequestParam int idadeMin, @RequestParam int idadeMax) {
+            try {
+                var result = animalService.findAnimaisEntreIdade(idadeMax, idadeMin);
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            } catch (Exception e) {
+                return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            }
+        }
+}
 

@@ -63,5 +63,66 @@ public class UsuarioController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/existsByCPF")
+    public ResponseEntity<Boolean> existsByCPF(@RequestParam String cpf) {
+        try {
+            boolean exists = usuarioService.existsByCPF(cpf);
+            return new ResponseEntity<>(exists, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/existsByEmail")
+    public ResponseEntity<Boolean> existsByEmail(@RequestParam String email) {
+        try {
+            boolean exists = usuarioService.existsByEmail(email);
+            return new ResponseEntity<>(exists, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/findByNome")
+    public ResponseEntity<Usuario> findByNome(@RequestParam String nome) {
+        try {
+            Usuario usuario = usuarioService.findByNome(nome);
+            return new ResponseEntity<>(usuario, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/findByCPF")
+    public ResponseEntity<Usuario> findByCPF(@RequestParam String cpf) {
+        try {
+            Usuario usuario = usuarioService.findByCPF(cpf);
+            return new ResponseEntity<>(usuario, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/findByTelefone")
+    public ResponseEntity<Usuario> findByTelefone(@RequestParam String telefone) {
+        try {
+            Usuario usuario = usuarioService.findByTelefone(telefone);
+            return new ResponseEntity<>(usuario, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/findByEmail")
+    public ResponseEntity<Usuario> findByEmail(@RequestParam String email) {
+        try {
+            Usuario usuario = usuarioService.findByEmail(email);
+            return new ResponseEntity<>(usuario, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
 

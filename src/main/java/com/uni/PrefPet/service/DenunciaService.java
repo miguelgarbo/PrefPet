@@ -102,7 +102,35 @@ public class DenunciaService {
             denunciaSelecionada.setDataCriacao(denunciaAtualizada.getDataCriacao());
         }
 
-
-
         return denunciaRepository.save(denunciaSelecionada);    }
+
+    //serviços especificos
+
+    public List<Denuncia> findByTipo(Denuncia.TipoDenuncia tipo) {
+        return denunciaRepository.findByTipo(tipo);
+    }
+
+    public List<Denuncia> findByStatus(Denuncia.StatusDenuncia status) {
+        return denunciaRepository.findByStatus(status);
+    }
+
+    public List<Denuncia> findByUsuario(Usuario usuario) {
+        return denunciaRepository.findByUsuario(usuario);
+    }
+
+    public List<Denuncia> findByAnonimaTrue() {
+        return denunciaRepository.findByAnonimaTrue();
+    }
+
+    public List<Denuncia> findByAnonimaFalse() {
+        return denunciaRepository.findByAnonimaFalse();
+    }
+
+    public List<Denuncia> findByEspecieContainingIgnoreCase(String especie) {
+        return denunciaRepository.findByEspecieContainingIgnoreCase(especie);
+    }
+
+    //
+
+
 }

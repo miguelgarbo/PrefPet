@@ -6,6 +6,8 @@ import com.uni.PrefPet.repository.VacinaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -65,5 +67,43 @@ public class VacinaService {
 
     ///fim crud basico
 
+
+
     //serviços especificos
+
+    public List<Vacina> findByNome(String nome) {
+        List<Vacina> vacinas = vacinaRepository.findByNomeContainingIgnoreCase(nome);
+        if (vacinas.isEmpty()) {
+            throw new EntityNotFoundException("Nenhuma vacina encontrada contendo o nome informado");
+        }
+        return vacinas;
+    }
+
+    public Vacina findByLote(String lote) {
+        return vacinaRepository.findByLote(lote)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhuma vacina encontrada com o lote informado"));
+    }
+
+    public boolean existsByLote(String lote) {
+        return vacinaRepository.existsByLote(lote);
+    }
+
+    public List<Vacina> findByValidadeBefore(LocalDate data) {
+        List<Vacina> vacinas = vacinaRepository.findByValidadeBefore(data);
+        if (vacinas.isEmpty()) {
+            throw new EntityNotFoundException("Nenhuma vacina encontrada com validade anterior à data informada");
+        }
+        return vacinas;
+    }
+
+    public List<Vacina> findByValidadeAfter(LocalDate data) {
+        List<Vacina> vacinas = vacinaRepository.findByValidadeAfter(data);
+        if (vacinas.isEmpty()) {
+            throw new EntityNotFoundException("Nenhuma vacina encontrada com validade posterior à data informada");
+        }
+        return vacinas;
+    }
+
+
+    //fim
 }

@@ -17,17 +17,19 @@ public class UsuarioService {
     }
 
     public Usuario save(Usuario usuario) {
-//        if (usuarioRepository.findByNome(usuario.getNome()).isPresent()) {
-//            throw new IllegalArgumentException("Já existe um usuário com este nome.");
-//        }
 
-        if (usuarioRepository.findByCPF(usuario.getCPF()).isPresent()) {
+        if (usuarioRepository.existsByCPF(usuario.getCPF())) {
             throw new IllegalArgumentException("Já existe um usuário com este CPF.");
         }
 
-        if (usuarioRepository.findByTelefone(usuario.getTelefone()).isPresent()) {
+        if (usuarioRepository.existsByTelefone(usuario.getTelefone())) {
             throw new IllegalArgumentException("Já existe um usuário com este telefone.");
         }
+
+        if (usuarioRepository.existsByEmail(usuario.getEmail())) {
+            throw new IllegalArgumentException("Já existe um usuário com este email.");
+        }
+
         return usuarioRepository.save(usuario);
     }
 
@@ -68,4 +70,45 @@ public class UsuarioService {
         usuarioRepository.deleteById(id);
         return "Usuário com id " + id + " foi excluído com sucesso.";
     }
+
+
+    //serviços especificos:
+
+    public boolean existsByCPF(String cpf) {
+        return usuarioRepository.existsByCPF(cpf);
+    }
+
+    public boolean existsByEmail(String email) {
+        return usuarioRepository.existsByEmail(email);
+    }
+
+    public boolean existsByTelefone(String telefone){
+        return usuarioRepository.existsByTelefone(telefone);
+    }
+
+    public Usuario findByNome(String nome) {
+        return usuarioRepository.findByNome(nome)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o nome informado"));
+    }
+
+    public Usuario findByCPF(String cpf) {
+        return usuarioRepository.findByCPF(cpf)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o CPF informado"));
+    }
+
+    public Usuario findByTelefone(String telefone) {
+        return usuarioRepository.findByTelefone(telefone)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o telefone informado"));
+    }
+
+    public Usuario findByEmail(String email) {
+        return usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o email informado"));
+    }
+
+
+
+
+    //fim dos serviços especificos
+
 }

@@ -17,6 +17,11 @@ public class EspecieService {
     ///crud basico
 
     public Especie save(Especie especie){
+        if(especieRepository.existsByNomeIgnoreCase(especie.getNome())){
+
+            throw new IllegalArgumentException("Já existe uma Especie com este nome.");
+        }
+
         return especieRepository.save(especie);
     }
 
@@ -60,5 +65,22 @@ public class EspecieService {
         return especieRepository.save(especieSelecionada);    }
 
     ///fim crud basico
+
+    //serviços especificos:
+    public boolean existsByNome(String nome) {
+        return especieRepository.existsByNomeIgnoreCase(nome);
+    }
+
+    public List<Especie> findByNomeContaining(String nome) {
+        List<Especie> especies = especieRepository.findByNomeContainingIgnoreCase(nome);
+        if (especies.isEmpty()) {
+            throw new EntityNotFoundException("Nenhuma espécie encontrada contendo o nome informado");
+        }
+        return especies;
+    }
+
+    //fim
+
+
     
 }
