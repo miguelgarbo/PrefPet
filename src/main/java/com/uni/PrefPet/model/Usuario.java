@@ -1,4 +1,5 @@
 package com.uni.PrefPet.model;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -8,7 +9,6 @@ import java.util.List;
 
 @Data
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario {
 
     @Id
@@ -19,6 +19,8 @@ public class Usuario {
     @NotBlank(message = "Cpf Não pode estar vazio")
     @Column(unique = true)
     private String CPF;
+
+    @Column(unique = true)
     private String telefone;
 
     private String senha;
@@ -31,9 +33,12 @@ public class Usuario {
     private List<InscricaoCampanha> inscricaoCampanhas;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+
     private List<Denuncia> denuncias;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonManagedReference
+
     private List<Animal> animais;
 
 }

@@ -22,7 +22,7 @@ public class AnimalService  {
         return animalRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
-    public List<Animal> listAll(){
+    public List<Animal> findAll(){
         return animalRepository.findAll();
     }
 
@@ -36,7 +36,7 @@ public class AnimalService  {
             animalExistente.setNome(animalAtualizado.getNome());
         }
 
-        if (animalAtualizado.getEspecie() != null && !animalAtualizado.getEspecie().trim().isEmpty()) {
+        if (animalAtualizado.getEspecie() != null && !animalAtualizado.getEspecie().getNome().trim().isEmpty()) {
             animalExistente.setEspecie(animalAtualizado.getEspecie());
         }
 
@@ -99,4 +99,22 @@ public class AnimalService  {
         return "Animal com id " + id + " foi excluído com sucesso.";
     }
     // servicos especificos
+
+    public List<Animal> findAnimaisIdadeAcima(int idade) {
+        LocalDate limite = LocalDate.now().minusYears(idade);
+        return animalRepository.findAnimaisIdadeAcima(limite);
+    }
+    //
+
+    public List<Animal> findAnimaisEntreIdade(int idadeMax, int idadeMin){
+
+
+        LocalDate anoMax = LocalDate.now().minusYears(idadeMax);
+        LocalDate anoMin = LocalDate.now().minusYears(idadeMin);
+
+        return animalRepository.findAnimaisIdadeEntre(anoMax, anoMin);
+
+    }
+
+
 }

@@ -1,9 +1,7 @@
 package com.uni.PrefPet.controller;
 
 import com.uni.PrefPet.model.Animal;
-import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.service.AnimalService;
-import com.uni.PrefPet.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,16 +18,13 @@ public class AnimalController {
     private AnimalService animalService;
 
     @PostMapping("/save")
-    public ResponseEntity<Animal> save(
-            @Valid @RequestBody Animal animal
+    public ResponseEntity<Animal> save(@RequestBody Animal animal
     ) {
         try {
             var result = animalService.save(animal);
-            return new ResponseEntity<>(result,
-                    HttpStatus.CREATED);
+            return new ResponseEntity<>(result, HttpStatus.CREATED);
         } catch (Exception ex) {
-            return new ResponseEntity<>(null,
-                    HttpStatus.BAD_GATEWAY);
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -60,10 +55,10 @@ public class AnimalController {
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             }
         }
-        @GetMapping("/listAll")
-        public ResponseEntity<List<Animal>> listAll() {
+        @GetMapping("/findAll")
+        public ResponseEntity<List<Animal>> findAll() {
             try {
-                var result = animalService.listAll();
+                var result = animalService.findAll();
                 return new ResponseEntity<>(result, HttpStatus.OK);
             } catch (Exception ex) {
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

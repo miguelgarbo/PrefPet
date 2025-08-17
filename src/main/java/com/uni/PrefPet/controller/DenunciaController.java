@@ -2,6 +2,7 @@ package com.uni.PrefPet.controller;
 
 import com.uni.PrefPet.model.Denuncia;
 import com.uni.PrefPet.service.DenunciaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ public class DenunciaController {
     private DenunciaService denunciaService;
 
     @PostMapping("/save")
-    public ResponseEntity<Denuncia> save(@RequestBody Denuncia denuncia) {
+    public ResponseEntity<Denuncia> save(@RequestBody @Valid Denuncia denuncia) {
         try {
             var result = denunciaService.save(denuncia);
             return new ResponseEntity<>(result, HttpStatus.CREATED);

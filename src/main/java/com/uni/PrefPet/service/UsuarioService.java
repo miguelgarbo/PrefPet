@@ -12,7 +12,7 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public List<Usuario> listAll() {
+    public List<Usuario> findAll() {
         return usuarioRepository.findAll();
     }
 

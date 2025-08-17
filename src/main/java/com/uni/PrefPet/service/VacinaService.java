@@ -57,8 +57,8 @@ public class VacinaService {
             vacinaSelecionada.setNome(vacinaAtualizada.getNome());
         }
 
-        if (vacinaAtualizada.getData() != null) {
-            vacinaSelecionada.setData(vacinaAtualizada.getData());
+        if (vacinaAtualizada.getDataAplicacao() != null) {
+            vacinaSelecionada.setDataAplicacao(vacinaAtualizada.getDataAplicacao());
         }
 
         return vacinaRepository.save(vacinaSelecionada);    }

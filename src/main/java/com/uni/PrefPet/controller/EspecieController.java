@@ -1,7 +1,7 @@
 package com.uni.PrefPet.controller;
 
-import com.uni.PrefPet.model.Usuario;
-import com.uni.PrefPet.service.UsuarioService;
+import com.uni.PrefPet.model.Especie;
+import com.uni.PrefPet.service.EspecieService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,57 +11,62 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuarios")
-public class UsuarioController {
-
+@RequestMapping("/especies")
+public class EspecieController {
+    
     @Autowired
-    private UsuarioService usuarioService;
-
+    private EspecieService especieService;
+    
     @PostMapping("/save")
-    public ResponseEntity<Usuario> save(@RequestBody @Valid Usuario usuario) {
+    public ResponseEntity<Especie> save(@RequestBody Especie especie
+    ) {
         try {
-            var result = usuarioService.save(usuario);
-            return new ResponseEntity<>(result, HttpStatus.CREATED);
+            var result = especieService.save(especie);
+            return new ResponseEntity<>(result,
+                    HttpStatus.CREATED);
         } catch (Exception ex) {
             return new ResponseEntity<>(null,
                     HttpStatus.BAD_REQUEST);
         }
     }
+
     @GetMapping("/findById/{id}")
-    public ResponseEntity<Usuario> findById(@PathVariable Long id) {
+    public ResponseEntity<Especie> findById(@PathVariable Long id){
         try {
-            var result = usuarioService.findById(id);
+            var result = especieService.findById(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<Void> delete (@PathVariable Long id){
         try {
-            usuarioService.delete(id);
+            especieService.delete(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario usuario) {
+    public ResponseEntity<Especie> update (@Valid @PathVariable Long id, @RequestBody Especie especie){
         try {
-            var updatedUsuario = usuarioService.update(id, usuario);
+            var updatedUsuario = especieService.update(id, especie);
             return new ResponseEntity<>(updatedUsuario, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
     @GetMapping("/findAll")
-    public ResponseEntity<List<Usuario>> findAll() {
+    public ResponseEntity<List<Especie>> findAll() {
         try {
-            var result = usuarioService.findAll();
+            var result = especieService.findAll();
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+    
+    
+    
 }
-

@@ -14,7 +14,7 @@ public interface VacinaRepository extends JpaRepository<Vacina, Long> {
     Optional<Vacina> findByNome(String nome);
     List<Vacina> findByNomeContainingIgnoreCase(String nome);
     Optional<Vacina> findByLote(String lote);
-    boolean existByLote(String lote);
+    boolean existsByLote(String lote);
     List<Vacina> findByValidadeBefore(LocalDate data);
     List<Vacina> findByValidadeAfter(LocalDate data);
 }

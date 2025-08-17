@@ -15,7 +15,6 @@ import java.util.List;
 public class InscricaoCampanhaController {
     private InscricaoCampanhaService inscricaoCampanhaService;
 
-
     @PostMapping("/save")
     public ResponseEntity<InscricaoCampanha> save(@Valid @RequestBody InscricaoCampanha inscricaoCampanha) {
         try {
@@ -36,8 +35,8 @@ public class InscricaoCampanhaController {
         }
     }
 
-    @GetMapping("/listAll")
-    public ResponseEntity<List<InscricaoCampanha>> listAll() {
+    @GetMapping("/findAll")
+    public ResponseEntity<List<InscricaoCampanha>> findAll() {
         try {
             var result = inscricaoCampanhaService.findAll();
             return new ResponseEntity<>(result, HttpStatus.OK);
