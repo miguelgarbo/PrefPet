@@ -104,7 +104,7 @@ public class AnimalService  {
         LocalDate limite = LocalDate.now().minusYears(idade);
         return animalRepository.findAnimaisIdadeAcima(limite);
     }
-    //
+
 
     public List<Animal> findAnimaisEntreIdade(int idadeMax, int idadeMin){
 
@@ -116,5 +116,6 @@ public class AnimalService  {
 
     }
 
+//fim servico
 
 }
