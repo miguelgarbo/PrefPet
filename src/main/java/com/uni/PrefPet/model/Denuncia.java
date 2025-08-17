@@ -33,7 +33,9 @@ public class Denuncia{
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    private String especie;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "especie_id")
+    private Especie especie;
 
     private String descricao;
 
