@@ -4,6 +4,7 @@ import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.service.AnimalService;
 import com.uni.PrefPet.service.UsuarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class AnimalController {
 
     @PostMapping("/save")
     public ResponseEntity<Animal> save(
-            @RequestBody Animal animal
+            @Valid @RequestBody Animal animal
     ) {
         try {
             var result = animalService.save(animal);
@@ -51,7 +52,7 @@ public class AnimalController {
             }
         }
         @PutMapping("/update/{id}")
-        public ResponseEntity<Animal> update (@PathVariable Long id, @RequestBody Animal animal){
+        public ResponseEntity<Animal> update (@Valid @PathVariable Long id, @RequestBody Animal animal){
             try {
                 var updatedUsuario = animalService.update(id, animal);
                 return new ResponseEntity<>(updatedUsuario, HttpStatus.OK);

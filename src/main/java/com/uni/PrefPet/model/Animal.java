@@ -1,7 +1,9 @@
 package com.uni.PrefPet.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.Data;
+import jakarta.validation.constraints.NotBlank;
+import lombok.*;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -12,15 +14,26 @@ public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "O nome é obrigatório")
     private String nome;
+
     private String registroGeral;
+
+    @NotBlank(message = "A espécie é obrigatória")
     private String especie;
+
     private Boolean castrado;
+
     private String cor;
+
     private String sexo;
+
     private Boolean microchip;
+
     private LocalDate dataNascimento;
+
     private String naturalidade;
+
     private String imagemUrl;
 
     @ManyToOne(cascade = CascadeType.ALL)
