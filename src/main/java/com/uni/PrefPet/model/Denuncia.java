@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 @Entity
-public class Denuncia{
+public class Denuncia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,26 +30,18 @@ public class Denuncia{
     }
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "especie_id")
-    private Especie especie;
+    private String especie;
 
     private String descricao;
 
     @Embedded
     private Localizacao localizacao;
 
-
-
     private LocalDateTime dataCriacao;
 
-    @OneToMany(mappedBy = "denuncia", cascade = CascadeType.ALL)
-    private List<MidiaDenuncia> midias;
-
-    private Boolean anonima;
+    private boolean anonima; // <-- campo necessário para os filtros do repository
 
     @ManyToMany
     @JoinTable(

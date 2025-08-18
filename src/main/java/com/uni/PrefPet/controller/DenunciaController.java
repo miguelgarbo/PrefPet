@@ -3,8 +3,6 @@ package com.uni.PrefPet.controller;
 import com.uni.PrefPet.model.Denuncia;
 import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.service.DenunciaService;
-import com.uni.PrefPet.service.UsuarioService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,10 +16,9 @@ public class DenunciaController {
 
     @Autowired
     private DenunciaService denunciaService;
-    private UsuarioService usuarioService;
 
     @PostMapping("/save")
-    public ResponseEntity<Denuncia> save(@RequestBody @Valid Denuncia denuncia) {
+    public ResponseEntity<Denuncia> save(@RequestBody Denuncia denuncia) {
         try {
             var result = denunciaService.save(denuncia);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
@@ -42,12 +39,7 @@ public class DenunciaController {
 
     @GetMapping("/listAll")
     public ResponseEntity<List<Denuncia>> listAll() {
-        try {
-            var result = denunciaService.findAll();
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        return ResponseEntity.ok(denunciaService.findAll());
     }
 
     @PutMapping("/update/{id}")
@@ -70,64 +62,34 @@ public class DenunciaController {
         }
     }
 
+    // 🔎 Filtros extras
     @GetMapping("/tipo/{tipo}")
-    public ResponseEntity<List<Denuncia>> getByTipo(@PathVariable Denuncia.TipoDenuncia tipo) {
-        try {
-            var result = denunciaService.findByTipo(tipo);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<List<Denuncia>> findByTipo(@PathVariable Denuncia.TipoDenuncia tipo) {
+        return ResponseEntity.ok(denunciaService.findByTipo(tipo));
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<Denuncia>> getByStatus(@PathVariable Denuncia.StatusDenuncia status) {
-        try {
-            var result = denunciaService.findByStatus(status);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<List<Denuncia>> findByStatus(@PathVariable Denuncia.StatusDenuncia status) {
+        return ResponseEntity.ok(denunciaService.findByStatus(status));
     }
 
-    @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<List<Denuncia>> getByUsuario(@PathVariable Long usuarioId) {
-        try {
-            Usuario usuario = usuarioService.findById(usuarioId);
-            var result = denunciaService.findByUsuario(usuario);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    @PostMapping("/usuario")
+    public ResponseEntity<List<Denuncia>> findByUsuario(@RequestBody Usuario usuario) {
+        return ResponseEntity.ok(denunciaService.findByUsuario(usuario));
     }
 
     @GetMapping("/anonimas")
-    public ResponseEntity<List<Denuncia>> getAnonimas() {
-        try {
-            var result = denunciaService.findByAnonimaTrue();
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<List<Denuncia>> findAnonimas() {
+        return ResponseEntity.ok(denunciaService.findAnonimas());
     }
 
-    @GetMapping("/nao-anonimas")
-    public ResponseEntity<List<Denuncia>> getNaoAnonimas() {
-        try {
-            var result = denunciaService.findByAnonimaFalse();
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping("/naoAnonimas")
+    public ResponseEntity<List<Denuncia>> findNaoAnonimas() {
+        return ResponseEntity.ok(denunciaService.findNaoAnonimas());
     }
 
-    @GetMapping("/especie")
-    public ResponseEntity<List<Denuncia>> getByEspecie(@RequestParam String especie) {
-        try {
-            var result = denunciaService.findByEspecieContainingIgnoreCase(especie);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping("/especie/{especie}")
+    public ResponseEntity<List<Denuncia>> findByEspecie(@PathVariable String especie) {
+        return ResponseEntity.ok(denunciaService.findByEspecie(especie));
     }
 }

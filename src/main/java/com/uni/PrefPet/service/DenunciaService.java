@@ -13,85 +13,67 @@ import java.util.List;
 @Service
 public class DenunciaService {
 
-
     @Autowired
     private DenunciaRepository denunciaRepository;
 
-    ///crud basico
-
-    public Denuncia save(Denuncia denuncia){
-
-        if(denuncia.getUsuario()==null){
+    /// CRUD básico
+    public Denuncia save(Denuncia denuncia) {
+        if (denuncia.getUsuario() == null && !denuncia.isAnonima()) {
             Usuario usuarioAnonimo = new Usuario();
             usuarioAnonimo.setNome("Usuário Anônimo");
             denuncia.setUsuario(usuarioAnonimo);
+            denuncia.setAnonima(true);
         }
 
         denuncia.setDataCriacao(LocalDateTime.now());
-
         return denunciaRepository.save(denuncia);
     }
 
-
-/// BUSCA
-    public Denuncia findById(Long id){
-        return denunciaRepository.findById(id).orElseThrow(()->
-                new EntityNotFoundException("Denuncia Não Encontrada")
+    public Denuncia findById(Long id) {
+        return denunciaRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Denúncia não encontrada")
         );
     }
 
-    public List<Denuncia> findAll(){
+    public List<Denuncia> findAll() {
         return denunciaRepository.findAll();
     }
 
-    /// DELETA
-
-    public String delete(Long id){
-
-        if(!existById(id)){
+    public String delete(Long id) {
+        if (!existById(id)) {
+            throw new EntityNotFoundException("Denúncia não encontrada");
         }
         denunciaRepository.deleteById(id);
-
-        return "denuncia  Deletada com Sucesso";
+        return "Denúncia deletada com sucesso";
     }
 
     public boolean existById(Long id) {
         if (!denunciaRepository.existsById(id)) {
-            throw new EntityNotFoundException("denuncia  Não Encontrada");
+            throw new EntityNotFoundException("Denúncia não encontrada");
         }
         return true;
     }
 
-    /// ATUALIZA
-
     public Denuncia update(Long id, Denuncia denunciaAtualizada) {
-
-        Denuncia denunciaSelecionada = denunciaRepository.findById(id).orElseThrow(()->
-                new EntityNotFoundException("denuncia  Não Encontrada")
+        Denuncia denunciaSelecionada = denunciaRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Denúncia não encontrada")
         );
-
-
 
         if (denunciaAtualizada.getUsuario() != null) {
             denunciaSelecionada.setUsuario(denunciaAtualizada.getUsuario());
         }
-
         if (denunciaAtualizada.getEspecie() != null) {
             denunciaSelecionada.setEspecie(denunciaAtualizada.getEspecie());
         }
-
         if (denunciaAtualizada.getTipo() != null) {
             denunciaSelecionada.setTipo(denunciaAtualizada.getTipo());
         }
-
         if (denunciaAtualizada.getDescricao() != null) {
             denunciaSelecionada.setDescricao(denunciaAtualizada.getDescricao());
         }
-
         if (denunciaAtualizada.getStatus() != null) {
             denunciaSelecionada.setStatus(denunciaAtualizada.getStatus());
         }
-
         if (denunciaAtualizada.getContatosNotificados() != null) {
             denunciaSelecionada.setContatosNotificados(denunciaAtualizada.getContatosNotificados());
         }
@@ -102,10 +84,10 @@ public class DenunciaService {
             denunciaSelecionada.setDataCriacao(denunciaAtualizada.getDataCriacao());
         }
 
-        return denunciaRepository.save(denunciaSelecionada);    }
+        return denunciaRepository.save(denunciaSelecionada);
+    }
 
-    //serviços especificos
-
+    /// Filtros extras
     public List<Denuncia> findByTipo(Denuncia.TipoDenuncia tipo) {
         return denunciaRepository.findByTipo(tipo);
     }
@@ -118,19 +100,15 @@ public class DenunciaService {
         return denunciaRepository.findByUsuario(usuario);
     }
 
-    public List<Denuncia> findByAnonimaTrue() {
+    public List<Denuncia> findAnonimas() {
         return denunciaRepository.findByAnonimaTrue();
     }
 
-    public List<Denuncia> findByAnonimaFalse() {
+    public List<Denuncia> findNaoAnonimas() {
         return denunciaRepository.findByAnonimaFalse();
     }
 
-    public List<Denuncia> findByEspecieContainingIgnoreCase(String especie) {
+    public List<Denuncia> findByEspecie(String especie) {
         return denunciaRepository.findByEspecieContainingIgnoreCase(especie);
     }
-
-    //
-
-
 }
