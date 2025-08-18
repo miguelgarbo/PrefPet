@@ -1,8 +1,11 @@
 package com.uni.PrefPet.controller;
 
+import com.uni.PrefPet.model.Enum.StatusInscricao;
 import com.uni.PrefPet.model.InscricaoCampanha;
 import com.uni.PrefPet.service.InscricaoCampanhaService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +16,8 @@ import java.util.List;
 @RequestMapping("/inscricoesCampanha")
 
 public class InscricaoCampanhaController {
+
+    @Autowired
     private InscricaoCampanhaService inscricaoCampanhaService;
 
     @PostMapping("/save")
@@ -56,7 +61,7 @@ public class InscricaoCampanhaController {
         }
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
             inscricaoCampanhaService.delete(id);
@@ -66,6 +71,61 @@ public class InscricaoCampanhaController {
         }
     }
 
+    @GetMapping("/findByCampanhaTitulo/{titulo}")
+    public ResponseEntity<List<InscricaoCampanha>> findByCampanhaTitulo(@PathVariable String titulo){
+        try {
+            var result = inscricaoCampanhaService.findByCampanhaTitulo(titulo);
+
+            if (result == null || result.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/findByAnimalNome/{nome}")
+    public ResponseEntity<List<InscricaoCampanha>> findByAnimalNome(@PathVariable String nome){
+        try {
+            var result = inscricaoCampanhaService.findByAnimalNome(nome);
+
+            if (result == null || result.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/findByUsuarioNome/{nome}")
+    public ResponseEntity<List<InscricaoCampanha>> findByUsuarioNome(@PathVariable String nome){
+        try {
+            var result = inscricaoCampanhaService.findByUsuarioNome(nome);
+
+            if (result == null || result.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/findByStatus/{status}")
+    public ResponseEntity<List<InscricaoCampanha>> findByStatus(@PathVariable StatusInscricao status) {
+        try{
+            var result = inscricaoCampanhaService.findByStatus(status);
+
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }
 

@@ -1,5 +1,7 @@
 package com.uni.PrefPet.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.uni.PrefPet.model.Enum.StatusInscricao;
 import jakarta.persistence.*;
 import lombok.Data;

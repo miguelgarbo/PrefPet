@@ -6,6 +6,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -75,10 +76,20 @@ public class CampanhaService {
 
         return campanhaRepository.save(campanhaSelecionada);    }
 
-    ///fim crud basico
+    /// fim crud basico
 
-    //serviços especificos:
+        //serviços especificos:
+            public boolean existsByTitulo(String titulo){
+                return campanhaRepository.existsByTitulo(titulo);
+            }
 
+        public List<Campanha> findByDataCriacao(LocalDate data){
+            return campanhaRepository.findByDataCriacao(data);
+        }
+
+        public List<Campanha> findByTituloContainingIgnoreCase(String titulo){
+            return campanhaRepository.findByTituloContainingIgnoreCase(titulo);
+        }
 
     //
 }

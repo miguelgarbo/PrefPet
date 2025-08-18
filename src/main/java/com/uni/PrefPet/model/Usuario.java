@@ -1,4 +1,5 @@
 package com.uni.PrefPet.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -30,6 +31,7 @@ public class Usuario {
     private String email;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<InscricaoCampanha> inscricaoCampanhas;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)

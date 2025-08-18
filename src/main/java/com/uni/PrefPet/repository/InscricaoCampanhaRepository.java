@@ -14,12 +14,7 @@ import java.util.List;
 public interface InscricaoCampanhaRepository extends JpaRepository<InscricaoCampanha, Long> {
 
     boolean existsByAnimalAndCampanha(Animal animal, Campanha campanha);
-
-    List<InscricaoCampanha> findByCampanha(Campanha campanha);
-    List<InscricaoCampanha> findByAnimal(Animal animal);
-    List<InscricaoCampanha> findByUsuario(Usuario usuario);
-    List<InscricaoCampanha> findByStatus(StatusInscricao status);
-    List<InscricaoCampanha> findByAnimalAndCampanha(Animal animal, Campanha campanha);
-    List<InscricaoCampanha> findBycampanhaAndStatus(Campanha campanha, StatusInscricao status);
-
-}
+    List<InscricaoCampanha> findByCampanhaTitulo(String titulo);
+    List<InscricaoCampanha> findByAnimalNome(String nome);
+    List<InscricaoCampanha> findByUsuarioNome(String nome);
+    List<InscricaoCampanha> findByStatus(StatusInscricao status);}

@@ -1,4 +1,6 @@
 package com.uni.PrefPet.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -27,6 +29,7 @@ public class Campanha {
     private LocalDate dataCriacao;
 
     @OneToMany(mappedBy = "campanha", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<InscricaoCampanha> inscricaoCampanhas;
 
     @ManyToOne

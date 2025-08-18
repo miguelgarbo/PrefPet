@@ -4,6 +4,7 @@ import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.Campanha;
 import com.uni.PrefPet.model.Enum.StatusInscricao;
 import com.uni.PrefPet.model.InscricaoCampanha;
+import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.repository.InscricaoCampanhaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,20 @@ public class InscricaoCampanhaService {
     }
 
 
-    //
-    
+    public List<InscricaoCampanha> findByCampanhaTitulo(String titulo) {
+        return inscricaoCampanhaRepository.findByCampanhaTitulo(titulo);
+    }
+
+    public List<InscricaoCampanha> findByAnimalNome(String nome) {
+        return inscricaoCampanhaRepository.findByAnimalNome(nome);
+    }
+
+    public List<InscricaoCampanha> findByUsuarioNome(String nome) {
+        return inscricaoCampanhaRepository.findByUsuarioNome(nome);
+    }
+
+    public List<InscricaoCampanha> findByStatus(StatusInscricao status) {
+        return inscricaoCampanhaRepository.findByStatus(status);
+    }
+
 }
