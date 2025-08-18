@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -62,6 +63,36 @@ public class CampanhaController {
         try {
             campanhaService.delete(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/existsByTitulo/{titulo}")
+    public ResponseEntity<Boolean> existsByTitulo(@PathVariable String titulo) {
+        try {
+            boolean exists = campanhaService.existsByTitulo(titulo);
+            return new ResponseEntity<>(exists, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("findByDataCriacao/{data}")
+    public ResponseEntity<List<Campanha>> findByDataCriacao(@PathVariable LocalDate data) {
+        try {
+            var result = campanhaService.findByDataCriacao(data);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("findByTituloContainingIgnoreCase/{titulo}")
+    public ResponseEntity<List<Campanha>> findByTituloContainingIgnoreCase(@PathVariable String titulo) {
+        try {
+            var result = campanhaService.findByTituloContainingIgnoreCase(titulo);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }

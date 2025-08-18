@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ContatoService {
@@ -84,8 +85,28 @@ public class ContatoService {
     ///fim crud basico
 
     //serviços especificos:
+    public boolean existsByEmail(String email) {
+        return contatoRepository.existsByEmail(email);
+    }
 
+    public Optional<Contato> findByEmail(String email) {
+        return contatoRepository.findByEmail(email);
+    }
 
-    //
+    public List<Contato> findByAtivoTrue() {
+        return contatoRepository.findByAtivoTrue();
+    }
+
+    public List<Contato> findByNomeOrgao(String nomeOrgao) {
+        return contatoRepository.findByNomeOrgao(nomeOrgao);
+    }
+
+    public List<Contato> findByNomeOrgaoContainingIgnoreCase(String nomeOrgao) {
+        return contatoRepository.findByNomeOrgaoContainingIgnoreCase(nomeOrgao);
+    }
+
+    public List<Contato> findByTelefone(String telefone) {
+        return contatoRepository.findByTelefone(telefone);
+    }
     
 }
