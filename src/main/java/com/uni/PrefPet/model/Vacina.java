@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,18 +23,20 @@ public class Vacina {
     private String nome;
 
     @NotBlank(message = "data de aplicação é um campo obrigatório")
-    private String dataAplicacao;
+    private LocalDate dataAplicacao;
 
     @NotBlank(message = "lote é um campo obrigatório")
     private String lote;
 
     @NotBlank(message = "validade é um campo obrigatório")
-    private LocalDateTime validade;
+    private LocalDate validade;
 
     @ToString.Exclude
     @ManyToMany(mappedBy = "vacinas")
     @JsonIgnoreProperties("vacinas")
     private List<Animal> animais;
+
+
 
 
 }

@@ -18,18 +18,21 @@ public class Animal {
     private Long id;
     @NotBlank(message = "O nome é obrigatório")
     private String nome;
-
     private String registroGeral;
 
-    @NotBlank(message = "A espécie é obrigatória")
-
-
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "especie_id")
     private Especie especie;
 
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
+
+    @NotBlank(message = "Esse campo deve haver algo")
     private Boolean castrado;
 
+    @NotBlank(message = "O Campo cor não deve ser nulo")
     private String cor;
 
     private String sexo;
@@ -42,9 +45,6 @@ public class Animal {
 
     private String imagemUrl;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonBackReference
-    private Usuario usuario;
 
     @OneToMany
     private List<InscricaoCampanha> inscricaoCampanhas;

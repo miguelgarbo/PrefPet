@@ -18,7 +18,7 @@ public class UsuarioService {
 
     public Usuario save(Usuario usuario) {
 
-        if (usuarioRepository.existsByCPF(usuario.getCPF())) {
+        if (usuarioRepository.existsByCpf(usuario.getCpf())) {
             throw new IllegalArgumentException("Já existe um usuário com este CPF.");
         }
 
@@ -46,8 +46,8 @@ public class UsuarioService {
             throw new IllegalArgumentException("Já existe um usuário com este nome.");
         }
 
-        if (!existente.getCPF().equals(usuarioAtualizado.getCPF()) &&
-                usuarioRepository.findByCPF(usuarioAtualizado.getCPF()).isPresent()) {
+        if (!existente.getCpf().equals(usuarioAtualizado.getCpf()) &&
+                usuarioRepository.findByCpf(usuarioAtualizado.getCpf()).isPresent()) {
             throw new IllegalArgumentException("Já existe um usuário com este CPF.");
         }
 
@@ -57,7 +57,7 @@ public class UsuarioService {
         }
 
         existente.setNome(usuarioAtualizado.getNome());
-        existente.setCPF(usuarioAtualizado.getCPF());
+        existente.setCpf(usuarioAtualizado.getCpf());
         existente.setTelefone(usuarioAtualizado.getTelefone());
         existente.setAnimais(usuarioAtualizado.getAnimais());
         return usuarioRepository.save(existente);
@@ -75,7 +75,7 @@ public class UsuarioService {
     //serviços especificos:
 
     public boolean existsByCPF(String cpf) {
-        return usuarioRepository.existsByCPF(cpf);
+        return usuarioRepository.existsByCpf(cpf);
     }
 
     public boolean existsByEmail(String email) {
@@ -92,7 +92,7 @@ public class UsuarioService {
     }
 
     public Usuario findByCPF(String cpf) {
-        return usuarioRepository.findByCPF(cpf)
+        return usuarioRepository.findByCpf(cpf)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o CPF informado"));
     }
 

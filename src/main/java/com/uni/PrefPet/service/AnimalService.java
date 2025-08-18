@@ -11,11 +11,11 @@ import java.util.List;
 @Service
 public class AnimalService  {
     private final AnimalRepository animalRepository;
-    private final UsuarioRepository tutorRepository;
+    private final UsuarioRepository usuarioRepository;
 
-    public AnimalService(AnimalRepository animalRepository, UsuarioRepository tutorRepository) {
+    public AnimalService(AnimalRepository animalRepository, UsuarioRepository usuarioRepository) {
         this.animalRepository = animalRepository;
-        this.tutorRepository = tutorRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     // crud simples
@@ -81,7 +81,7 @@ public class AnimalService  {
         }
 
         if (animalAtualizado.getUsuario() != null && animalAtualizado.getUsuario().getId() != null) {
-            boolean tutorExiste = tutorRepository.existsById(animalAtualizado.getUsuario().getId());
+            boolean tutorExiste = usuarioRepository.existsById(animalAtualizado.getUsuario().getId());
             if (!tutorExiste) {
                 throw new EntityNotFoundException("Tutor com ID " + animalAtualizado.getUsuario().getId() + " não encontrado.");
             }

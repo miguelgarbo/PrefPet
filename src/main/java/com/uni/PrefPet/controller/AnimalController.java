@@ -24,7 +24,7 @@ public class AnimalController {
     private UsuarioService usuarioService;
 
     @PostMapping("/save")
-    public ResponseEntity<Animal> save(@RequestBody Animal animal
+    public ResponseEntity<Animal> save(@RequestBody @Valid Animal animal
     ) {
         try {
             var result = animalService.save(animal);

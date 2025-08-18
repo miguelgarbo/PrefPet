@@ -19,7 +19,7 @@ public class Usuario {
 
     @NotBlank(message = "Cpf Não pode estar vazio")
     @Column(unique = true)
-    private String CPF;
+    private String cpf;
 
     @Column(unique = true)
     private String telefone;
@@ -35,12 +35,10 @@ public class Usuario {
     private List<InscricaoCampanha> inscricaoCampanhas;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-
     private List<Denuncia> denuncias;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     @JsonManagedReference
-
     private List<Animal> animais;
 
 }
