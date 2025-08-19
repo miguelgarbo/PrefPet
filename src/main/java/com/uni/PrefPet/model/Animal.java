@@ -3,6 +3,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import lombok.*;
 
@@ -32,7 +33,7 @@ public class Animal {
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @NotBlank(message = "Esse campo deve haver algo")
+    @NotNull(message = "Esse campo deve haver algo")
     private Boolean castrado;
 
     @NotBlank(message = "O Campo cor não deve ser nulo")
@@ -41,11 +42,11 @@ public class Animal {
     @NotBlank(message = "O Campo sexo não deve ser nulo")
     private String sexo;
 
-    @NotBlank(message = "O Campo microchip não deve ser nulo")
+    @NotNull(message = "O Campo microchip não deve ser nulo")
     private Boolean microchip;
 
     @Past(message = "A data de nascimento deve estar no passado")
-    @NotBlank(message = "O Campo de data de nascimento não deve ser nulo")
+    @NotNull(message = "Data de nascimento nao deve se null")
     private LocalDate dataNascimento;
 
     @NotBlank(message = "O Campo de naturalidade não deve ser nulo")

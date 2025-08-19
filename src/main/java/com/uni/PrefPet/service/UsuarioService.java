@@ -41,11 +41,6 @@ public class UsuarioService {
         Usuario existente = usuarioRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Usuário com id " + id + " não encontrado."));
 
-        if (!existente.getNome().equalsIgnoreCase(usuarioAtualizado.getNome()) &&
-                usuarioRepository.findByNome(usuarioAtualizado.getNome()).isPresent()) {
-            throw new IllegalArgumentException("Já existe um usuário com este nome.");
-        }
-
         if (!existente.getCpf().equals(usuarioAtualizado.getCpf()) &&
                 usuarioRepository.findByCpf(usuarioAtualizado.getCpf()).isPresent()) {
             throw new IllegalArgumentException("Já existe um usuário com este CPF.");
@@ -86,22 +81,22 @@ public class UsuarioService {
         return usuarioRepository.existsByTelefone(telefone);
     }
 
-    public Usuario findByNome(String nome) {
-        return usuarioRepository.findByNome(nome)
+    public List<Usuario> findByNome(String nome) {
+        return usuarioRepository.findByNomeContainingIgnoreCase(nome)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o nome informado"));
     }
 
-    public Usuario findByCPF(String cpf) {
+    public List<Usuario> findByCPF(String cpf) {
         return usuarioRepository.findByCpf(cpf)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o CPF informado"));
     }
 
-    public Usuario findByTelefone(String telefone) {
+    public List<Usuario> findByTelefone(String telefone) {
         return usuarioRepository.findByTelefone(telefone)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o telefone informado"));
     }
 
-    public Usuario findByEmail(String email) {
+    public List<Usuario> findByEmail(String email) {
         return usuarioRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o email informado"));
     }

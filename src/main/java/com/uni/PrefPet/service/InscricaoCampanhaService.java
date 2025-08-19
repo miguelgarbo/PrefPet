@@ -20,11 +20,10 @@ public class InscricaoCampanhaService {
     private InscricaoCampanhaRepository inscricaoCampanhaRepository;
 
     ///crud basico
-
     public InscricaoCampanha save(InscricaoCampanha inscricaoCampanha) {
 
         validarAnimalInscritoCampanha(inscricaoCampanha.getAnimal(), inscricaoCampanha.getCampanha());
-
+        validarAnimalUsuario(inscricaoCampanha.getUsuario(), inscricaoCampanha.getAnimal());
         inscricaoCampanha.setDataInscricao(LocalDateTime.now());
         inscricaoCampanha.setStatus(StatusInscricao.INSCRITO);
         return inscricaoCampanhaRepository.save(inscricaoCampanha);
@@ -106,6 +105,12 @@ public class InscricaoCampanhaService {
 
     public List<InscricaoCampanha> findByStatus(StatusInscricao status) {
         return inscricaoCampanhaRepository.findByStatus(status);
+    }
+
+    public void validarAnimalUsuario(Usuario usuario, Animal animal){
+        if(!usuario.getAnimais().contains(animal)){
+            throw new IllegalArgumentException("O Animal deve ser do usuario");
+        }
     }
 
 }

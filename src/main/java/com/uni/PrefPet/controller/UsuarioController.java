@@ -85,9 +85,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/findByNome")
-    public ResponseEntity<Usuario> findByNome(@RequestParam String nome) {
+    public ResponseEntity<List<Usuario>> findByNome(@RequestParam String nome) {
         try {
-            Usuario usuario = usuarioService.findByNome(nome);
+            List<Usuario> usuario = usuarioService.findByNome(nome);
             return new ResponseEntity<>(usuario, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -95,9 +95,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/findByCPF")
-    public ResponseEntity<Usuario> findByCPF(@RequestParam String cpf) {
+    public ResponseEntity<List<Usuario>> findByCPF(@RequestParam String cpf) {
         try {
-            Usuario usuario = usuarioService.findByCPF(cpf);
+            List<Usuario> usuario = usuarioService.findByCPF(cpf);
             return new ResponseEntity<>(usuario, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -105,9 +105,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/findByTelefone")
-    public ResponseEntity<Usuario> findByTelefone(@RequestParam String telefone) {
+    public ResponseEntity<List<Usuario>> findByTelefone(@RequestParam String telefone) {
         try {
-            Usuario usuario = usuarioService.findByTelefone(telefone);
+            List<Usuario> usuario = usuarioService.findByTelefone(telefone);
             return new ResponseEntity<>(usuario, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -115,9 +115,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/findByEmail")
-    public ResponseEntity<Usuario> findByEmail(@RequestParam String email) {
+    public ResponseEntity<List<Usuario>> findByEmail(@RequestParam String email) {
         try {
-            Usuario usuario = usuarioService.findByEmail(email);
+            List<Usuario> usuario = usuarioService.findByEmail(email);
             return new ResponseEntity<>(usuario, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
