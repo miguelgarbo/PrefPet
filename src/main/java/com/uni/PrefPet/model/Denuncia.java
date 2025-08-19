@@ -3,6 +3,7 @@ package com.uni.PrefPet.model;
 import com.uni.PrefPet.model.Enum.StatusDenuncia;
 import com.uni.PrefPet.model.Enum.TipoDenuncia;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,27 +22,22 @@ public class Denuncia {
     @Enumerated(EnumType.STRING)
     private StatusDenuncia status;
 
-    public enum TipoDenuncia {
-        MAUS_TRATOS, ANIMAL_SILVESTRE
-    }
-
-    public enum StatusDenuncia {
-        ABERTA, EM_ANDAMENTO, FINALIZADA
-    }
-
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private Usuario usuario;
 
-    private String especie;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Especie especie;
 
+    @NotBlank(message = "Descrição Não deve ser nula")
     private String descricao;
 
     @Embedded
     private Localizacao localizacao;
 
+    @Column(updatable = false)
     private LocalDateTime dataCriacao;
 
-    private boolean anonima; // <-- campo necessário para os filtros do repository
+    private boolean anonima;
 
     @ManyToMany
     @JoinTable(

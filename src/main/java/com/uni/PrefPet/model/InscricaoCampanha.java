@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.uni.PrefPet.model.Enum.StatusInscricao;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import java.time.LocalDateTime;
 
@@ -18,15 +19,15 @@ public class InscricaoCampanha {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "campanha_id")
     private Campanha campanha;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "animal_id")
     private Animal animal;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 

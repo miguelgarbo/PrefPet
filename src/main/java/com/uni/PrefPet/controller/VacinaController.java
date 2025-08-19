@@ -20,9 +20,9 @@ public class VacinaController {
     private VacinaService vacinaService;
 
     @PostMapping("/save")
-    public ResponseEntity<Vacina> save(@RequestBody @Valid Vacina vacina) {
+    public ResponseEntity<Vacina> save(@RequestBody @Valid Vacina vacina, @RequestParam int meses) {
         try {
-            var result = vacinaService.save(vacina);
+            var result = vacinaService.save(vacina, meses);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

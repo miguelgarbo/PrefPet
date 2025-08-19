@@ -3,11 +3,12 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.List;
+import java.util.Random;
 
 @Data
 @Entity
@@ -18,6 +19,8 @@ public class Animal {
     private Long id;
     @NotBlank(message = "O nome é obrigatório")
     private String nome;
+
+    @Column(unique = true, nullable = false)
     private String registroGeral;
 
     @ManyToOne
@@ -35,16 +38,20 @@ public class Animal {
     @NotBlank(message = "O Campo cor não deve ser nulo")
     private String cor;
 
+    @NotBlank(message = "O Campo sexo não deve ser nulo")
     private String sexo;
 
+    @NotBlank(message = "O Campo microchip não deve ser nulo")
     private Boolean microchip;
 
+    @Past(message = "A data de nascimento deve estar no passado")
+    @NotBlank(message = "O Campo de data de nascimento não deve ser nulo")
     private LocalDate dataNascimento;
 
+    @NotBlank(message = "O Campo de naturalidade não deve ser nulo")
     private String naturalidade;
 
     private String imagemUrl;
-
 
     @OneToMany
     private List<InscricaoCampanha> inscricaoCampanhas;
@@ -72,6 +79,20 @@ public class Animal {
             idadeFinal--;
         }
         return idadeFinal;
+    }
+
+    public String gerarRg(){
+
+        Random random = new Random();
+        int numeroRgAleatorio = random.nextInt(10);
+        return "RG"+ numeroRgAleatorio;
+    }
+
+    @PrePersist
+    public void prePersist(){
+        if(registroGeral == null){
+            registroGeral = gerarRg();
+        }
     }
 }
 

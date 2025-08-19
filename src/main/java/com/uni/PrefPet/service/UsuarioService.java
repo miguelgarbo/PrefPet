@@ -106,9 +106,6 @@ public class UsuarioService {
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o email informado"));
     }
 
-
-
-
     //fim dos serviços especificos
 
 }

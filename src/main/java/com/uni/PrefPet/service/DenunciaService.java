@@ -1,6 +1,8 @@
 package com.uni.PrefPet.service;
 
 import com.uni.PrefPet.model.Denuncia;
+import com.uni.PrefPet.model.Enum.StatusDenuncia;
+import com.uni.PrefPet.model.Enum.TipoDenuncia;
 import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.repository.DenunciaRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,14 +17,16 @@ public class DenunciaService {
 
     @Autowired
     private DenunciaRepository denunciaRepository;
+    private UsuarioService usuarioService;
 
     /// CRUD básico
     public Denuncia save(Denuncia denuncia) {
-        if (denuncia.getUsuario() == null && !denuncia.isAnonima()) {
-            Usuario usuarioAnonimo = new Usuario();
-            usuarioAnonimo.setNome("Usuário Anônimo");
-            denuncia.setUsuario(usuarioAnonimo);
+        if(denuncia.getUsuario()==null){
             denuncia.setAnonima(true);
+        }
+
+        if(denuncia.isAnonima()){
+            denuncia.setUsuario(null);
         }
 
         denuncia.setDataCriacao(LocalDateTime.now());
@@ -88,11 +92,11 @@ public class DenunciaService {
     }
 
     /// Filtros extras
-    public List<Denuncia> findByTipo(Denuncia.TipoDenuncia tipo) {
+    public List<Denuncia> findByTipo(TipoDenuncia tipo) {
         return denunciaRepository.findByTipo(tipo);
     }
 
-    public List<Denuncia> findByStatus(Denuncia.StatusDenuncia status) {
+    public List<Denuncia> findByStatus(StatusDenuncia status) {
         return denunciaRepository.findByStatus(status);
     }
 
@@ -108,7 +112,10 @@ public class DenunciaService {
         return denunciaRepository.findByAnonimaFalse();
     }
 
-    public List<Denuncia> findByEspecie(String especie) {
-        return denunciaRepository.findByEspecieContainingIgnoreCase(especie);
+    public List<Denuncia> findByEspecieNome(String especie) {
+        return denunciaRepository.findByEspecieNomeContainingIgnoreCase(especie);
     }
+
+
+
 }

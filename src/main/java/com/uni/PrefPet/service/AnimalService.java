@@ -4,19 +4,17 @@ import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.repository.AnimalRepository;
 import com.uni.PrefPet.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class AnimalService  {
-    private final AnimalRepository animalRepository;
-    private final UsuarioRepository usuarioRepository;
 
-    public AnimalService(AnimalRepository animalRepository, UsuarioRepository usuarioRepository) {
-        this.animalRepository = animalRepository;
-        this.usuarioRepository = usuarioRepository;
-    }
+    @Autowired
+    private AnimalRepository animalRepository;
+    private UsuarioRepository usuarioRepository;
 
     // crud simples
     public Animal findById(Long id){

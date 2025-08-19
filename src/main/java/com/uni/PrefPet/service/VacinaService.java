@@ -18,7 +18,10 @@ public class VacinaService {
 
     ///crud basico
 
-    public Vacina save(Vacina vacina){
+    public Vacina save(Vacina vacina, int meses){
+        if(vacina.getDataValidade() == null && vacina.getDataAplicacao() != null){
+            vacina.setDataValidade(gerarDataValidade(vacina.getDataAplicacao(), meses));
+        }
         return vacinaRepository.save(vacina);
     }
 
@@ -89,7 +92,7 @@ public class VacinaService {
     }
 
     public List<Vacina> findByValidadeBefore(LocalDate data) {
-        List<Vacina> vacinas = vacinaRepository.findByValidadeBefore(data);
+        List<Vacina> vacinas = vacinaRepository.findByDataValidadeBefore(data);
         if (vacinas.isEmpty()) {
             throw new EntityNotFoundException("Nenhuma vacina encontrada com validade anterior à data informada");
         }
@@ -97,13 +100,22 @@ public class VacinaService {
     }
 
     public List<Vacina> findByValidadeAfter(LocalDate data) {
-        List<Vacina> vacinas = vacinaRepository.findByValidadeAfter(data);
+        List<Vacina> vacinas = vacinaRepository.findByDataValidadeAfter(data);
         if (vacinas.isEmpty()) {
             throw new EntityNotFoundException("Nenhuma vacina encontrada com validade posterior à data informada");
         }
         return vacinas;
     }
 
+    /// /////////////////////////////
+    public void validarDataAplicacaoEValidade(LocalDate dataAplicacao, LocalDate dataValidade){
+        if(!dataAplicacao.isBefore(dataValidade)){
+            throw new IllegalArgumentException("A Data de aplicação deve ser antes da validade");
+        }
+    }
 
+    public LocalDate gerarDataValidade(LocalDate dataAplicacao, int meses){
+        return dataAplicacao.plusMonths(meses);
+    }
     //fim
 }

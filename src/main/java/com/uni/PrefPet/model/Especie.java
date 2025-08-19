@@ -23,4 +23,7 @@ public class Especie {
     @OneToMany(mappedBy = "especie")
     @JsonIgnore
     private List<Denuncia> denuncias;
+
+
+
 }

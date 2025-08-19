@@ -1,6 +1,8 @@
 package com.uni.PrefPet.controller;
 
 import com.uni.PrefPet.model.Denuncia;
+import com.uni.PrefPet.model.Enum.StatusDenuncia;
+import com.uni.PrefPet.model.Enum.TipoDenuncia;
 import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.service.DenunciaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,12 +66,12 @@ public class DenunciaController {
 
     // 🔎 Filtros extras
     @GetMapping("/tipo/{tipo}")
-    public ResponseEntity<List<Denuncia>> findByTipo(@PathVariable Denuncia.TipoDenuncia tipo) {
+    public ResponseEntity<List<Denuncia>> findByTipo(@PathVariable TipoDenuncia tipo) {
         return ResponseEntity.ok(denunciaService.findByTipo(tipo));
     }
 
     @GetMapping("/status/{status}")
-    public ResponseEntity<List<Denuncia>> findByStatus(@PathVariable Denuncia.StatusDenuncia status) {
+    public ResponseEntity<List<Denuncia>> findByStatus(@PathVariable StatusDenuncia status) {
         return ResponseEntity.ok(denunciaService.findByStatus(status));
     }
 
@@ -90,6 +92,6 @@ public class DenunciaController {
 
     @GetMapping("/especie/{especie}")
     public ResponseEntity<List<Denuncia>> findByEspecie(@PathVariable String especie) {
-        return ResponseEntity.ok(denunciaService.findByEspecie(especie));
+        return ResponseEntity.ok(denunciaService.findByEspecieNome(especie));
     }
 }

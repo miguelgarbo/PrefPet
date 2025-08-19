@@ -34,6 +34,7 @@ public class CampanhaService {
     public String delete(Long id){
 
         if(!existById(id)){
+            throw new EntityNotFoundException("Campanha não encontrada");
         }
         campanhaRepository.deleteById(id);
 
