@@ -51,7 +51,7 @@ public class CampanhaService {
     public Campanha update(Long id, Campanha campanhaAtualizada) {
 
         Campanha campanhaSelecionada = campanhaRepository.findById(id).orElseThrow(()->
-                new EntityNotFoundException("campanha  Não Encontrada")
+                new EntityNotFoundException("campanha Não Encontrada")
         );
 
         if (campanhaAtualizada.getDescricao() != null) {
@@ -74,22 +74,40 @@ public class CampanhaService {
             campanhaSelecionada.setInscricaoCampanhas(campanhaAtualizada.getInscricaoCampanhas());
         }
 
-        return campanhaRepository.save(campanhaSelecionada);    }
+        return campanhaRepository.save(campanhaSelecionada);
+    }
 
     /// fim crud basico
 
         //serviços especificos:
-            public boolean existsByTitulo(String titulo){
-                return campanhaRepository.existsByTitulo(titulo);
-            }
+    public boolean existsByTitulo(String titulo){
+        return campanhaRepository.existsByTitulo(titulo);
+    }
 
-        public List<Campanha> findByDataCriacao(LocalDate data){
-            return campanhaRepository.findByDataCriacao(data);
+    public List<Campanha> findByDataCriacao(LocalDate data){
+        return campanhaRepository.findByDataCriacao(data);
+    }
+
+    public List<Campanha> findByTituloContainingIgnoreCase(String titulo){
+        return campanhaRepository.findByTituloContainingIgnoreCase(titulo);
+    }
+
+    public List<Campanha> findCampanhaByDataCriacaoAfter(LocalDate data){
+        return campanhaRepository.findCampanhaByDataCriacaoAfter(data);
+    }
+
+    public List<Campanha> findCampanhaByDataCriacaoBefore(LocalDate data){
+        return campanhaRepository.findCampanhaByDataCriacaoBefore(data);
+    }
+
+    public List<Campanha> findCampanhaByDataCriacaoBeetwen(LocalDate comeco, LocalDate fim){
+        if (comeco.equals(fim)) {
+            return campanhaRepository.findByDataCriacao(comeco);
         }
 
-        public List<Campanha> findByTituloContainingIgnoreCase(String titulo){
-            return campanhaRepository.findByTituloContainingIgnoreCase(titulo);
-        }
+        LocalDate comecoValidado = comeco.isBefore(fim) ? comeco : fim;
+        LocalDate fimValidado = comeco.isAfter(fim) ? comeco : fim;
 
-    //
+        return campanhaRepository.findCampanhaByDataCriacaoBetween(comecoValidado, fimValidado);
+    }
 }

@@ -4,6 +4,7 @@ import com.uni.PrefPet.model.Campanha;
 import com.uni.PrefPet.service.CampanhaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -78,7 +79,7 @@ public class CampanhaController {
         }
     }
 
-    @GetMapping("findByDataCriacao/{data}")
+    @GetMapping("/findByDataCriacao/{data}")
     public ResponseEntity<List<Campanha>> findByDataCriacao(@PathVariable LocalDate data) {
         try {
             var result = campanhaService.findByDataCriacao(data);
@@ -88,13 +89,59 @@ public class CampanhaController {
         }
     }
 
-    @GetMapping("findByTituloContainingIgnoreCase/{titulo}")
+    @GetMapping("/findByTituloContainingIgnoreCase/{titulo}")
     public ResponseEntity<List<Campanha>> findByTituloContainingIgnoreCase(@PathVariable String titulo) {
         try {
             var result = campanhaService.findByTituloContainingIgnoreCase(titulo);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/findCampanhaByDataCriacaoAfter/{data}")
+    public ResponseEntity<List<Campanha>> findCampanhaByDataCriacaoAfter(@PathVariable LocalDate data){
+        try{
+            var result = campanhaService.findCampanhaByDataCriacaoAfter(data);
+
+            if (result == null || result.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            return new ResponseEntity<>(result,HttpStatus.OK);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/findCampanhaByDataCriacaoBefore/{data}")
+    public ResponseEntity<List<Campanha>> findCampanhaByDataCriacaoBefore(@PathVariable LocalDate data){
+        try{
+            var result = campanhaService.findCampanhaByDataCriacaoBefore(data);
+
+            if (result == null || result.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            return new ResponseEntity<>(result,HttpStatus.OK);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/findCampanhaByDataCriacaoBeetwen/{comeco}/{fim}")
+    public ResponseEntity<List<Campanha>> findCampanhaByDataCriacaoBefore
+            (@PathVariable LocalDate comeco, @PathVariable LocalDate fim){
+        try{
+            var result = campanhaService.findCampanhaByDataCriacaoBeetwen(comeco, fim);
+
+            if (result == null || result.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+
+            return new ResponseEntity<>(result,HttpStatus.OK);
+        }catch (Exception ex){
+            return new ResponseEntity<>(null,HttpStatus.BAD_REQUEST);
         }
     }
 }
