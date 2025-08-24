@@ -22,10 +22,12 @@ public class Denuncia {
     @Enumerated(EnumType.STRING)
     private StatusDenuncia status;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Usuario usuario;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+
+
+    @ManyToOne
     private Especie especie;
 
     @NotBlank(message = "Descrição Não deve ser nula")

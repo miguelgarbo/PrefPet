@@ -1,18 +1,15 @@
 package com.uni.PrefPet.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.uni.PrefPet.model.Enum.StatusInscricao;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"animal_id", "campanha_id"})
-})
+//@Table(uniqueConstraints = {
+//        @UniqueConstraint(columnNames = {"animal_id", "campanha_id"})
+//})
 public class InscricaoCampanha {
 
     @Id

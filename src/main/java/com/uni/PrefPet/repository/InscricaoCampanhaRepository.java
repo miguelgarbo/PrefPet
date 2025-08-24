@@ -13,7 +13,7 @@ import java.util.List;
 @Repository
 public interface InscricaoCampanhaRepository extends JpaRepository<InscricaoCampanha, Long> {
 
-    boolean existsByAnimalAndCampanha(Animal animal, Campanha campanha);
+    boolean existsByAnimalAndCampanhaAndUsuario(Animal animal, Campanha campanha, Usuario usuario);
     List<InscricaoCampanha> findByCampanhaTitulo(String titulo);
     List<InscricaoCampanha> findByAnimalNome(String nome);
     List<InscricaoCampanha> findByUsuarioNome(String nome);

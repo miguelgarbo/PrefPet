@@ -21,9 +21,7 @@ public class InscricaoCampanhaService {
 
     ///crud basico
     public InscricaoCampanha save(InscricaoCampanha inscricaoCampanha) {
-
-        validarAnimalInscritoCampanha(inscricaoCampanha.getAnimal(), inscricaoCampanha.getCampanha());
-        validarAnimalUsuario(inscricaoCampanha.getUsuario(), inscricaoCampanha.getAnimal());
+        validarAnimalInscritoCampanha(inscricaoCampanha.getAnimal(), inscricaoCampanha.getCampanha(), inscricaoCampanha.getUsuario());
         inscricaoCampanha.setDataInscricao(LocalDateTime.now());
         inscricaoCampanha.setStatus(StatusInscricao.INSCRITO);
         return inscricaoCampanhaRepository.save(inscricaoCampanha);
@@ -84,12 +82,6 @@ public class InscricaoCampanhaService {
 
     //serviços especificos:
 
-    public void validarAnimalInscritoCampanha(Animal animal, Campanha campanha) {
-        if (inscricaoCampanhaRepository.existsByAnimalAndCampanha(animal, campanha)) {
-            throw new IllegalArgumentException("Este animal já está inscrito nesta campanha");
-        }
-    }
-
 
     public List<InscricaoCampanha> findByCampanhaTitulo(String titulo) {
         return inscricaoCampanhaRepository.findByCampanhaTitulo(titulo);
@@ -107,10 +99,11 @@ public class InscricaoCampanhaService {
         return inscricaoCampanhaRepository.findByStatus(status);
     }
 
-    public void validarAnimalUsuario(Usuario usuario, Animal animal){
-        if(!usuario.getAnimais().contains(animal)){
-            throw new IllegalArgumentException("O Animal deve ser do usuario");
+    public void validarAnimalInscritoCampanha(Animal animal, Campanha campanha, Usuario usuario) {
+        if (inscricaoCampanhaRepository.existsByAnimalAndCampanhaAndUsuario(animal, campanha, usuario)) {
+            throw new IllegalArgumentException("Este animal já está inscrito nesta campanha pelo mesmo usuário");
         }
     }
+
 
 }
