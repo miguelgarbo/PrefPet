@@ -1,7 +1,6 @@
 package com.uni.PrefPet.controller;
 
 import com.uni.PrefPet.model.Denuncia;
-import com.uni.PrefPet.model.Enum.StatusDenuncia;
 import com.uni.PrefPet.model.Enum.TipoDenuncia;
 import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.service.DenunciaService;

@@ -1,6 +1,6 @@
 package com.uni.PrefPet.controller;
 
-import com.uni.PrefPet.model.Usuario;
+import com.uni.PrefPet.model.Usuarios.UsuarioComum;
 import com.uni.PrefPet.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class UsuarioController {
     private UsuarioService usuarioService;
 
     @PostMapping("/save")
-    public ResponseEntity<Usuario> save(@RequestBody @Valid Usuario usuario) {
+    public ResponseEntity<UsuarioComum> save(@RequestBody @Valid UsuarioComum usuario) {
         try {
             var result = usuarioService.save(usuario);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
@@ -28,7 +28,7 @@ public class UsuarioController {
         }
     }
     @GetMapping("/findById/{id}")
-    public ResponseEntity<Usuario> findById(@PathVariable Long id) {
+    public ResponseEntity<UsuarioComum> findById(@PathVariable Long id) {
         try {
             var result = usuarioService.findById(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -46,7 +46,7 @@ public class UsuarioController {
         }
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario usuario) {
+    public ResponseEntity<UsuarioComum> update(@PathVariable Long id, @RequestBody UsuarioComum usuario) {
         try {
             var updatedUsuario = usuarioService.update(id, usuario);
             return new ResponseEntity<>(updatedUsuario, HttpStatus.OK);
@@ -55,7 +55,7 @@ public class UsuarioController {
         }
     }
     @GetMapping("/findAll")
-    public ResponseEntity<List<Usuario>> findAll() {
+    public ResponseEntity<List<UsuarioComum>> findAll() {
         try {
             var result = usuarioService.findAll();
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -85,9 +85,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/findByNome")
-    public ResponseEntity<List<Usuario>> findByNome(@RequestParam String nome) {
+    public ResponseEntity<List<UsuarioComum>> findByNome(@RequestParam String nome) {
         try {
-            List<Usuario> usuario = usuarioService.findByNome(nome);
+            List<UsuarioComum> usuario = usuarioService.findByNome(nome);
             return new ResponseEntity<>(usuario, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -95,9 +95,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/findByCPF")
-    public ResponseEntity<List<Usuario>> findByCPF(@RequestParam String cpf) {
+    public ResponseEntity<List<UsuarioComum>> findByCPF(@RequestParam String cpf) {
         try {
-            List<Usuario> usuario = usuarioService.findByCPF(cpf);
+            List<UsuarioComum> usuario = usuarioService.findByCPF(cpf);
             return new ResponseEntity<>(usuario, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -105,9 +105,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/findByTelefone")
-    public ResponseEntity<List<Usuario>> findByTelefone(@RequestParam String telefone) {
+    public ResponseEntity<List<UsuarioComum>> findByTelefone(@RequestParam String telefone) {
         try {
-            List<Usuario> usuario = usuarioService.findByTelefone(telefone);
+            List<UsuarioComum> usuario = usuarioService.findByTelefone(telefone);
             return new ResponseEntity<>(usuario, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -115,9 +115,9 @@ public class UsuarioController {
     }
 
     @GetMapping("/findByEmail")
-    public ResponseEntity<List<Usuario>> findByEmail(@RequestParam String email) {
+    public ResponseEntity<List<UsuarioComum>> findByEmail(@RequestParam String email) {
         try {
-            List<Usuario> usuario = usuarioService.findByEmail(email);
+            List<UsuarioComum> usuario = usuarioService.findByEmail(email);
             return new ResponseEntity<>(usuario, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

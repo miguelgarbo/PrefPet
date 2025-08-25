@@ -69,13 +69,7 @@ public class ContatoService {
             contatoSelecionada.setTelefone(contatoAtualizado.getTelefone());
         }
 
-        if (contatoAtualizado.getApiUrl() != null) {
-            contatoSelecionada.setApiUrl(contatoAtualizado.getApiUrl());
-        }
 
-        if (contatoAtualizado.getDenunciasRecebidas() != null) {
-            contatoSelecionada.setDenunciasRecebidas(contatoAtualizado.getDenunciasRecebidas());
-        }
         if (contatoAtualizado.getNomeOrgao() != null) {
             contatoSelecionada.setNomeOrgao(contatoAtualizado.getNomeOrgao());
         }

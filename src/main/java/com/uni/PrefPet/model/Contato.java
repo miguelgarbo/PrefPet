@@ -19,9 +19,6 @@ public class Contato {
     @Size(max = 100, message = "Nome do órgão não pode ter mais de 100 caracteres")
     private String nomeOrgao;
 
-    @Pattern(regexp = "https?://.*", message = "URL inválida")
-    private String apiUrl;
-
     @Pattern(regexp = "\\+?\\d{10,15}", message = "Telefone inválido")
     private String telefone;
 
@@ -30,8 +27,5 @@ public class Contato {
     private String email;
 
     private Boolean ativo;
-
-    @ManyToMany(mappedBy = "contatosNotificados")
-    private List<Denuncia> denunciasRecebidas;
 }
 

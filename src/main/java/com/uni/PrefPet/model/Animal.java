@@ -1,6 +1,7 @@
 package com.uni.PrefPet.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.uni.PrefPet.model.Usuarios.UsuarioComum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -31,7 +32,7 @@ public class Animal {
     @ManyToOne
     @JsonBackReference
     @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+    private UsuarioComum usuario;
 
     @NotNull(message = "Esse campo deve haver algo")
     private Boolean castrado;
@@ -54,8 +55,6 @@ public class Animal {
 
     private String imagemUrl;
 
-    @OneToMany
-    private List<InscricaoCampanha> inscricaoCampanhas;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(

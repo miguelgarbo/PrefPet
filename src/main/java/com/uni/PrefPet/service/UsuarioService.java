@@ -1,6 +1,7 @@
 package com.uni.PrefPet.service;
 import com.uni.PrefPet.model.Usuario;
-import com.uni.PrefPet.repository.UsuarioRepository;
+import com.uni.PrefPet.model.Usuarios.UsuarioComum;
+import com.uni.PrefPet.repository.UsuarioComumRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,44 +11,44 @@ import java.util.List;
 public class UsuarioService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioComumRepository usuarioComumRepository;
 
-    public List<Usuario> findAll() {
-        return usuarioRepository.findAll();
+    public List<UsuarioComum> findAll() {
+        return usuarioComumRepository.findAll();
     }
 
-    public Usuario save(Usuario usuario) {
+    public UsuarioComum save(UsuarioComum usuarioComum) {
 
-        if (usuarioRepository.existsByCpf(usuario.getCpf())) {
+        if (usuarioComumRepository.existsByCpf(usuarioComum.getCpf())) {
             throw new IllegalArgumentException("Já existe um usuário com este CPF.");
         }
 
-        if (usuarioRepository.existsByTelefone(usuario.getTelefone())) {
+        if (usuarioComumRepository.existsByTelefone(usuarioComum.getTelefone())) {
             throw new IllegalArgumentException("Já existe um usuário com este telefone.");
         }
 
-        if (usuarioRepository.existsByEmail(usuario.getEmail())) {
+        if (usuarioComumRepository.existsByEmail(usuarioComum.getEmail())) {
             throw new IllegalArgumentException("Já existe um usuário com este email.");
         }
 
-        return usuarioRepository.save(usuario);
+        return usuarioComumRepository.save(usuarioComum);
     }
 
-    public Usuario findById(Long id) {
-        return usuarioRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+    public UsuarioComum findById(Long id) {
+        return usuarioComumRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
-    public Usuario update(Long id, Usuario usuarioAtualizado) {
-        Usuario existente = usuarioRepository.findById(id).orElseThrow(() ->
+    public UsuarioComum update(Long id, UsuarioComum usuarioAtualizado) {
+        UsuarioComum existente = usuarioComumRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Usuário com id " + id + " não encontrado."));
 
         if (!existente.getCpf().equals(usuarioAtualizado.getCpf()) &&
-                usuarioRepository.findByCpf(usuarioAtualizado.getCpf()).isPresent()) {
+                usuarioComumRepository.findByCpf(usuarioAtualizado.getCpf()).isPresent()) {
             throw new IllegalArgumentException("Já existe um usuário com este CPF.");
         }
 
         if (!existente.getTelefone().equals(usuarioAtualizado.getTelefone()) &&
-                usuarioRepository.findByTelefone(usuarioAtualizado.getTelefone()).isPresent()) {
+                usuarioComumRepository.findByTelefone(usuarioAtualizado.getTelefone()).isPresent()) {
             throw new IllegalArgumentException("Já existe um usuário com este telefone.");
         }
 
@@ -55,14 +56,14 @@ public class UsuarioService {
         existente.setCpf(usuarioAtualizado.getCpf());
         existente.setTelefone(usuarioAtualizado.getTelefone());
         existente.setAnimais(usuarioAtualizado.getAnimais());
-        return usuarioRepository.save(existente);
+        return usuarioComumRepository.save(existente);
     }
 
     public String delete(Long id) {
-        if (!usuarioRepository.existsById(id)) {
+        if (!usuarioComumRepository.existsById(id)) {
             throw new EntityNotFoundException("Usuário com id " + id + " não encontrado.");
         }
-        usuarioRepository.deleteById(id);
+        usuarioComumRepository.deleteById(id);
         return "Usuário com id " + id + " foi excluído com sucesso.";
     }
 
@@ -70,34 +71,34 @@ public class UsuarioService {
     //serviços especificos:
 
     public boolean existsByCPF(String cpf) {
-        return usuarioRepository.existsByCpf(cpf);
+        return usuarioComumRepository.existsByCpf(cpf);
     }
 
     public boolean existsByEmail(String email) {
-        return usuarioRepository.existsByEmail(email);
+        return usuarioComumRepository.existsByEmail(email);
     }
 
     public boolean existsByTelefone(String telefone){
-        return usuarioRepository.existsByTelefone(telefone);
+        return usuarioComumRepository.existsByTelefone(telefone);
     }
 
-    public List<Usuario> findByNome(String nome) {
-        return usuarioRepository.findByNomeContainingIgnoreCase(nome)
+    public List<UsuarioComum> findByNome(String nome) {
+        return usuarioComumRepository.findByNomeContainingIgnoreCase(nome)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o nome informado"));
     }
 
-    public List<Usuario> findByCPF(String cpf) {
-        return usuarioRepository.findByCpf(cpf)
+    public List<UsuarioComum> findByCPF(String cpf) {
+        return usuarioComumRepository.findByCpf(cpf)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o CPF informado"));
     }
 
-    public List<Usuario> findByTelefone(String telefone) {
-        return usuarioRepository.findByTelefone(telefone)
+    public List<UsuarioComum> findByTelefone(String telefone) {
+        return usuarioComumRepository.findByTelefone(telefone)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o telefone informado"));
     }
 
-    public List<Usuario> findByEmail(String email) {
-        return usuarioRepository.findByEmail(email)
+    public List<UsuarioComum> findByEmail(String email) {
+        return usuarioComumRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o email informado"));
     }
 

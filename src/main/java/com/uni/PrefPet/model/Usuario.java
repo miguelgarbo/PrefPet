@@ -1,44 +1,36 @@
 package com.uni.PrefPet.model;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-@Entity
-public class Usuario {
+@MappedSuperclass
+public abstract class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
 
-    @NotBlank(message = "Cpf Não pode estar vazio")
     @Column(unique = true)
-    private String cpf;
-
-    @Column(unique = true)
+    @Pattern(regexp = "\\+?\\d{10,15}", message = "Telefone inválido")
     private String telefone;
 
+    @NotBlank(message = "O Cep é obrigatório")
+    private String cep;
+
+    private String cidade;
+
+    private String estado;
+
+    @NotBlank(message = "A Senha é obrigatória")
     private String senha;
 
+    @NotBlank(message = "Email é obrigatório")
     @Column(unique = true)
     @Email
     private String email;
-
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    @JsonIgnore
-    private List<InscricaoCampanha> inscricaoCampanhas;
-
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private List<Denuncia> denuncias;
-
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Animal> animais;
 
 
 }

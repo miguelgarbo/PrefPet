@@ -20,9 +20,6 @@ public class Especie {
     @JsonIgnore
     private List<Animal> animais;
 
-    @OneToMany(mappedBy = "especie")
-    @JsonIgnore
-    private List<Denuncia> denuncias;
 
 
 
