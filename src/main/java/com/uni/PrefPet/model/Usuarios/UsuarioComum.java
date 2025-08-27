@@ -25,5 +25,7 @@ public class UsuarioComum  extends Usuario {
     @Column(unique = true)
     @CPF(message = "CPF INVALIDO")
     private String cpf;
+    private String cnpj;
+
 
 }

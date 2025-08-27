@@ -1,4 +1,5 @@
 package com.uni.PrefPet.model;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -26,6 +27,15 @@ public class Contato {
     @NotBlank(message = "Email não pode ser vazio")
     private String email;
 
+    @JsonIgnoreProperties("denuncias")
+    @ManyToMany(mappedBy = "contatos")
+    private List<Denuncia> denuncias;
+
     private Boolean ativo;
+
+
+
+
+
 }
 
