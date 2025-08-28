@@ -79,38 +79,19 @@ public class ContatoController {
     }
 
     @GetMapping("/findByEmail/{email}")
-    public ResponseEntity<Contato> findByEmail(@PathVariable String email) {
+    public ResponseEntity<List<Contato>> findByEmail(@PathVariable String email) {
         try {
-            Optional<Contato> contato = contatoService.findByEmail(email);
-            return contato
-                    .map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                    .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+            List<Contato> contatos = contatoService.findByEmail(email);
+            return new ResponseEntity<>(contatos, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping("/findByAtivoTrue")
-    public ResponseEntity<List<Contato>> findByAtivoTrue() {
-        try {
-            var result = contatoService.findByAtivoTrue();
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
+
+
 
     @GetMapping("/findByNomeOrgao/{nomeOrgao}")
-    public ResponseEntity<List<Contato>> findByNomeOrgao(@PathVariable String nomeOrgao) {
-        try {
-            var result = contatoService.findByNomeOrgao(nomeOrgao);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @GetMapping("/findByNomeOrgaoContainingIgnoreCase/{nomeOrgao}")
     public ResponseEntity<List<Contato>> findByNomeOrgaoContainingIgnoreCase(@PathVariable String nomeOrgao) {
         try {
             var result = contatoService.findByNomeOrgaoContainingIgnoreCase(nomeOrgao);

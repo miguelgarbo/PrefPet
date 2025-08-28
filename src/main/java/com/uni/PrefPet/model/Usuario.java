@@ -20,6 +20,7 @@ public abstract class Usuario {
     @NotBlank(message = "O Cep é obrigatório")
     private String cep;
 
+    private String cnpj;
     private String cidade;
 
     private String estado;

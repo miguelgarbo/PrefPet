@@ -21,9 +21,7 @@ public class ContatoService {
     }
 
     public Contato findById(Long id){
-        return contatoRepository.findById(id).orElseThrow(()->
-                new EntityNotFoundException("Contato Não Encontrado")
-        );
+        return contatoRepository.findById(id).orElseThrow(this::mensagemContatoNotFounded);
     }
 
     public List<Contato> findAll(){
@@ -33,6 +31,7 @@ public class ContatoService {
     public String delete(Long id){
 
         if(!existById(id)){
+
         }
         contatoRepository.deleteById(id);
 
@@ -46,11 +45,10 @@ public class ContatoService {
         return true;
     }
 
-
     public Contato update(Long id, Contato contatoAtualizado) {
 
-        Contato contatoSelecionada = contatoRepository.findById(id).orElseThrow(()->
-                new EntityNotFoundException("contato  Não Encontrada")
+        Contato contatoSelecionada = contatoRepository.findById(id).orElseThrow(
+                this::mensagemContatoNotFounded
         );
 
         if (contatoAtualizado.getTelefone() != null) {
@@ -83,24 +81,25 @@ public class ContatoService {
         return contatoRepository.existsByEmail(email);
     }
 
-    public Optional<Contato> findByEmail(String email) {
-        return contatoRepository.findByEmail(email);
+    public List<Contato> findByEmail(String email) {
+        return contatoRepository.findByEmail(email)
+                .orElseThrow(this::mensagemContatoNotFounded);
     }
 
-    public List<Contato> findByAtivoTrue() {
-        return contatoRepository.findByAtivoTrue();
-    }
-
-    public List<Contato> findByNomeOrgao(String nomeOrgao) {
-        return contatoRepository.findByNomeOrgao(nomeOrgao);
-    }
 
     public List<Contato> findByNomeOrgaoContainingIgnoreCase(String nomeOrgao) {
-        return contatoRepository.findByNomeOrgaoContainingIgnoreCase(nomeOrgao);
+        return contatoRepository.findByNomeOrgaoContainingIgnoreCase(nomeOrgao).orElseThrow(
+                this::mensagemContatoNotFounded
+        );
     }
 
     public List<Contato> findByTelefone(String telefone) {
-        return contatoRepository.findByTelefone(telefone);
+        return contatoRepository.findByTelefoneContaining(telefone).
+                orElseThrow(this::mensagemContatoNotFounded);
     }
-    
+
+    public EntityNotFoundException mensagemContatoNotFounded(){
+        return new EntityNotFoundException("Contato Não Encontrado");
+    }
+
 }
