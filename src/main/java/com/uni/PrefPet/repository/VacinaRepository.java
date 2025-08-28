@@ -11,9 +11,18 @@ import java.util.Optional;
 @Repository
 public interface VacinaRepository extends JpaRepository<Vacina, Long> {
 
-    List<Vacina> findByNomeContainingIgnoreCase(String nome);
+    Optional<List<Vacina>> findByNomeContainingIgnoreCase(String nome);
     Optional<Vacina> findByLote(String lote);
     boolean existsByLote(String lote);
-    List<Vacina> findByDataValidadeBefore(LocalDate data);
-    List<Vacina> findByDataValidadeAfter(LocalDate data);
+
+    Optional<List<Vacina>> findByDataAplicacao(LocalDate dataAplicacao);
+
+    Optional<List<Vacina>> findByDataAplicacaoAfter(LocalDate data);
+
+    Optional<List<Vacina>> findByDataValidadeBefore(LocalDate data);
+
+    Optional<List<Vacina>> findByDataValidadeAfter(LocalDate data);
+
+    Optional<List<Vacina>> findByAnimais_Id(Long animalId);
+
 }
