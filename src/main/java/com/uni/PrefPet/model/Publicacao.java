@@ -30,5 +30,5 @@ public class Publicacao {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
-    private Usuario criadoPor;
+    private Usuario usuario;
 }
