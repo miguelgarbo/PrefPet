@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.br.CNPJ;
+import org.hibernate.validator.constraints.br.CPF;
 
 @Data
 @MappedSuperclass
@@ -20,6 +21,11 @@ public abstract class Usuario {
 
     @NotBlank(message = "O Cep é obrigatório")
     private String cep;
+
+    @NotBlank(message = "Cpf Não pode estar vazio")
+    @Column(unique = true)
+    @CPF(message = "CPF INVALIDO")
+    private String cpf;
 
 
     private String cidade;

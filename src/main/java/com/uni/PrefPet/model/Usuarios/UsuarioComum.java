@@ -21,11 +21,6 @@ public class UsuarioComum  extends Usuario {
     @JsonManagedReference
     private List<Animal> animais;
 
-    @NotBlank(message = "Cpf Não pode estar vazio")
-    @Column(unique = true)
-    @CPF(message = "CPF INVALIDO")
-    private String cpf;
-
 
 
 }

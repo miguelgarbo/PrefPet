@@ -3,13 +3,16 @@ package com.uni.PrefPet.model.Usuarios;
 import com.uni.PrefPet.model.Enum.TipoOrgao;
 import com.uni.PrefPet.model.Publicacao;
 import com.uni.PrefPet.model.Usuario;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
+import lombok.Data;
 import org.hibernate.validator.constraints.br.CNPJ;
 
 import java.util.List;
-
+@Entity
+@Data
 public class Orgao extends Usuario {
     @Enumerated(EnumType.STRING)
     private TipoOrgao tipoOrgao;
