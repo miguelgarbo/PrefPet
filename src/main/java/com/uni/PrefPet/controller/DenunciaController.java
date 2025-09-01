@@ -1,15 +1,6 @@
 package com.uni.PrefPet.controller;
 
-import com.uni.PrefPet.model.Denuncia;
-import com.uni.PrefPet.model.Enum.TipoDenuncia;
-import com.uni.PrefPet.model.Usuario;
-import com.uni.PrefPet.service.DenunciaService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/denuncias")

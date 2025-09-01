@@ -20,10 +20,6 @@ public class Imagem {
     private String url;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario criadoPor;
-
-    @ManyToOne
     @JoinColumn(name = "publicacao_id")
     private Publicacao publicacao;
 

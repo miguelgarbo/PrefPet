@@ -94,6 +94,7 @@ public class ContatoController {
     @GetMapping("/findByNomeOrgao/{nomeOrgao}")
     public ResponseEntity<List<Contato>> findByNomeOrgaoContainingIgnoreCase(@PathVariable String nomeOrgao) {
         try {
+
             var result = contatoService.findByNomeOrgaoContainingIgnoreCase(nomeOrgao);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception ex) {

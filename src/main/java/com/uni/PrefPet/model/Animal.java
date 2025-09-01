@@ -47,6 +47,8 @@ public class Animal {
     @NotNull(message = "O Campo microchip não deve ser nulo")
     private Boolean microchip;
 
+    private String numeroMicrochip;
+
     @Past(message = "A data de nascimento deve estar no passado")
     @NotNull(message = "Data de nascimento nao deve se null")
     private LocalDate dataNascimento;

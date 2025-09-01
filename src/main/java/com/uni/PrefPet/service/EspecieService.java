@@ -72,13 +72,9 @@ public class EspecieService {
     }
 
     public List<Especie> findByNomeContaining(String nome) {
-        List<Especie> especies = especieRepository.findByNomeContainingIgnoreCase(nome);
-        if (especies.isEmpty()) {
-            throw new EntityNotFoundException("Nenhuma espécie encontrada contendo o nome informado");
-        }
-        return especies;
+       return especieRepository.findByNomeContainingIgnoreCase(nome).orElseThrow(()->
+                 new EntityNotFoundException("Especie Não encontrada"));
     }
-
     //fim
 
 

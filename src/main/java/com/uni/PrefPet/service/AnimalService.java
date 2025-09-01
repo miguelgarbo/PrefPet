@@ -2,7 +2,7 @@ package com.uni.PrefPet.service;
 import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.repository.AnimalRepository;
-import com.uni.PrefPet.repository.UsuarioRepository;
+import com.uni.PrefPet.repository.UsuarioComumRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,7 @@ public class AnimalService  {
 
     @Autowired
     private AnimalRepository animalRepository;
-    private UsuarioRepository usuarioRepository;
+    private UsuarioComumRepository usuarioRepository;
 
     // crud simples
     public Animal findById(Long id){

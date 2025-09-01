@@ -1,6 +1,5 @@
 package com.uni.PrefPet.model;
 
-import com.uni.PrefPet.model.Enum.TipoDenuncia;
 import jakarta.persistence.*;
 import lombok.Data;
 

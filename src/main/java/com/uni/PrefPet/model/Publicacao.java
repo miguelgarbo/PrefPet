@@ -1,8 +1,8 @@
 package com.uni.PrefPet.model;
 
+import com.uni.PrefPet.model.Usuarios.Orgao;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -25,10 +25,10 @@ public class Publicacao {
 
     private LocalDateTime dataCriacao = LocalDateTime.now();
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "publicacao", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Imagem> imagens;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+    private Orgao usuario;
 }

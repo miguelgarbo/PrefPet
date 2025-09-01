@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
+import org.hibernate.validator.constraints.br.CNPJ;
 
 @Data
 @MappedSuperclass
@@ -20,7 +21,9 @@ public abstract class Usuario {
     @NotBlank(message = "O Cep é obrigatório")
     private String cep;
 
+    @CNPJ(message = "CNPJ inválido")
     private String cnpj;
+
     private String cidade;
 
     private String estado;

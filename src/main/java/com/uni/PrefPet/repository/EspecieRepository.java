@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface EspecieRepository extends JpaRepository<Especie, Long> {
 
     boolean existsByNomeIgnoreCase(String nome);
-    List<Especie> findByNomeContainingIgnoreCase(String nome);
+    Optional<List<Especie>> findByNomeContainingIgnoreCase(String nome);
 }
