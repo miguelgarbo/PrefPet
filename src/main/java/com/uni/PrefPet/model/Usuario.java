@@ -21,8 +21,6 @@ public abstract class Usuario {
     @NotBlank(message = "O Cep é obrigatório")
     private String cep;
 
-    @CNPJ(message = "CNPJ inválido")
-    private String cnpj;
 
     private String cidade;
 
