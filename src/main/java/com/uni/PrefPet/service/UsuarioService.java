@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-@Service
 public class UsuarioService {
 
     @Autowired
@@ -24,43 +23,6 @@ public class UsuarioService {
 
     public Usuario save(Usuario usuario) {
 
-        validarAtributosPadroes(usuario);
-        
-        if(usuario instanceof Orgao orgao){
-            validarOrgao(orgao);
-        }
-
-        if(usuario instanceof Veterinario){
-
-
-
-        }
-
-
-        
-        
-
-
-
-        return usuarioRepository.save(usuario);
-    }
-
-
-    public void validarVeterinario(Veterinario veterinario){
-
-        if (veterinarioRepository.existsByCRMV(veterinario.getCRMV())) {
-            throw new IllegalArgumentException("Já existe um usuário com este CRMV.");
-        }
-
-        if(veterinario.getCRMV() ==null && veterinario.getCRMV().isBlank()){
-            throw new IllegalArgumentException("CRMV NAO PODE SER NULO");
-
-        }
-
-    }
-
-
-    public void validarAtributosPadroes(Usuario usuario){
         if (usuarioRepository.existsByCpf(usuario.getCpf())) {
             throw new IllegalArgumentException("Já existe um usuário com este CPF.");
         }
@@ -72,20 +34,10 @@ public class UsuarioService {
         if (usuarioRepository.existsByEmail(usuario.getEmail())) {
             throw new IllegalArgumentException("Já existe um usuário com este email.");
         }
+
+        return usuarioRepository.save(usuario);
     }
 
-    public void validarOrgao(Orgao orgao){
-
-        if(orgao.getCnpj() == null && orgao.getCnpj().isBlank()){
-            throw new IllegalArgumentException("CNPJ Não pode ser nulo");
-        }
-        if(orgao.getTipoOrgao() == null ){
-            throw new IllegalArgumentException("Tipo do Orgao Não pode ser nulo");
-        }
-        if(orgaoRepository.existsByCnpj(orgao.getCnpj())){
-            throw new IllegalArgumentException("já Existe um Usuario com esse CNPJ");
-        }
-    }
 
 
     public Usuario findById(Long id) {

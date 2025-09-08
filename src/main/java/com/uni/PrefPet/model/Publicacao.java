@@ -17,8 +17,8 @@ public class Publicacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "O título da campanha é obrigatório")
-    private String titulo;
+    @NotBlank(message = "O tipo da campanha é obrigatório")
+    private String tipoPublicacao;
 
     @NotBlank(message = "A descrição é obrigatória")
     private String descricao;

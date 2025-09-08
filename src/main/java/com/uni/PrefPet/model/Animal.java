@@ -26,9 +26,7 @@ public class Animal {
     @Column(unique = true, nullable = false)
     private String registroGeral;
 
-    @ManyToOne
-    @JoinColumn(name = "especie_id")
-    private Especie especie;
+    private String especie;
 
     @ManyToOne
     @JsonBackReference

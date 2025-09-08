@@ -27,9 +27,9 @@ public class Contato {
     @NotBlank(message = "Email não pode ser vazio")
     private String email;
 
-    @JsonIgnoreProperties("denuncias")
+    @JsonIgnoreProperties("emergencias")
     @ManyToMany(mappedBy = "contatos")
-    private List<Denuncia> denuncias;
+    private List<Emergencia> emergencias;
 
     private Boolean ativo;
 

@@ -35,7 +35,7 @@ public class AnimalService  {
             animalExistente.setNome(animalAtualizado.getNome());
         }
 
-        if (animalAtualizado.getEspecie() != null && !animalAtualizado.getEspecie().getNome().trim().isEmpty()) {
+        if (animalAtualizado.getEspecie() != null && !animalAtualizado.getEspecie().trim().isEmpty()) {
             animalExistente.setEspecie(animalAtualizado.getEspecie());
         }
 
@@ -119,7 +119,7 @@ public class AnimalService  {
                  new EntityNotFoundException("Esse Animal Não Foi Encontrado"));
     }
     public List<Animal> findByEspecieNome(String especie) {
-        return animalRepository.findByEspecieNomeIgnoreCase(especie)
+        return animalRepository.findByEspecieIgnoreCase(especie)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum animal com a espécie informada foi encontrado"));
     }
 

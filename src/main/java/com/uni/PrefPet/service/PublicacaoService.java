@@ -33,9 +33,7 @@ public class PublicacaoService {
                 new EntityNotFoundException("Publicacao com id " + id + " não encontrado."));
         
 
-        if (publicacaoAtualizada.getTitulo() != null) {
-            publicacaoSelecionada.setTitulo(publicacaoAtualizada.getTitulo());
-        }
+
 
         if (publicacaoAtualizada.getDescricao() != null) {
             publicacaoSelecionada.setDescricao(publicacaoAtualizada.getDescricao());

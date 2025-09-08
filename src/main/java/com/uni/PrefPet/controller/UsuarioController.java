@@ -1,21 +1,31 @@
 package com.uni.PrefPet.controller;
 
 import com.uni.PrefPet.model.Usuario;
+import com.uni.PrefPet.model.Usuarios.Orgao;
 import com.uni.PrefPet.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
+@CrossOrigin("*")
 public class UsuarioController {
 
     @Autowired
     private UsuarioService usuarioService;
+
+    @PostMapping("/save/orgao")
+    public ResponseEntity<Usuario> saveOrgao(@RequestBody @Valid Orgao orgao){
+        try {
+            var usuario = usuarioService.save(orgao);
+            return new ResponseEntity<>(usuario, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }}
 
     @PostMapping("/save")
     public ResponseEntity<Usuario> save(@RequestBody @Valid Usuario usuario) {

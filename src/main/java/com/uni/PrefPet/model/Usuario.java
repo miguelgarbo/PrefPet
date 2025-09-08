@@ -7,6 +7,7 @@ import lombok.Data;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 
+
 @Data
 @MappedSuperclass
 public abstract class Usuario {
@@ -26,7 +27,6 @@ public abstract class Usuario {
     @Column(unique = true)
     @CPF(message = "CPF INVALIDO")
     private String cpf;
-
 
     private String cidade;
 

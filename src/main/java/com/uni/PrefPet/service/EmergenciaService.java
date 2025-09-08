@@ -1,0 +1,66 @@
+package com.uni.PrefPet.service;
+
+import com.uni.PrefPet.model.Emergencia;
+import com.uni.PrefPet.repository.EmergenciaRepository;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class EmergenciaService {
+
+    @Autowired
+    private EmergenciaRepository emergenciaRepository;
+
+    /// CRUD básico
+    public Emergencia save(Emergencia denuncia) {
+        return emergenciaRepository.save(denuncia);
+    }
+
+    public Emergencia findById(Long id) {
+        return emergenciaRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Denúncia não encontrada")
+        );
+    }
+
+    public List<Emergencia> findAll() {
+        return emergenciaRepository.findAll();
+    }
+
+    public String delete(Long id) {
+        if (!existById(id)) {
+            throw new EntityNotFoundException("Denúncia não encontrada");
+        }
+        emergenciaRepository.deleteById(id);
+        return "Denúncia deletada com sucesso";
+    }
+
+    public boolean existById(Long id) {
+        if (!emergenciaRepository.existsById(id)) {
+            throw new EntityNotFoundException("Denúncia não encontrada");
+        }
+        return true;
+    }
+
+    public Emergencia update(Long id, Emergencia denunciaAtualizada) {
+        Emergencia denunciaSelecionada = emergenciaRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Denúncia não encontrada")
+        );
+
+        if (denunciaAtualizada.getNome() != null) {
+            denunciaSelecionada.setNome(denunciaAtualizada.getNome());
+        }
+
+        return emergenciaRepository.save(denunciaSelecionada);
+    }
+
+    /// Filtros extras
+    public List<Emergencia> findByNome(String nome) {
+        return emergenciaRepository.findByNome(nome).orElseThrow(()->
+                new EntityNotFoundException("Tipo de Emergencia Não Encontrada"));
+    }
+
+
+}

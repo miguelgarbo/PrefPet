@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/publicacao")
+@CrossOrigin("*")
 public class PublicacaoController {
     
     @Autowired
@@ -72,8 +73,7 @@ public class PublicacaoController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-    }
+        }}
 
     @GetMapping("/findByUsuarioNome")
     public ResponseEntity<List<Publicacao>> findByUsuarioNome(@RequestParam String nomeUsuario) {

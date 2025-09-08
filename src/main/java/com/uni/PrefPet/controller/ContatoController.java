@@ -13,6 +13,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/contatos")
+@CrossOrigin("*")
+
 public class ContatoController {
 
     @Autowired

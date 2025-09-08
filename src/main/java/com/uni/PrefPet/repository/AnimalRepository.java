@@ -20,7 +20,7 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
 
     Optional<List<Animal>> findByNomeContainingIgnoreCase(String nome);
 
-    Optional<List<Animal> >findByEspecieNomeIgnoreCase(String especie);
+    Optional<List<Animal> >findByEspecieIgnoreCase(String especie);
 
     Optional<List<Animal>> findByCorIgnoreCase(String cor);
 
