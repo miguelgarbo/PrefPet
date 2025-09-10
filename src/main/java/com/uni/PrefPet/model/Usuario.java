@@ -35,7 +35,6 @@ public abstract class Usuario {
 
     @CNPJ(message = "CNPJ inválido")
     @Column(unique = true)
-    @NotBlank(message = "Cnpj Não deve ser nulo")
     private String cnpj;
 
     @NotBlank(message = "A Senha é obrigatória")
