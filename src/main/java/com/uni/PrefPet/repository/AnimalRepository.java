@@ -2,6 +2,7 @@ package com.uni.PrefPet.repository;
 
 import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.Usuario;
+import com.uni.PrefPet.model.Usuarios.Tutor;
 import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -30,7 +31,7 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
 
     Optional<List<Animal>> findByMicrochip(Boolean microchip);
 
-    Optional<List<Animal>> findByUsuario(Usuario usuario);
+    Optional<List<Animal>> findByTutor(Tutor tutor);
 
     Optional<List<Animal>> findByDataNascimento(LocalDate dataNascimento);
 

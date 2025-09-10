@@ -2,6 +2,7 @@ package com.uni.PrefPet.repository;
 
 import com.uni.PrefPet.model.Publicacao;
 import com.uni.PrefPet.model.Usuario;
+import com.uni.PrefPet.model.Usuarios.Entidade;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,11 +13,10 @@ import java.util.Optional;
 @Repository
 public interface PublicacaoRepository extends JpaRepository<Publicacao, Long> {
 
-    Optional<List<Publicacao>> findByTituloContaining(String titulo);
+    Optional<List<Publicacao>> findByTipoPublicacao(String tipoPublicacao);
     Optional<List<Publicacao>> findByDescricaoContaining(String descricao);
-    Optional<List<Publicacao>> findByUsuarioNome(String nome);
+    Optional<List<Publicacao>> findByEntidadeNome(String nome);
     Optional<List<Publicacao>> findByDataCriacao(LocalDate dataCriacao);
-    Optional<List<Publicacao>> findByUsuario(Usuario usuario);
-
+    Optional<List<Publicacao>> findByEntidade(Entidade entidade);
 
 }

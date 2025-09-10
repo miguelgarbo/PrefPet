@@ -1,11 +1,10 @@
 package com.uni.PrefPet.model;
 
-import com.uni.PrefPet.model.Usuarios.Orgao;
+import com.uni.PrefPet.model.Usuarios.Entidade;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 @Entity
@@ -29,6 +28,6 @@ public class Publicacao {
     private List<Imagem> imagens;
 
     @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private Orgao usuario;
+    @JoinColumn(name = "entidade_id")
+    private Entidade entidade;
 }

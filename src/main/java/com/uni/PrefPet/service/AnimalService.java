@@ -1,8 +1,9 @@
 package com.uni.PrefPet.service;
 import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.Usuario;
+import com.uni.PrefPet.model.Usuarios.Tutor;
 import com.uni.PrefPet.repository.AnimalRepository;
-import com.uni.PrefPet.repository.UsuarioComumRepository;
+import com.uni.PrefPet.repository.TutorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ public class AnimalService  {
 
     @Autowired
     private AnimalRepository animalRepository;
-    private UsuarioComumRepository usuarioRepository;
+    private TutorRepository usuarioRepository;
 
     // crud simples
     public Animal findById(Long id){
@@ -78,12 +79,12 @@ public class AnimalService  {
             animalExistente.setNaturalidade(animalAtualizado.getNaturalidade());
         }
 
-        if (animalAtualizado.getUsuario() != null && animalAtualizado.getUsuario().getId() != null) {
-            boolean tutorExiste = usuarioRepository.existsById(animalAtualizado.getUsuario().getId());
+        if (animalAtualizado.getTutor() != null && animalAtualizado.getTutor().getId() != null) {
+            boolean tutorExiste = usuarioRepository.existsById(animalAtualizado.getTutor().getId());
             if (!tutorExiste) {
-                throw new EntityNotFoundException("Tutor com ID " + animalAtualizado.getUsuario().getId() + " não encontrado.");
+                throw new EntityNotFoundException("Tutor com ID " + animalAtualizado.getTutor().getId() + " não encontrado.");
             }
-            animalExistente.setUsuario(animalAtualizado.getUsuario());
+            animalExistente.setTutor(animalAtualizado.getTutor());
         }
 
         return animalRepository.save(animalExistente);
@@ -143,8 +144,8 @@ public class AnimalService  {
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum animal com o status de microchip informado foi encontrado"));
     }
 
-    public List<Animal> findByUsuario(Usuario usuario) {
-        return animalRepository.findByUsuario(usuario)
+    public List<Animal> findByTutor(Tutor tutor) {
+        return animalRepository.findByTutor(tutor)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum animal encontrado para o usuário informado"));
     }
 

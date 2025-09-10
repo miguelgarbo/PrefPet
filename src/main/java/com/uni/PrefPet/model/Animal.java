@@ -1,7 +1,7 @@
 package com.uni.PrefPet.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.uni.PrefPet.model.Usuarios.UsuarioComum;
+import com.uni.PrefPet.model.Usuarios.Tutor;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -30,8 +30,8 @@ public class Animal {
 
     @ManyToOne
     @JsonBackReference
-    @JoinColumn(name = "usuario_id")
-    private UsuarioComum usuario;
+    @JoinColumn(name = "tutor_id")
+    private Tutor tutor;
 
     @NotNull(message = "Esse campo deve haver algo")
     private Boolean castrado;
@@ -42,9 +42,10 @@ public class Animal {
     @NotBlank(message = "O Campo sexo não deve ser nulo")
     private String sexo;
 
-    @NotNull(message = "O Campo microchip não deve ser nulo")
+
     private Boolean microchip;
 
+    @Column(unique = true)
     private String numeroMicrochip;
 
     @Past(message = "A data de nascimento deve estar no passado")

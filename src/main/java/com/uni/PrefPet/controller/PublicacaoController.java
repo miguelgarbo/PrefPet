@@ -2,6 +2,7 @@ package com.uni.PrefPet.controller;
 
 import com.uni.PrefPet.model.Publicacao;
 import com.uni.PrefPet.model.Usuario;
+import com.uni.PrefPet.model.Usuarios.Entidade;
 import com.uni.PrefPet.service.PublicacaoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -66,29 +68,39 @@ public class PublicacaoController {
         }
     }
 
-    @GetMapping("/findByUsuario")
-    public ResponseEntity<List<Publicacao>> findByUsuario(@RequestParam Usuario usuario) {
+    @GetMapping("/findByEntidade")
+    public ResponseEntity<List<Publicacao>> findByUsuario(@RequestParam Entidade entidade) {
         try {
-            var result = publicacaoService.findByUsuario(usuario);
+            var result = publicacaoService.findByEntidade(entidade);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }}
 
-    @GetMapping("/findByUsuarioNome")
-    public ResponseEntity<List<Publicacao>> findByUsuarioNome(@RequestParam String nomeUsuario) {
+    @GetMapping("/findByEntidadeNome")
+    public ResponseEntity<List<Publicacao>> findByEntidadeNome(@RequestParam String nomeEntidade) {
         try {
-            var result = publicacaoService.findByUsuarioNome(nomeUsuario);
+            var result = publicacaoService.findByEntidadeNome(nomeEntidade);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
-    @GetMapping("/findByTitulo")
-    public ResponseEntity<List<Publicacao>> findByTitulo(@RequestParam String titulo) {
+    @GetMapping("/findByDataCriacao")
+    public ResponseEntity<List<Publicacao>> findByDataCriacao(@RequestParam LocalDate data) {
         try {
-            var result = publicacaoService.findByTitulo(titulo);
+            var result = publicacaoService.findByDataCriacao(data);
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        } catch (Exception ex) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping("/findByTipoPublicacao")
+    public ResponseEntity<List<Publicacao>> findByTipoPublicacao(@RequestParam String tipoPublicacao) {
+        try {
+            var result = publicacaoService.findByTipoPublicacao(tipoPublicacao);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

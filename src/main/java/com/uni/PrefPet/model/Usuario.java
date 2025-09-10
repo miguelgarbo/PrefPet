@@ -18,6 +18,7 @@ public abstract class Usuario {
 
     @Column(unique = true)
     @Pattern(regexp = "\\+?\\d{10,15}", message = "Telefone inválido")
+
     private String telefone;
 
     @NotBlank(message = "O Cep é obrigatório")
@@ -32,6 +33,11 @@ public abstract class Usuario {
 
     private String estado;
 
+    @CNPJ(message = "CNPJ inválido")
+    @Column(unique = true)
+    @NotBlank(message = "Cnpj Não deve ser nulo")
+    private String cnpj;
+
     @NotBlank(message = "A Senha é obrigatória")
     private String senha;
 
@@ -39,6 +45,5 @@ public abstract class Usuario {
     @Column(unique = true)
     @Email
     private String email;
-
 
 }

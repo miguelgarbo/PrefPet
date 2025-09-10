@@ -11,9 +11,9 @@ import lombok.Data;
 import java.util.List;
 @Entity
 @Data
-public class UsuarioComum  extends Usuario {
+public class Tutor extends Usuario {
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Animal> animais;
 

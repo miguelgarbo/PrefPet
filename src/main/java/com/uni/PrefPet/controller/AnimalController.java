@@ -2,8 +2,9 @@ package com.uni.PrefPet.controller;
 
 import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.Usuario;
+import com.uni.PrefPet.model.Usuarios.Tutor;
 import com.uni.PrefPet.service.AnimalService;
-import com.uni.PrefPet.service.UsuarioService;
+import com.uni.PrefPet.service.TutorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,8 +23,7 @@ public class AnimalController {
 
     @Autowired
     private AnimalService animalService;
-    @Autowired
-    private UsuarioService usuarioService;
+    private TutorService tutorService;
 
     @PostMapping("/save")
     public ResponseEntity<Animal> save(@RequestBody @Valid Animal animal
@@ -134,12 +134,12 @@ public class AnimalController {
             }
         }
 
-        @GetMapping("/findByUsuario")
-        public ResponseEntity<List<Animal>> findByUsuario(@RequestParam Long usuarioId) {
+        @GetMapping("/findByTutor")
+        public ResponseEntity<List<Animal>> findByUsuario(@RequestParam Long tutorId) {
             try {
 
-                Usuario usuarioInformado = usuarioService.findById(usuarioId);
-                var result = animalService.findByUsuario(usuarioInformado);
+                Tutor tutorInformado = tutorService.findById(tutorId);
+                var result = animalService.findByTutor(tutorInformado);
                 return new ResponseEntity<>(result, HttpStatus.OK);
             } catch (Exception e) {
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

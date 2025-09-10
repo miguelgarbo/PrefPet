@@ -2,11 +2,13 @@ package com.uni.PrefPet.service;
 
 import com.uni.PrefPet.model.Publicacao;
 import com.uni.PrefPet.model.Usuario;
+import com.uni.PrefPet.model.Usuarios.Entidade;
 import com.uni.PrefPet.repository.PublicacaoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -59,21 +61,27 @@ public class PublicacaoService {
     }
 
 
-    public List<Publicacao> findByUsuario(Usuario usuario){
+    public List<Publicacao> findByEntidade(Entidade entidade){
 
-        return publicacaoRepository.findByUsuario(usuario).orElseThrow(()->
+        return publicacaoRepository.findByEntidade(entidade).orElseThrow(()->
                 new EntityNotFoundException("Publicacoes não encontradas"));
     }
 
-    public List<Publicacao> findByUsuarioNome(String nomeUsuario){
+    public List<Publicacao> findByEntidadeNome(String nomeEntidade){
 
-        return publicacaoRepository.findByUsuarioNome(nomeUsuario).orElseThrow(()->
+        return publicacaoRepository.findByEntidadeNome(nomeEntidade).orElseThrow(()->
                 new EntityNotFoundException("Publicacoes não encontradas"));
     }
 
-    public List<Publicacao> findByTitulo(String titulo){
+    public List<Publicacao> findByDataCriacao(LocalDate data){
 
-        return publicacaoRepository.findByTituloContaining(titulo).orElseThrow(()->
+        return publicacaoRepository.findByDataCriacao(data).orElseThrow(()->
+                new EntityNotFoundException("Publicacoes não encontradas"));
+
+    }
+
+    public List<Publicacao> findByTipoPublicacao(String tipoPublicacao){
+        return publicacaoRepository.findByTipoPublicacao(tipoPublicacao).orElseThrow(()->
                 new EntityNotFoundException("Publicacoes não encontradas"));
     }
 

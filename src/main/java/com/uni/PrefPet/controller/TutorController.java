@@ -1,8 +1,8 @@
 package com.uni.PrefPet.controller;
 
-import com.uni.PrefPet.model.Usuario;
-import com.uni.PrefPet.model.Usuarios.Orgao;
-import com.uni.PrefPet.service.UsuarioService;
+
+import com.uni.PrefPet.model.Usuarios.Tutor;
+import com.uni.PrefPet.service.TutorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,26 +11,18 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/tutores")
 @CrossOrigin("*")
-public class UsuarioController {
+public class TutorController {
 
     @Autowired
-    private UsuarioService usuarioService;
+    private TutorService tutorService;
 
-    @PostMapping("/save/orgao")
-    public ResponseEntity<Usuario> saveOrgao(@RequestBody @Valid Orgao orgao){
-        try {
-            var usuario = usuarioService.save(orgao);
-            return new ResponseEntity<>(usuario, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }}
 
     @PostMapping("/save")
-    public ResponseEntity<Usuario> save(@RequestBody @Valid Usuario usuario) {
+    public ResponseEntity<Tutor> save(@RequestBody @Valid Tutor tutor) {
         try {
-            var result = usuarioService.save(usuario);
+            var result = tutorService.save(tutor);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         } catch (Exception ex) {
             return new ResponseEntity<>(null,
@@ -38,9 +30,9 @@ public class UsuarioController {
         }
     }
     @GetMapping("/findById/{id}")
-    public ResponseEntity<Usuario> findById(@PathVariable Long id) {
+    public ResponseEntity<Tutor> findById(@PathVariable Long id) {
         try {
-            var result = usuarioService.findById(id);
+            var result = tutorService.findById(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -49,25 +41,25 @@ public class UsuarioController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
-            usuarioService.delete(id);
+            tutorService.delete(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario usuario) {
+    public ResponseEntity<Tutor> update(@PathVariable Long id, @RequestBody Tutor tutor) {
         try {
-            var updatedUsuario = usuarioService.update(id, usuario);
-            return new ResponseEntity<>(updatedUsuario, HttpStatus.OK);
+            var updatedTutor = tutorService.update(id, tutor);
+            return new ResponseEntity<>(updatedTutor, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
     @GetMapping("/findAll")
-    public ResponseEntity<List<Usuario>> findAll() {
+    public ResponseEntity<List<Tutor>> findAll() {
         try {
-            var result = usuarioService.findAll();
+            var result = tutorService.findAll();
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -77,7 +69,7 @@ public class UsuarioController {
     @GetMapping("/existsByCPF")
     public ResponseEntity<Boolean> existsByCPF(@RequestParam String cpf) {
         try {
-            boolean exists = usuarioService.existsByCPF(cpf);
+            boolean exists = tutorService.existsByCPF(cpf);
             return new ResponseEntity<>(exists, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
@@ -87,7 +79,7 @@ public class UsuarioController {
     @GetMapping("/existsByEmail")
     public ResponseEntity<Boolean> existsByEmail(@RequestParam String email) {
         try {
-            boolean exists = usuarioService.existsByEmail(email);
+            boolean exists = tutorService.existsByEmail(email);
             return new ResponseEntity<>(exists, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
@@ -95,40 +87,40 @@ public class UsuarioController {
     }
 
     @GetMapping("/findByNome")
-    public ResponseEntity<List<Usuario>> findByNome(@RequestParam String nome) {
+    public ResponseEntity<List<Tutor>> findByNome(@RequestParam String nome) {
         try {
-            List<Usuario> usuario = usuarioService.findByNome(nome);
-            return new ResponseEntity<>(usuario, HttpStatus.OK);
+            List<Tutor> tutor = tutorService.findByNome(nome);
+            return new ResponseEntity<>(tutor, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/findByCPF")
-    public ResponseEntity<List<Usuario>> findByCPF(@RequestParam String cpf) {
+    public ResponseEntity<List<Tutor>> findByCPF(@RequestParam String cpf) {
         try {
-            List<Usuario> usuario = usuarioService.findByCPF(cpf);
-            return new ResponseEntity<>(usuario, HttpStatus.OK);
+            List<Tutor> tutor = tutorService.findByCPF(cpf);
+            return new ResponseEntity<>(tutor, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/findByTelefone")
-    public ResponseEntity<List<Usuario>> findByTelefone(@RequestParam String telefone) {
+    public ResponseEntity<List<Tutor>> findByTelefone(@RequestParam String telefone) {
         try {
-            List<Usuario> usuario = usuarioService.findByTelefone(telefone);
-            return new ResponseEntity<>(usuario, HttpStatus.OK);
+            List<Tutor> tutor = tutorService.findByTelefone(telefone);
+            return new ResponseEntity<>(tutor, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 
     @GetMapping("/findByEmail")
-    public ResponseEntity<List<Usuario>> findByEmail(@RequestParam String email) {
+    public ResponseEntity<List<Tutor>> findByEmail(@RequestParam String email) {
         try {
-            var usuarios = usuarioService.findByEmail(email);
-            return new ResponseEntity<>(usuarios, HttpStatus.OK);
+            var tutors = tutorService.findByEmail(email);
+            return new ResponseEntity<>(tutors, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
