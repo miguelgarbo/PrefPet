@@ -21,7 +21,7 @@ public class PublicacaoController {
     @Autowired
     private PublicacaoService publicacaoService;
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<Publicacao> save(@RequestBody @Valid Publicacao publicacao) {
         try {
             var result = publicacaoService.save(publicacao);
@@ -31,7 +31,7 @@ public class PublicacaoController {
                     HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("/findById/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Publicacao> findById(@PathVariable Long id) {
         try {
             var result = publicacaoService.findById(id);
@@ -40,7 +40,7 @@ public class PublicacaoController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
             publicacaoService.delete(id);
@@ -49,7 +49,7 @@ public class PublicacaoController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-    @PutMapping("/update/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<Publicacao> update(@PathVariable Long id, @RequestBody Publicacao publicacao) {
         try {
             var updatedPublicacao = publicacaoService.update(id, publicacao);
@@ -68,8 +68,8 @@ public class PublicacaoController {
         }
     }
 
-    @GetMapping("/findByEntidade")
-    public ResponseEntity<List<Publicacao>> findByUsuario(@RequestParam Entidade entidade) {
+    @GetMapping("/byEntidade")
+    public ResponseEntity<List<Publicacao>> findByEntidade(@RequestParam Entidade entidade) {
         try {
             var result = publicacaoService.findByEntidade(entidade);
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -77,7 +77,7 @@ public class PublicacaoController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }}
 
-    @GetMapping("/findByEntidadeNome")
+    @GetMapping("/byEntidadeNome")
     public ResponseEntity<List<Publicacao>> findByEntidadeNome(@RequestParam String nomeEntidade) {
         try {
             var result = publicacaoService.findByEntidadeNome(nomeEntidade);
@@ -87,7 +87,7 @@ public class PublicacaoController {
         }
     }
 
-    @GetMapping("/findByDataCriacao")
+    @GetMapping("/byDataCriacao")
     public ResponseEntity<List<Publicacao>> findByDataCriacao(@RequestParam LocalDate data) {
         try {
             var result = publicacaoService.findByDataCriacao(data);
@@ -97,7 +97,7 @@ public class PublicacaoController {
         }
     }
 
-    @GetMapping("/findByTipoPublicacao")
+    @GetMapping("/byTipoPublicacao")
     public ResponseEntity<List<Publicacao>> findByTipoPublicacao(@RequestParam String tipoPublicacao) {
         try {
             var result = publicacaoService.findByTipoPublicacao(tipoPublicacao);
@@ -106,7 +106,7 @@ public class PublicacaoController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("/findByDescricao")
+    @GetMapping("/byDescricao")
     public ResponseEntity<List<Publicacao>> findByDescricao(@RequestParam String descricao) {
         try {
             var result = publicacaoService.findByDescricao(descricao);
@@ -115,9 +115,6 @@ public class PublicacaoController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-
-
-
 
 
 

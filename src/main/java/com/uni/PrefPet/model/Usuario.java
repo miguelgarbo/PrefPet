@@ -45,4 +45,6 @@ public abstract class Usuario {
     @Email
     private String email;
 
+     private String imagemUrlPerfil;
+
 }

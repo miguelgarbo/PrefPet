@@ -19,7 +19,7 @@ public class EntidadeController {
     @Autowired
     private EntidadeService entidadeService;
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<Entidade> save(@RequestBody @Valid Entidade entidade) {
         try {
             var result = entidadeService.save(entidade);
@@ -29,7 +29,7 @@ public class EntidadeController {
                     HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("/findById/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Entidade> findById(@PathVariable Long id) {
         try {
             var result = entidadeService.findById(id);
@@ -38,7 +38,7 @@ public class EntidadeController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
             entidadeService.delete(id);

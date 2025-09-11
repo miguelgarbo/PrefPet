@@ -1,5 +1,7 @@
 package com.uni.PrefPet.model.Usuarios;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.uni.PrefPet.model.Enum.TipoEntidade;
 import com.uni.PrefPet.model.Publicacao;
 import com.uni.PrefPet.model.Usuario;
@@ -16,5 +18,6 @@ public class Entidade extends Usuario {
     private TipoEntidade tipoEntidade;
 
     @OneToMany(mappedBy = "entidade")
+    @JsonIgnore
     List<Publicacao> publicacoes;
 }
