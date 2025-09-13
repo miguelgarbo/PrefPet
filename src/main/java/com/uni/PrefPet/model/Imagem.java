@@ -25,4 +25,6 @@ public class Imagem {
     @JsonIgnore
     private Publicacao publicacao;
 
+
+
 }

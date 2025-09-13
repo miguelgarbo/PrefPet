@@ -1,8 +1,10 @@
 package com.uni.PrefPet.service;
 
+import com.uni.PrefPet.model.Imagem;
 import com.uni.PrefPet.model.Publicacao;
 import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.model.Usuarios.Entidade;
+import com.uni.PrefPet.repository.ImagemRepository;
 import com.uni.PrefPet.repository.PublicacaoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ public class PublicacaoService {
 
     @Autowired
     private PublicacaoRepository publicacaoRepository;
+    private ImagemRepository imagemRepository;
 
     public List<Publicacao> findAll() {
         return publicacaoRepository.findAll();
@@ -29,6 +32,16 @@ public class PublicacaoService {
     public Publicacao findById(Long id) {
         return publicacaoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
+
+    public Imagem saveImagem(Imagem imagem) {
+        Long publicacaoId = imagem.getPublicacao().getId();
+        Publicacao publicacao = publicacaoRepository.findById(publicacaoId)
+                .orElseThrow(() -> new EntityNotFoundException("Publicação com id " + publicacaoId + " não encontrada"));
+
+        imagem.setPublicacao(publicacao);
+        return imagemRepository.save(imagem);
+    }
+
 
     public Publicacao update(Long id, Publicacao publicacaoAtualizada) {
         Publicacao publicacaoSelecionada = publicacaoRepository.findById(id).orElseThrow(() ->

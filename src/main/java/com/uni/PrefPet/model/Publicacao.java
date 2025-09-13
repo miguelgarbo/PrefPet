@@ -1,7 +1,5 @@
 package com.uni.PrefPet.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.uni.PrefPet.model.Usuarios.Entidade;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -32,4 +30,12 @@ public class Publicacao {
     @ManyToOne
     @JoinColumn(name = "entidade_id")
     private Entidade entidade;
+
+    @PrePersist
+    @PreUpdate
+    private void prePersist() {
+        if (imagens != null) {
+            imagens.forEach(img -> img.setPublicacao(this));
+        }
+    }
 }
