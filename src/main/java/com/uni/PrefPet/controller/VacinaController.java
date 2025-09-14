@@ -22,9 +22,9 @@ public class VacinaController {
     private VacinaService vacinaService;
 
     @PostMapping("/save")
-    public ResponseEntity<Vacina> save(@RequestBody @Valid Vacina vacina, @RequestParam int meses) {
+    public ResponseEntity<Vacina> save(@RequestBody @Valid Vacina vacina) {
         try {
-            var result = vacinaService.save(vacina, meses);
+            var result = vacinaService.save(vacina);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
         } catch (Exception ex) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -75,76 +75,6 @@ public class VacinaController {
     public ResponseEntity<List<Vacina>> findByNome(@RequestParam String nome) {
         try {
             List<Vacina> result = vacinaService.findByNome(nome);
-            return ResponseEntity.ok(result);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
-
-    @GetMapping("/by-lote")
-    public ResponseEntity<Vacina> findByLote(@RequestParam String lote) {
-        try {
-            Vacina result = vacinaService.findByLote(lote);
-            return ResponseEntity.ok(result);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
-
-    @GetMapping("/exists-lote")
-    public ResponseEntity<Boolean> existsByLote(@RequestParam String lote) {
-        boolean exists = vacinaService.existsByLote(lote);
-        return ResponseEntity.ok(exists);
-    }
-
-    @GetMapping("/validade-before")
-    public ResponseEntity<List<Vacina>> findByValidadeBefore(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
-        try {
-            List<Vacina> result = vacinaService.findByValidadeBefore(data);
-            return ResponseEntity.ok(result);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
-
-    @GetMapping("/validade-after")
-    public ResponseEntity<List<Vacina>> findByValidadeAfter(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
-        try {
-            List<Vacina> result = vacinaService.findByValidadeAfter(data);
-            return ResponseEntity.ok(result);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
-
-    @GetMapping("/aplicacao")
-    public ResponseEntity<List<Vacina>> findByDataAplicacao(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
-        try {
-            List<Vacina> result = vacinaService.findByDataAplicacao(data);
-            return ResponseEntity.ok(result);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
-
-    @GetMapping("/aplicacao-after")
-    public ResponseEntity<List<Vacina>> findByDataAplicacaoAfter(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
-        try {
-            List<Vacina> result = vacinaService.findByDataAplicacaoAfter(data);
-            return ResponseEntity.ok(result);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
-
-    @GetMapping("/animal/{id}")
-    public ResponseEntity<List<Vacina>> findByAnimalId(@PathVariable Long id) {
-        try {
-            List<Vacina> result = vacinaService.findByAnimalId(id);
             return ResponseEntity.ok(result);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

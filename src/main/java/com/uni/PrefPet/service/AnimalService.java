@@ -139,9 +139,9 @@ public class AnimalService  {
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum animal com o status de castrado informado foi encontrado"));
     }
 
-    public List<Animal> findByMicrochip(Boolean microchip) {
-        return animalRepository.findByMicrochip(microchip)
-                .orElseThrow(() -> new EntityNotFoundException("Nenhum animal com o status de microchip informado foi encontrado"));
+    public Animal findByMicrochip(String numeroMicrochip) {
+        return animalRepository.findByNumeroMicrochip(numeroMicrochip)
+                .orElseThrow(() -> new EntityNotFoundException("Nenhum animal com o microchip informado foi encontrado"));
     }
 
     public List<Animal> findByTutor(Tutor tutor) {

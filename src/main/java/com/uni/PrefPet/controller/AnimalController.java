@@ -125,9 +125,9 @@ public class AnimalController {
         }
 
         @GetMapping("/findByMicrochip")
-        public ResponseEntity<List<Animal>> findByMicrochip(@RequestParam Boolean microchip) {
+        public ResponseEntity<Animal> findByNumeroMicrochip(@RequestParam String numeroMicrochip) {
             try {
-                var result = animalService.findByMicrochip(microchip);
+                var result = animalService.findByMicrochip(numeroMicrochip);
                 return new ResponseEntity<>(result, HttpStatus.OK);
             } catch (Exception e) {
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -185,5 +185,6 @@ public class AnimalController {
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             }
         }
+
 }
 

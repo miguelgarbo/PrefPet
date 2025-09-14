@@ -18,17 +18,7 @@ public class Vacina {
     @NotBlank(message = "nome é um campo obrigatório")
     private String nome;
 
-    @NotNull(message = "Data de aplicação não deve ser nula")
-    private LocalDate dataAplicacao;
-
-    @NotBlank(message = "lote é um campo obrigatório")
-    private String lote;
-
-    private LocalDate dataValidade;
-
-    @ToString.Exclude
-    @ManyToMany(mappedBy = "vacinas")
-    @JsonIgnoreProperties("vacinas")
-    private List<Animal> animais;
+    @OneToMany(mappedBy = "vacina", cascade = CascadeType.ALL)
+    private List<AplicacaoVacina> aplicacoes;
 
 }

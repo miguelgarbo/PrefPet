@@ -58,14 +58,8 @@ public class Animal {
     private String imagemUrl;
 
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "animal_vacina",
-            joinColumns = @JoinColumn(name = "animal_id"),
-            inverseJoinColumns = @JoinColumn(name = "vacina_id")
-    )
-    @JsonIgnoreProperties("vacinas")
-    private List<Vacina> vacinas;
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
+    private List<AplicacaoVacina> aplicacoes;
 
     @Transient // não persiste no banco pq é um numero dinamico
     public int getIdade() {

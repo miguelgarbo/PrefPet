@@ -29,7 +29,7 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
 
     Optional<List<Animal>> findByCastrado(Boolean castrado);
 
-    Optional<List<Animal>> findByMicrochip(Boolean microchip);
+    Optional<Animal> findByNumeroMicrochip(String microchip);
 
     Optional<List<Animal>> findByTutor(Tutor tutor);
 

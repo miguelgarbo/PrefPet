@@ -19,7 +19,7 @@ public class TutorController {
     private TutorService tutorService;
 
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<Tutor> save(@RequestBody @Valid Tutor tutor) {
         try {
             var result = tutorService.save(tutor);
@@ -29,7 +29,7 @@ public class TutorController {
                     HttpStatus.BAD_REQUEST);
         }
     }
-    @GetMapping("/findById/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Tutor> findById(@PathVariable Long id) {
         try {
             var result = tutorService.findById(id);
@@ -38,7 +38,7 @@ public class TutorController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
             tutorService.delete(id);
@@ -47,7 +47,7 @@ public class TutorController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Tutor> update(@PathVariable Long id, @RequestBody Tutor tutor) {
         try {
             var updatedTutor = tutorService.update(id, tutor);
