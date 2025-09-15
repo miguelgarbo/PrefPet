@@ -15,31 +15,24 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/aplicacao-vacinas")
+@RequestMapping("/aplicacao")
 @CrossOrigin("*")
 public class AplicacaoVacinaController {
 
     @Autowired
     private AplicacaoVacinaService aplicacaoVacinaService;
 
-    @PostMapping
-    public ResponseEntity<AplicacaoVacina> save(@RequestBody @Valid AplicacaoVacina vacina, @RequestParam int meses) {
-        try {
-            var result = aplicacaoVacinaService.save(vacina, meses);
+    @PostMapping(consumes = "application/json", produces = "application/json")
+    public ResponseEntity<AplicacaoVacina> save(@RequestBody AplicacaoVacina aplicacaoVacina, @RequestParam int meses) {
+            var result = aplicacaoVacinaService.save(aplicacaoVacina, meses);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<AplicacaoVacina> findById(@PathVariable Long id) {
-        try {
             var result = aplicacaoVacinaService.findById(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+
     }
 
     @GetMapping("/findAll")

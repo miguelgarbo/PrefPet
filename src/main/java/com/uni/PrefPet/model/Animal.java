@@ -1,5 +1,6 @@
 package com.uni.PrefPet.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.uni.PrefPet.model.Usuarios.Tutor;
 import jakarta.persistence.*;
@@ -9,6 +10,7 @@ import jakarta.validation.constraints.Past;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -59,7 +61,8 @@ public class Animal {
 
 
     @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
-    private List<AplicacaoVacina> aplicacoes;
+    @JsonIgnore
+    private List<AplicacaoVacina> aplicacoes =new ArrayList<>();;
 
     @Transient // não persiste no banco pq é um numero dinamico
     public int getIdade() {

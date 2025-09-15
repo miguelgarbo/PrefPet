@@ -1,7 +1,11 @@
 package com.uni.PrefPet.service;
 
+import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.AplicacaoVacina;
+import com.uni.PrefPet.model.Vacina;
+import com.uni.PrefPet.repository.AnimalRepository;
 import com.uni.PrefPet.repository.AplicacaoVacinaRepository;
+import com.uni.PrefPet.repository.VacinaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,13 +18,31 @@ public class AplicacaoVacinaService {
 
     @Autowired
     private AplicacaoVacinaRepository aplicacaoVacinaRepository;
+    @Autowired
+    private VacinaRepository vacinaRepository;
+
+    @Autowired
+    private AnimalRepository animalRepository;
 
     /// crud basico
 
     public AplicacaoVacina save(AplicacaoVacina aplicacaoVacina, int meses) {
-        if (aplicacaoVacina.getDataValidade() == null && aplicacaoVacina.getDataAplicacao() != null) {
-            aplicacaoVacina.setDataValidade(gerarDataValidade(aplicacaoVacina.getDataAplicacao(), meses));
-        }
+        Vacina vacina = vacinaRepository.findById(aplicacaoVacina.getVacina().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Vacina não encontrada"));
+
+        Animal animal = animalRepository.findById(aplicacaoVacina.getAnimal().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Animal não encontrado"));
+
+        // Calcule o número da dose com base no histórico do animal e vacina
+        long doseAnterior = aplicacaoVacinaRepository.countByAnimalAndVacina(animal, vacina);
+        aplicacaoVacina.setNumeroDose((int) doseAnterior + 1);
+
+        aplicacaoVacina.setAnimal(animal);
+        aplicacaoVacina.setVacina(vacina);
+
+        LocalDate validade = aplicacaoVacina.getDataAplicacao().plusMonths(meses);
+        aplicacaoVacina.setDataValidade(validade);
+
         return aplicacaoVacinaRepository.save(aplicacaoVacina);
     }
 
@@ -115,6 +137,9 @@ public class AplicacaoVacinaService {
     public LocalDate gerarDataValidade(LocalDate dataAplicacao, int meses) {
         return dataAplicacao.plusMonths(meses);
     }
-    
-    
+
+
+
+
+
 }
