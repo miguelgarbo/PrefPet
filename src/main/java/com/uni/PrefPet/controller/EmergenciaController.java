@@ -28,7 +28,6 @@ public class EmergenciaController {
         var result = emergenciaService.save(emergencia);
         return new ResponseEntity<>(result, HttpStatus.CREATED);}
 
-
     @GetMapping("/findById/{id}")
     public ResponseEntity<Emergencia> findById(@PathVariable Long id) {
         try {
@@ -38,8 +37,6 @@ public class EmergenciaController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
-
-
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {

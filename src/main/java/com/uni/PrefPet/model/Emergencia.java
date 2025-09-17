@@ -1,5 +1,6 @@
 package com.uni.PrefPet.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class Emergencia {
             name = "emergencia_contato",
             joinColumns = @JoinColumn(name = "emergencia_id"),
             inverseJoinColumns = @JoinColumn(name = "contato_id"))
-    @JsonManagedReference
+    @JsonIgnoreProperties("emergencias")
     private List<Contato> contatos = new ArrayList<>();
 
     public void addContato(Contato c) {

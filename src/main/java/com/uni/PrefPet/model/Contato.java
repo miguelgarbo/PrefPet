@@ -30,7 +30,6 @@ public class Contato {
 
     @JsonIgnoreProperties("emergencias")
     @ManyToMany(mappedBy = "contatos")
-    @JsonBackReference
     private List<Emergencia> emergencias;
 
     private Boolean ativo;
