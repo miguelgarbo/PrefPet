@@ -1,5 +1,7 @@
 package com.uni.PrefPet.controller;
+import com.uni.PrefPet.model.Contato;
 import com.uni.PrefPet.model.Emergencia;
+import com.uni.PrefPet.service.ContatoService;
 import com.uni.PrefPet.service.EmergenciaService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -17,17 +20,15 @@ public class EmergenciaController {
 
     @Autowired
     private EmergenciaService emergenciaService;
+    @Autowired
+    private ContatoService contatoService;
 
     @PostMapping("/save")
     public ResponseEntity<Emergencia> save(@RequestBody @Valid Emergencia emergencia) {
-        try {
-            var result = emergenciaService.save(emergencia);
-            return new ResponseEntity<>(result, HttpStatus.CREATED);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null,
-                    HttpStatus.BAD_REQUEST);
-        }
-    }
+        var result = emergenciaService.save(emergencia);
+        return new ResponseEntity<>(result, HttpStatus.CREATED);}
+
+
     @GetMapping("/findById/{id}")
     public ResponseEntity<Emergencia> findById(@PathVariable Long id) {
         try {
@@ -37,6 +38,8 @@ public class EmergenciaController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {

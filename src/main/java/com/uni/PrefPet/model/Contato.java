@@ -1,4 +1,5 @@
 package com.uni.PrefPet.model;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -29,6 +30,7 @@ public class Contato {
 
     @JsonIgnoreProperties("emergencias")
     @ManyToMany(mappedBy = "contatos")
+    @JsonBackReference
     private List<Emergencia> emergencias;
 
     private Boolean ativo;
