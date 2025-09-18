@@ -1,5 +1,6 @@
 package com.uni.PrefPet.model;
 
+import com.uni.PrefPet.model.Usuarios.Veterinario;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -27,14 +28,14 @@ public class AplicacaoVacina {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "vacina_id")
-//    @JsonIgnoreProperties("aplicacoes")
     private Vacina vacina;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "animal_id")
-//    @JsonIgnoreProperties("aplicacoes")
     private Animal animal;
 
-
+    @ManyToOne
+    @JoinColumn(name = "veterinario_id")
+    private Veterinario veterinario;
 }

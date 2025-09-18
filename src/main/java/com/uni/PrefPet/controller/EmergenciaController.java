@@ -20,13 +20,8 @@ public class EmergenciaController {
 
     @PostMapping("/save")
     public ResponseEntity<Emergencia> save(@RequestBody @Valid Emergencia emergencia) {
-        try {
             var result = emergenciaService.save(emergencia);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null,
-                    HttpStatus.BAD_REQUEST);
-        }
     }
     @GetMapping("/findById/{id}")
     public ResponseEntity<Emergencia> findById(@PathVariable Long id) {

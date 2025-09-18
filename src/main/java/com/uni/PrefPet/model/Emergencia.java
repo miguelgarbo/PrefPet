@@ -18,9 +18,10 @@ public class Emergencia {
 
     @ManyToMany
     @JoinTable(
-            name = "denuncia_contato",
-            joinColumns = @JoinColumn(name = "denuncia_id"),
-            inverseJoinColumns = @JoinColumn(name = "contato_id"))
+            name = "emergencia_contato",
+            joinColumns = @JoinColumn(name = "emergencia_id"),
+            inverseJoinColumns = @JoinColumn(name = "contato_id")
+    )
     private List<Contato> contatos;
 
     public void addContato(Contato c) {

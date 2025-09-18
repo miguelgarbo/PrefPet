@@ -2,6 +2,7 @@ package com.uni.PrefPet.service;
 
 import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.AplicacaoVacina;
+import com.uni.PrefPet.model.Notificacao;
 import com.uni.PrefPet.model.Vacina;
 import com.uni.PrefPet.repository.AnimalRepository;
 import com.uni.PrefPet.repository.AplicacaoVacinaRepository;
@@ -137,9 +138,6 @@ public class AplicacaoVacinaService {
     public LocalDate gerarDataValidade(LocalDate dataAplicacao, int meses) {
         return dataAplicacao.plusMonths(meses);
     }
-
-
-
 
 
 }

@@ -21,49 +21,32 @@ public class TutorController {
 
     @PostMapping
     public ResponseEntity<Tutor> save(@RequestBody @Valid Tutor tutor) {
-        try {
+
             var result = tutorService.save(tutor);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null,
-                    HttpStatus.BAD_REQUEST);
-        }
+
     }
     @GetMapping("/{id}")
     public ResponseEntity<Tutor> findById(@PathVariable Long id) {
-        try {
             var result = tutorService.findById(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        try {
             tutorService.delete(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
     }
     @PutMapping("/{id}")
     public ResponseEntity<Tutor> update(@PathVariable Long id, @RequestBody Tutor tutor) {
-        try {
             var updatedTutor = tutorService.update(id, tutor);
             return new ResponseEntity<>(updatedTutor, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
     }
     @GetMapping("/findAll")
     public ResponseEntity<List<Tutor>> findAll() {
-        try {
             var result = tutorService.findAll();
             return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
     }
 
     @GetMapping("/existsByCPF")
@@ -78,53 +61,41 @@ public class TutorController {
 
     @GetMapping("/existsByEmail")
     public ResponseEntity<Boolean> existsByEmail(@RequestParam String email) {
-        try {
+
             boolean exists = tutorService.existsByEmail(email);
             return new ResponseEntity<>(exists, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
-        }
+
     }
 
     @GetMapping("/findByNome")
     public ResponseEntity<List<Tutor>> findByNome(@RequestParam String nome) {
-        try {
             List<Tutor> tutor = tutorService.findByNome(nome);
             return new ResponseEntity<>(tutor, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+
     }
 
     @GetMapping("/findByCPF")
     public ResponseEntity<List<Tutor>> findByCPF(@RequestParam String cpf) {
-        try {
             List<Tutor> tutor = tutorService.findByCPF(cpf);
             return new ResponseEntity<>(tutor, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
     }
 
     @GetMapping("/findByTelefone")
     public ResponseEntity<List<Tutor>> findByTelefone(@RequestParam String telefone) {
-        try {
-            List<Tutor> tutor = tutorService.findByTelefone(telefone);
-            return new ResponseEntity<>(tutor, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+        List<Tutor> tutor = tutorService.findByTelefone(telefone);
+        return new ResponseEntity<>(tutor, HttpStatus.OK);
     }
 
     @GetMapping("/findByEmail")
     public ResponseEntity<List<Tutor>> findByEmail(@RequestParam String email) {
-        try {
             var tutors = tutorService.findByEmail(email);
             return new ResponseEntity<>(tutors, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
     }
 
+    @GetMapping("/login")
+    public ResponseEntity<Boolean> login(@RequestParam String email, @RequestParam String senha) {
+            var result = tutorService.login(email, senha);
+            return new ResponseEntity<Boolean>(result, HttpStatus.OK);
+    }
 }
 

@@ -1,7 +1,9 @@
 package com.uni.PrefPet.model.Usuarios;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.uni.PrefPet.model.Animal;
+import com.uni.PrefPet.model.Notificacao;
 import com.uni.PrefPet.model.Usuario;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -14,7 +16,13 @@ import java.util.List;
 public class Tutor extends Usuario {
 
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonIgnore
     private List<Animal> animais;
+
+
+    @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Notificacao> notificacoes;
+
 
 }

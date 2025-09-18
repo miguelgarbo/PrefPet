@@ -18,7 +18,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/animais")
 @CrossOrigin("*")
-
 public class AnimalController {
 
     @Autowired
@@ -133,6 +132,7 @@ public class AnimalController {
                 return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             }
         }
+
 
         @GetMapping("/findByTutor")
         public ResponseEntity<List<Animal>> findByUsuario(@RequestParam Long tutorId) {

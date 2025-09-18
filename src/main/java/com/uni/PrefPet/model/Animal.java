@@ -1,14 +1,11 @@
 package com.uni.PrefPet.model;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.uni.PrefPet.model.Usuarios.Tutor;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import lombok.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +28,6 @@ public class Animal {
     private String especie;
 
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "tutor_id")
     private Tutor tutor;
 

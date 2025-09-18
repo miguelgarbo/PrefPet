@@ -1,4 +1,5 @@
 package com.uni.PrefPet.service;
+import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.Usuarios.Entidade;
 import com.uni.PrefPet.model.Usuarios.Tutor;
 import com.uni.PrefPet.repository.EntidadeRepository;
@@ -14,6 +15,8 @@ public class TutorService {
 
     @Autowired
     private TutorRepository tutorRepository;
+
+    private Tutor tutorLogged;
 
     public List<Tutor> findAll() {
         return tutorRepository.findAll();
@@ -118,6 +121,32 @@ public class TutorService {
         return tutorRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o email informado"));
     }
+
+    public String mudarTutor(Tutor tutor, Animal animal){
+
+        Tutor tutorAntes = animal.getTutor();
+        animal.setTutor(tutor);
+
+        Tutor tutorDepois = animal.getTutor();
+
+        return "Tutor Alterado com Sucesso, Antes:"+tutorAntes.getNome()+" Agora: "+tutorDepois.getNome();
+
+    }
+
+    public boolean login(String email, String senha){
+        boolean deuCerto = false;
+
+        for(Tutor tutor : tutorRepository.findAll()){
+            if(email.equals(tutor.getEmail()) && senha.equals(tutor.getSenha())){
+                deuCerto = true;
+            }else {
+                deuCerto = false;
+            }
+        }
+        return deuCerto;
+    }
+
+
 
     //fim dos serviços especificos
 
