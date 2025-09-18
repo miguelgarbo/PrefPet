@@ -1,8 +1,11 @@
 package com.uni.PrefPet.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -16,13 +19,13 @@ public class Emergencia {
     private Long id;
     private String nome; // MAUS_TRATOS ou ANIMAL_SILVESTRE
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "emergencia_contato",
             joinColumns = @JoinColumn(name = "emergencia_id"),
-            inverseJoinColumns = @JoinColumn(name = "contato_id")
-    )
-    private List<Contato> contatos;
+            inverseJoinColumns = @JoinColumn(name = "contato_id"))
+    @JsonIgnoreProperties("emergencias")
+    private List<Contato> contatos = new ArrayList<>();
 
     public void addContato(Contato c) {
         contatos.add(c);
