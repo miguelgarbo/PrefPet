@@ -28,4 +28,5 @@ public interface AplicacaoVacinaRepository extends JpaRepository<AplicacaoVacina
     // Método para contar as aplicações de uma vacina específica para um animal específico
     long countByAnimalAndVacina(Animal animal, Vacina vacina);
 
+    Optional<List<AplicacaoVacina>> findByAnimalId(Long animal_id);
 }

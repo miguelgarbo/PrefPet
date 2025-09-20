@@ -1,11 +1,14 @@
 package com.uni.PrefPet.controller;
 
 
+import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.AplicacaoVacina;
 import com.uni.PrefPet.model.Notificacao;
+import com.uni.PrefPet.model.Usuarios.Tutor;
 import com.uni.PrefPet.service.AplicacaoVacinaService;
 import com.uni.PrefPet.service.NotificacaoService;
 import jakarta.validation.Valid;
+import org.hibernate.mapping.Any;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,5 +71,12 @@ public class NotificacaoController {
         }
 
         return "Notificações geradas com sucesso!";
+    }
+
+    @GetMapping("/gerarConvite")
+    public String gerarConvite(@RequestParam Long tutorDestinatario_id, @RequestParam Long tutor_id, @RequestParam Long animal_id){
+
+        this.notificacaoService.gerarConvite(tutorDestinatario_id,tutor_id, animal_id);
+        return "Convite Gerado";
     }
 }

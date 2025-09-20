@@ -1,9 +1,12 @@
 package com.uni.PrefPet.service;
 
+import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.AplicacaoVacina;
 import com.uni.PrefPet.model.Notificacao;
 import com.uni.PrefPet.model.Usuarios.Tutor;
+import com.uni.PrefPet.repository.AnimalRepository;
 import com.uni.PrefPet.repository.NotificacaoRepository;
+import com.uni.PrefPet.repository.TutorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,10 @@ public class NotificacaoService {
     
     @Autowired
     private NotificacaoRepository notificacaoRepository;
+    @Autowired
+    private TutorRepository tutorRepository;
+    @Autowired
+    private AnimalRepository animalRepository;
 
     public List<Notificacao> findAll() {
         return notificacaoRepository.findAll();
@@ -95,4 +102,26 @@ public class NotificacaoService {
 
         return null;
 }
+
+    public Notificacao gerarConvite(Long tutorDestinatario_id,Long tutor_id, Long animal_id){
+
+        Tutor tutorDestinario = tutorRepository.findById(tutorDestinatario_id).get();
+        Tutor tutor = tutorRepository.findById(tutor_id).get();
+        Animal animal = animalRepository.findById(animal_id).get();
+
+        Notificacao convite = new Notificacao();
+        convite.setTutor(tutorDestinario);
+        convite.setTexto("Você foi convidado(a) para se tornar o tutor do animal "
+                + animal.getNome()
+                + ", atualmente sob tutela de "
+                + tutor.getNome()
+                + ".\n"
+                + "Deseja aceitar a transferência de tutela?\n");
+
+        convite.setNivel(1);
+        convite.setAceito(false);
+        notificacaoRepository.save(convite);
+
+        return convite;
+    }
 }

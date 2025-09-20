@@ -74,7 +74,7 @@ public class AnimalController {
 
 
         @GetMapping("/findByNome")
-        public ResponseEntity<List<Animal>> findByNome(@RequestParam String nome) {
+        public ResponseEntity<Animal> findByNome(@RequestParam String nome) {
             try {
                 var result = animalService.findByNome(nome);
                 return new ResponseEntity<>(result, HttpStatus.OK);

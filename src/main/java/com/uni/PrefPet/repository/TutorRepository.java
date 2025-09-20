@@ -20,13 +20,13 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
 
     boolean existsByTelefone(String telefone);
 
-    Optional<List<Tutor>> findByNomeContainingIgnoreCase(String nome);
+    Optional<Tutor> findByNomeContainingIgnoreCase(String nome);
 
     Optional<List<Tutor>> findByCpf(String cpf);
 
     Optional<List<Tutor>> findByTelefone(String telefone);
 
-    Optional<List<Tutor>> findByEmail(String email);
+    Optional<Tutor> findByEmail(String email);
 
 
 }

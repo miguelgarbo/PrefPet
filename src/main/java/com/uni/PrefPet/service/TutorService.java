@@ -102,7 +102,7 @@ public class TutorService {
         return tutorRepository.existsByTelefone(telefone);
     }
 
-    public List<Tutor> findByNome(String nome) {
+    public Tutor findByNome(String nome) {
         return tutorRepository.findByNomeContainingIgnoreCase(nome)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o nome informado"));
     }
@@ -117,7 +117,7 @@ public class TutorService {
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o telefone informado"));
     }
 
-    public List<Tutor> findByEmail(String email) {
+    public Tutor findByEmail(String email) {
         return tutorRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o email informado"));
     }
@@ -130,7 +130,6 @@ public class TutorService {
         Tutor tutorDepois = animal.getTutor();
 
         return "Tutor Alterado com Sucesso, Antes:"+tutorAntes.getNome()+" Agora: "+tutorDepois.getNome();
-
     }
 
     public boolean login(String email, String senha){
@@ -145,6 +144,8 @@ public class TutorService {
         }
         return deuCerto;
     }
+
+
 
 
 

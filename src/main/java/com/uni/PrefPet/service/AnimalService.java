@@ -115,7 +115,7 @@ public class AnimalService  {
 
     }
 
-    public List<Animal> findByNome(String nome){
+    public Animal findByNome(String nome){
         return animalRepository.findByNomeContainingIgnoreCase(nome).orElseThrow(()->
                  new EntityNotFoundException("Esse Animal Não Foi Encontrado"));
     }

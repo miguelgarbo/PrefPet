@@ -17,6 +17,8 @@ public class Notificacao {
 
     private Integer nivel;
 
+    private Boolean aceito;
+
     @ManyToOne
     @JoinColumn(name = "tutor_id")
     private Tutor tutor;

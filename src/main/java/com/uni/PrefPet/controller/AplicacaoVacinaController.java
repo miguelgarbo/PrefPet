@@ -1,5 +1,6 @@
 package com.uni.PrefPet.controller;
 
+import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.AplicacaoVacina;
 import com.uni.PrefPet.service.AplicacaoVacinaService;
 import jakarta.persistence.EntityNotFoundException;
@@ -32,7 +33,6 @@ public class AplicacaoVacinaController {
     public ResponseEntity<AplicacaoVacina> findById(@PathVariable Long id) {
             var result = aplicacaoVacinaService.findById(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
-
     }
 
     @GetMapping("/findAll")
@@ -63,6 +63,12 @@ public class AplicacaoVacinaController {
         } catch (Exception ex) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping("/findByAnimalId/{animal_id}")
+    public ResponseEntity<List<AplicacaoVacina>> findByAnimalId(@PathVariable Long animal_id) {
+            var result = aplicacaoVacinaService.findByAnimal(animal_id);
+            return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 

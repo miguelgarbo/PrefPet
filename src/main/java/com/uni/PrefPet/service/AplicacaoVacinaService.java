@@ -139,5 +139,11 @@ public class AplicacaoVacinaService {
         return dataAplicacao.plusMonths(meses);
     }
 
+    public List<AplicacaoVacina> findByAnimal(Long animal_id) {
+        return aplicacaoVacinaRepository.findByAnimalId(animal_id)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Nenhuma aplicacaoVacina com esse animal "));
+    }
+
 
 }

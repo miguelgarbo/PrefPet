@@ -68,8 +68,8 @@ public class TutorController {
     }
 
     @GetMapping("/findByNome")
-    public ResponseEntity<List<Tutor>> findByNome(@RequestParam String nome) {
-            List<Tutor> tutor = tutorService.findByNome(nome);
+    public ResponseEntity<Tutor> findByNome(@RequestParam String nome) {
+            Tutor tutor = tutorService.findByNome(nome);
             return new ResponseEntity<>(tutor, HttpStatus.OK);
 
     }
@@ -87,7 +87,7 @@ public class TutorController {
     }
 
     @GetMapping("/findByEmail")
-    public ResponseEntity<List<Tutor>> findByEmail(@RequestParam String email) {
+    public ResponseEntity<Tutor> findByEmail(@RequestParam String email) {
             var tutors = tutorService.findByEmail(email);
             return new ResponseEntity<>(tutors, HttpStatus.OK);
     }
