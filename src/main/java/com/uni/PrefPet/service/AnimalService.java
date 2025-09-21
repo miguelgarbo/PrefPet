@@ -144,8 +144,8 @@ public class AnimalService  {
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum animal com o microchip informado foi encontrado"));
     }
 
-    public List<Animal> findByTutor(Tutor tutor) {
-        return animalRepository.findByTutor(tutor)
+    public List<Animal> findByTutorId(Long tutor_id) {
+        return animalRepository.findByTutorId(tutor_id)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum animal encontrado para o usuário informado"));
     }
 

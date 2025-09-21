@@ -31,7 +31,7 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
 
     Optional<Animal> findByNumeroMicrochip(String microchip);
 
-    Optional<List<Animal>> findByTutor(Tutor tutor);
+    Optional<List<Animal>> findByTutorId(Long tutor_id);
 
     Optional<List<Animal>> findByDataNascimento(LocalDate dataNascimento);
 

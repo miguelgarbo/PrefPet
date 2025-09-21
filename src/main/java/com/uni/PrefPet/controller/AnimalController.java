@@ -109,11 +109,10 @@ public class AnimalController {
         }
 
 
-        @GetMapping("/findByTutor")
-        public ResponseEntity<List<Animal>> findByUsuario(@RequestParam Long tutorId) {
+        @GetMapping("/findByTutorId/{tutorId}")
+        public ResponseEntity<List<Animal>> findByUsuario(@PathVariable Long tutorId) {
 
-                Tutor tutorInformado = tutorService.findById(tutorId);
-                var result = animalService.findByTutor(tutorInformado);
+                var result = animalService.findByTutorId(tutorId);
                 return new ResponseEntity<>(result, HttpStatus.OK);
 
         }
