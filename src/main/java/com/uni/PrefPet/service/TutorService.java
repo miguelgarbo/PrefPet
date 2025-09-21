@@ -2,9 +2,7 @@ package com.uni.PrefPet.service;
 import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.Usuarios.Entidade;
 import com.uni.PrefPet.model.Usuarios.Tutor;
-import com.uni.PrefPet.repository.EntidadeRepository;
 import com.uni.PrefPet.repository.TutorRepository;
-import com.uni.PrefPet.repository.VeterinarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +13,9 @@ public class TutorService {
 
     @Autowired
     private TutorRepository tutorRepository;
+
+    @Autowired
+    private AnimalService animalService;
 
     private Tutor tutorLogged;
 
@@ -122,10 +123,15 @@ public class TutorService {
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o email informado"));
     }
 
-    public String mudarTutor(Tutor tutor, Animal animal){
+    public String mudarTutor(Long tutorDestinatario_id, Long animal_id){
+
+        Tutor tutorDestinatario  = findById(tutorDestinatario_id);
+        Animal animal = animalService.findById(animal_id);
 
         Tutor tutorAntes = animal.getTutor();
-        animal.setTutor(tutor);
+        animal.setTutor(tutorDestinatario);
+
+        animalService.save(animal);
 
         Tutor tutorDepois = animal.getTutor();
 

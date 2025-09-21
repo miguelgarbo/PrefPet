@@ -51,12 +51,10 @@ public class TutorController {
 
     @GetMapping("/existsByCPF")
     public ResponseEntity<Boolean> existsByCPF(@RequestParam String cpf) {
-        try {
+
             boolean exists = tutorService.existsByCPF(cpf);
             return new ResponseEntity<>(exists, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
-        }
+
     }
 
     @GetMapping("/existsByEmail")

@@ -12,7 +12,7 @@ public class Notificacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 150)
+    @Column(columnDefinition = "TEXT")
     private String texto;
 
     private Integer nivel;
@@ -20,6 +20,13 @@ public class Notificacao {
     private Boolean aceito;
 
     @ManyToOne
-    @JoinColumn(name = "tutor_id")
-    private Tutor tutor;
+    @JoinColumn(name = "tutor_destinatario_id")
+    private Tutor tutorDestinatario;
+
+    @ManyToOne
+    private Animal animal;
+
+    @ManyToOne
+    @JoinColumn(name = "tutor_remetente_id")
+    private Tutor tutorRemetente;
 }

@@ -30,39 +30,31 @@ public class EmergenciaController {
 
     @GetMapping("/findById/{id}")
     public ResponseEntity<Emergencia> findById(@PathVariable Long id) {
-        try {
+        
             var result = emergenciaService.findById(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+
     }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        try {
+        
             emergenciaService.delete(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<Emergencia> update(@PathVariable Long id, @RequestBody Emergencia emergencia) {
-        try {
+        
             var updatedEmergencia = emergenciaService.update(id, emergencia);
             return new ResponseEntity<>(updatedEmergencia, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+
     }
     @GetMapping("/findAll")
     public ResponseEntity<List<Emergencia>> findAll() {
-        try {
+        
             var result = emergenciaService.findAll();
             return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
+
     }
 
 }

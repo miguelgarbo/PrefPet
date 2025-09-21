@@ -20,9 +20,15 @@ public class Tutor extends Usuario {
     private List<Animal> animais;
 
 
-    @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
+    // Notificações recebidas
+    @OneToMany(mappedBy = "tutorDestinatario", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Notificacao> notificacoes;
+    private List<Notificacao> notificacoesRecebidas;
+
+    // Notificações enviadas (opcional)
+    @OneToMany(mappedBy = "tutorRemetente", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Notificacao> notificacoesEnviadas;
 
 
 }
