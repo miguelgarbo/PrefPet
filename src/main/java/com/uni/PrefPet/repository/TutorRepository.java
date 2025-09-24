@@ -16,15 +16,15 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
     boolean existsByCpf(String cpf);
     boolean existsByEmail(String email);
     boolean existsByCnpj(String cnpj);
-    Optional<Entidade> findByCnpj(String cnpj);
+    Optional<Tutor> findByCnpj(String cnpj);
 
     boolean existsByTelefone(String telefone);
 
     Optional<Tutor> findByNomeContainingIgnoreCase(String nome);
 
-    Optional<List<Tutor>> findByCpf(String cpf);
+    Optional<Tutor> findByCpf(String cpf);
 
-    Optional<List<Tutor>> findByTelefone(String telefone);
+    Optional<Tutor> findByTelefone(String telefone);
 
     Optional<Tutor> findByEmail(String email);
 

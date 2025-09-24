@@ -73,14 +73,14 @@ public class TutorController {
     }
 
     @GetMapping("/findByCPF")
-    public ResponseEntity<List<Tutor>> findByCPF(@RequestParam String cpf) {
-            List<Tutor> tutor = tutorService.findByCPF(cpf);
+    public ResponseEntity<Tutor> findByCPF(@RequestParam String cpf) {
+            Tutor tutor = tutorService.findByCPF(cpf);
             return new ResponseEntity<>(tutor, HttpStatus.OK);
     }
 
     @GetMapping("/findByTelefone")
-    public ResponseEntity<List<Tutor>> findByTelefone(@RequestParam String telefone) {
-        List<Tutor> tutor = tutorService.findByTelefone(telefone);
+    public ResponseEntity<Tutor> findByTelefone(@RequestParam String telefone) {
+        Tutor tutor = tutorService.findByTelefone(telefone);
         return new ResponseEntity<>(tutor, HttpStatus.OK);
     }
 
@@ -94,6 +94,22 @@ public class TutorController {
     public ResponseEntity<Boolean> login(@RequestParam String email, @RequestParam String senha) {
             var result = tutorService.login(email, senha);
             return new ResponseEntity<Boolean>(result, HttpStatus.OK);
+    }
+
+    @GetMapping("/current-user")
+    public ResponseEntity<Tutor> getCurrentUser() {
+        Tutor currentUser = tutorService.getCurrentUser();
+        if (currentUser != null) {
+            return ResponseEntity.ok(currentUser);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout() {
+        tutorService.logout();
+        return ResponseEntity.ok("Logout realizado com sucesso!");
     }
 }
 

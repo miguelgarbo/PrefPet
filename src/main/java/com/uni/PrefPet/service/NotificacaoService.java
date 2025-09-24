@@ -103,6 +103,10 @@ public class NotificacaoService {
 
     public Notificacao gerarConvite(Long tutorDestinatario_id, Long tutorRemetente_id, Long animal_id) {
 
+        if (tutorDestinatario_id.equals(tutorRemetente_id)) {
+            throw new IllegalArgumentException("Um tutor não pode se convidar a si mesmo.");
+        }
+
         Tutor tutorDestinatario = tutorService.findById(tutorDestinatario_id);
         Tutor tutorRemetente = tutorService.findById(tutorRemetente_id);
         Animal animal = animalService.findById(animal_id);

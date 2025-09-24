@@ -56,6 +56,11 @@ public class Animal {
     private String imagemUrl;
 
 
+    @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Notificacao> notificacoes = new ArrayList<>();
+
+
     @OneToMany(mappedBy = "animal", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<AplicacaoVacina> aplicacoes =new ArrayList<>();;

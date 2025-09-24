@@ -1,6 +1,5 @@
 package com.uni.PrefPet.service;
 import com.uni.PrefPet.model.Animal;
-import com.uni.PrefPet.model.Usuarios.Entidade;
 import com.uni.PrefPet.model.Usuarios.Tutor;
 import com.uni.PrefPet.repository.TutorRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -8,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class TutorService {
 
@@ -17,7 +18,8 @@ public class TutorService {
     @Autowired
     private AnimalService animalService;
 
-    private Tutor tutorLogged;
+    private Tutor currentUser;
+
 
     public List<Tutor> findAll() {
         return tutorRepository.findAll();
@@ -46,29 +48,30 @@ public class TutorService {
         return tutorRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
-    public Entidade findByCnpj(String cnpj){
+    public Tutor findByCnpj(String cnpj){
 
         return tutorRepository.findByCnpj(cnpj)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o cnpj informado"));
     }
 
     public Tutor update(Long id, Tutor tutorAtualizado) {
-        Tutor existente = tutorRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("Usuário com id " + id + " não encontrado."));
+        Tutor existente = tutorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário com id " + id + " não encontrado."));
 
-        if (tutorRepository.existsByCpf(tutorAtualizado.getCpf())) {
+        // Verifica CPF em outro tutor
+        Optional<Tutor> outroCpf = tutorRepository.findByCpf(tutorAtualizado.getCpf());
+        if(outroCpf.isPresent() && !outroCpf.get().getId().equals(id)) {
             throw new IllegalArgumentException("Já existe um usuário com este CPF.");
         }
 
-        if (tutorRepository.existsByTelefone(tutorAtualizado.getTelefone())) {
+        // Verifica telefone em outro tutor
+        Optional<Tutor> outroTelefone = tutorRepository.findByTelefone(tutorAtualizado.getTelefone());
+        if(outroTelefone.isPresent() && !outroTelefone.get().getId().equals(id)) {
             throw new IllegalArgumentException("Já existe um usuário com este telefone.");
         }
 
-        if (tutorRepository.existsByCnpj(tutorAtualizado.getCnpj())) {
-            throw new IllegalArgumentException("Já existe um usuário com este cnpj.");
-        }
 
-
+        // Atualiza campos
         existente.setEstado(tutorAtualizado.getEstado());
         existente.setCidade(tutorAtualizado.getCidade());
         existente.setCep(tutorAtualizado.getCep());
@@ -77,8 +80,14 @@ public class TutorService {
         existente.setCpf(tutorAtualizado.getCpf());
         existente.setTelefone(tutorAtualizado.getTelefone());
         existente.setAnimais(tutorAtualizado.getAnimais());
+        existente.setImagemUrlPerfil(tutorAtualizado.getImagemUrlPerfil());
+        existente.setEmail(tutorAtualizado.getEmail());
+        existente.setSenha(tutorAtualizado.getSenha());
+
+
         return tutorRepository.save(existente);
     }
+
 
     public String delete(Long id) {
         if (!tutorRepository.existsById(id)) {
@@ -108,12 +117,12 @@ public class TutorService {
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o nome informado"));
     }
 
-    public List<Tutor> findByCPF(String cpf) {
+    public Tutor findByCPF(String cpf) {
         return tutorRepository.findByCpf(cpf)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o CPF informado"));
     }
 
-    public List<Tutor> findByTelefone(String telefone) {
+    public Tutor findByTelefone(String telefone) {
         return tutorRepository.findByTelefone(telefone)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o telefone informado"));
     }
@@ -138,22 +147,24 @@ public class TutorService {
         return "Tutor Alterado com Sucesso, Antes:"+tutorAntes.getNome()+" Agora: "+tutorDepois.getNome();
     }
 
-    public boolean login(String email, String senha){
-        boolean deuCerto = false;
-
-        for(Tutor tutor : tutorRepository.findAll()){
-            if(email.equals(tutor.getEmail()) && senha.equals(tutor.getSenha())){
-                deuCerto = true;
-            }else {
-                deuCerto = false;
+    public boolean login(String email, String senha) {
+        for(Tutor tutor : tutorRepository.findAll()) {
+            if(email.equals(tutor.getEmail()) && senha.equals(tutor.getSenha())) {
+                currentUser = tutor;
+                return true;
             }
         }
-        return deuCerto;
+        return false; // não encontrou ninguém
     }
 
 
+    public Tutor getCurrentUser(){
+        return currentUser;
+    }
 
-
+    public void logout() {
+        currentUser = null;
+    }
 
     //fim dos serviços especificos
 

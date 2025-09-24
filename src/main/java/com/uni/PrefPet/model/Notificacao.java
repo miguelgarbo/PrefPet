@@ -24,6 +24,7 @@ public class Notificacao {
     private Tutor tutorDestinatario;
 
     @ManyToOne
+    @JoinColumn(name = "animal_id")
     private Animal animal;
 
     @ManyToOne
