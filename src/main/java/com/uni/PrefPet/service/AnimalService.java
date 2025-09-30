@@ -66,6 +66,7 @@ public class AnimalService  {
 
         if (animalAtualizado.getMicrochip() != null) {
             animalExistente.setMicrochip(animalAtualizado.getMicrochip());
+            animalExistente.setNumeroMicrochip(animalAtualizado.getNumeroMicrochip());
         }
 
         if (animalAtualizado.getDataNascimento() != null) {

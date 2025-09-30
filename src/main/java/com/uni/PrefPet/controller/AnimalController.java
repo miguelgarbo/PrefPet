@@ -22,6 +22,7 @@ public class AnimalController {
 
     @Autowired
     private AnimalService animalService;
+    @Autowired
     private TutorService tutorService;
 
     @PostMapping("/save")
