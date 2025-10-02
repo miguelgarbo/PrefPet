@@ -40,7 +40,6 @@ public class Animal {
     @NotBlank(message = "O Campo sexo não deve ser nulo")
     private String sexo;
 
-
     private Boolean microchip;
 
     @Column(unique = true)
