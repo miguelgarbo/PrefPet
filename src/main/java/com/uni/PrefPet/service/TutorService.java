@@ -20,7 +20,6 @@ public class TutorService {
 
     private Tutor currentUser;
 
-
     public List<Tutor> findAll() {
         return tutorRepository.findAll();
     }
@@ -38,14 +37,12 @@ public class TutorService {
         if (tutorRepository.existsByEmail(tutor.getEmail())) {
             throw new IllegalArgumentException("Já existe um usuário com este email.");
         }
-
         return tutorRepository.save(tutor);
     }
 
 
-
     public Tutor findById(Long id) {
-        return tutorRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return tutorRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Nenhum Tutor Com esse Id"));
     }
 
     public Tutor findByCnpj(String cnpj){
@@ -106,10 +103,6 @@ public class TutorService {
 
     public boolean existsByEmail(String email) {
         return tutorRepository.existsByEmail(email);
-    }
-
-    public boolean existsByTelefone(String telefone){
-        return tutorRepository.existsByTelefone(telefone);
     }
 
     public Tutor findByNome(String nome) {

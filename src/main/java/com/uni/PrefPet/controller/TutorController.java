@@ -21,7 +21,6 @@ public class TutorController {
 
     @PostMapping
     public ResponseEntity<Tutor> save(@RequestBody @Valid Tutor tutor) {
-
             var result = tutorService.save(tutor);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
 
