@@ -4,6 +4,7 @@ package com.uni.PrefPet.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uni.PrefPet.model.Usuarios.Tutor;
 import com.uni.PrefPet.repository.TutorRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +17,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -97,14 +100,142 @@ public class TutorServiceTest {
         Mockito.when(tutorRepository.save(tutor)).thenThrow(new IllegalArgumentException("Já existe um usuário com este email"));
 
         var exception = assertThrows(IllegalArgumentException.class, ()->{
-
             tutorService.save(tutor);
-
         });
 
         assertEquals(exception.getMessage(),"Já existe um usuário com este email");
         Mockito.verify(tutorRepository, Mockito.times(1)).save(any());
     }
+
+    @Test
+    @DisplayName("teste de cadastro invalido, CPF ja existe")
+    void testTutorSaveErrorCPFDuplicate(){
+
+        Mockito.when(tutorRepository.save(tutor)).thenThrow(new IllegalArgumentException("Já existe um usuário com este CPF"));
+
+        var exception = assertThrows(IllegalArgumentException.class, ()->{
+            tutorService.save(tutor);
+        });
+        assertEquals(exception.getMessage(),"Já existe um usuário com este CPF");
+        Mockito.verify(tutorRepository, Mockito.times(1)).save(any());
+    }
+
+    @Test
+    @DisplayName("teste de cadastro invalido, telefone ja existe")
+    void testTutorSaveErrorTelefoneDuplicate(){
+
+        Mockito.when(tutorRepository.save(tutor)).thenThrow(new IllegalArgumentException("Já existe um usuário com este telefone"));
+
+        var exception = assertThrows(IllegalArgumentException.class, ()->{
+            tutorService.save(tutor);
+        });
+        assertEquals(exception.getMessage(),"Já existe um usuário com este telefone");
+        Mockito.verify(tutorRepository, Mockito.times(1)).save(any());
+    }
+
+    //new EntityNotFoundException("Nenhum Tutor Com esse Id")
+
+    @Test
+    @DisplayName("teste de procurar tutor por id valido")
+    void testTutorFindTutorByIdValid(){
+
+        Mockito.when(tutorRepository.findById(1L)).thenReturn(Optional.of(tutor));
+
+        var resposta = tutorService.findById(1L);
+
+        assertEquals(tutor, resposta);
+
+        Mockito.verify(tutorRepository, Mockito.times(1)).findById(any());
+    }
+
+    @Test
+    @DisplayName("teste de procurar tutor por id invalido e retornar excepection")
+    void testTutorFindTutorByIdInvalid(){
+
+        Mockito.when(tutorRepository.findById(1L)).thenThrow(new EntityNotFoundException("Nenhum Tutor Com esse Id"));
+
+        var excepetion = assertThrows(Exception.class, ()->{
+           tutorService.findById(1L);
+        });
+
+        assertEquals(excepetion.getMessage(),"Nenhum Tutor Com esse Id");
+        Mockito.verify(tutorRepository, Mockito.times(1)).findById(any());
+    }
+
+    @Test
+    @DisplayName("teste de retornar lista de tutores")
+    void testTutorFindAllValid(){
+
+        Mockito.when(tutorRepository.findAll()).thenReturn(tutores);
+
+        var respota = tutorService.findAll();
+
+        assertEquals(respota.size(),2);
+        Mockito.verify(tutorRepository, Mockito.times(1)).findAll();
+    }
+
+    @Test
+    @DisplayName("teste de retornar lista de tutores vazia")
+    void testTutorFindAllValidEmpty(){
+        Mockito.when(tutorRepository.findAll()).thenReturn(Collections.emptyList());
+
+        var respota = tutorService.findAll();
+
+        assertEquals(respota.size(),0);
+        Mockito.verify(tutorRepository, Mockito.times(1)).findAll();
+    }
+
+    @Test
+    @DisplayName("teste de deletar um tutor valido com id")
+    void testDeleteTutorIdValid(){
+
+        Mockito.when(tutorRepository.existsById(tutor.getId())).thenReturn(true);
+        Mockito.doNothing().when(tutorRepository).deleteById(tutor.getId());
+
+        var resposta = tutorService.delete(tutor.getId());
+
+        assertEquals(resposta, "Usuário com id " + tutor.getId() + " foi excluído com sucesso.");
+        Mockito.verify(tutorRepository, Mockito.times(1)).deleteById(any());
+    }
+
+    @Test
+    @DisplayName("teste de deletar um tutor invalido com id")
+    void testDeleteTutorIdInvalid(){
+
+        Mockito.when(tutorRepository.existsById(tutor.getId()))
+                .thenThrow(new EntityNotFoundException("Usuário com id " + tutor.getId() + " não encontrado."));
+
+//        Mockito.doNothing().when(tutorRepository).deleteById(tutor.getId());
+
+        var resposta = assertThrows(EntityNotFoundException.class, ()->{
+           tutorService.delete(tutor.getId());
+        });
+
+        assertEquals(resposta.getMessage(), "Usuário com id " + tutor.getId() + " não encontrado.");
+        Mockito.verify(tutorRepository, Mockito.times(1)).existsById(any());
+        Mockito.verify(tutorRepository, Mockito.times(0)).deleteById(any());
+    }
+
+//    @Test
+//    @DisplayName("teste de atualizar um tutor valido com id")
+//    void testUpdateTutorIdValid(){
+//
+//        Mockito.when(tutorRepository.findById(tutor.getId())).thenReturn(Optional.of(tutor));
+//        Mockito.when(tutorRepository.existsByCpfAndIdNot("298.940.440-69", tutor.getId()));
+//        Mockito.when(tutorRepository.existsByEmailAndIdNot("joao@example.com", tutor.getId()));
+//        Mockito.when(tutorRepository.existsByTelefoneAndIdNot("4599999999", tutor.getId()));
+//
+//        Mockito.verify(tutorRepository, Mockito.times(1)).findById(any());
+//    }
+
+
+
+
+
+
+
+
+
 
 
 

@@ -48,21 +48,6 @@ public class TutorController {
             return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/existsByCPF")
-    public ResponseEntity<Boolean> existsByCPF(@RequestParam String cpf) {
-
-            boolean exists = tutorService.existsByCPF(cpf);
-            return new ResponseEntity<>(exists, HttpStatus.OK);
-
-    }
-
-    @GetMapping("/existsByEmail")
-    public ResponseEntity<Boolean> existsByEmail(@RequestParam String email) {
-
-            boolean exists = tutorService.existsByEmail(email);
-            return new ResponseEntity<>(exists, HttpStatus.OK);
-
-    }
 
     @GetMapping("/findByNome")
     public ResponseEntity<Tutor> findByNome(@RequestParam String nome) {
