@@ -216,17 +216,23 @@ public class TutorServiceTest {
         Mockito.verify(tutorRepository, Mockito.times(0)).deleteById(any());
     }
 
-//    @Test
-//    @DisplayName("teste de atualizar um tutor valido com id")
-//    void testUpdateTutorIdValid(){
-//
-//        Mockito.when(tutorRepository.findById(tutor.getId())).thenReturn(Optional.of(tutor));
-//        Mockito.when(tutorRepository.existsByCpfAndIdNot("298.940.440-69", tutor.getId()));
-//        Mockito.when(tutorRepository.existsByEmailAndIdNot("joao@example.com", tutor.getId()));
-//        Mockito.when(tutorRepository.existsByTelefoneAndIdNot("4599999999", tutor.getId()));
-//
-//        Mockito.verify(tutorRepository, Mockito.times(1)).findById(any());
-//    }
+    @Test
+    @DisplayName("teste de atualizar um tutor valido com id")
+    void testUpdateTutorIdValid(){
+
+        Mockito.when(tutorRepository.findById(tutor.getId())).thenReturn(Optional.of(tutor));
+        Mockito.when(tutorRepository.existsByCpfAndIdNot("298.940.440-69", tutor.getId()));
+        Mockito.when(tutorRepository.existsByEmailAndIdNot("joao@example.com", tutor.getId()));
+        Mockito.when(tutorRepository.existsByTelefoneAndIdNot("4599999999", tutor.getId()));
+
+        var resposta = assertThrows(EntityNotFoundException.class, ()->{
+
+
+        });
+
+        Mockito.verify(tutorRepository, Mockito.times(1)).findById(any());
+
+    }
 
 
 
