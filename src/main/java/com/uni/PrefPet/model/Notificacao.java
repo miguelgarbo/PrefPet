@@ -3,9 +3,11 @@ package com.uni.PrefPet.model;
 import com.uni.PrefPet.model.Usuarios.Tutor;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.ToString;
 
 @Entity
 @Data
+@ToString(exclude = {"tutorDestinatario", "tutorRemetente"})
 public class Notificacao {
 
     @Id

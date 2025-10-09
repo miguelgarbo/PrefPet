@@ -23,7 +23,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 
 //Definindo que quem vai gerenciar essa classe de tests será o mockito
 @ExtendWith(MockitoExtension.class)
@@ -218,21 +218,82 @@ public class TutorServiceTest {
 
     @Test
     @DisplayName("teste de atualizar um tutor valido com id")
-    void testUpdateTutorIdValid(){
+    void testUpdateTutorIdValido(){
 
         Mockito.when(tutorRepository.findById(tutor.getId())).thenReturn(Optional.of(tutor));
-        Mockito.when(tutorRepository.existsByCpfAndIdNot("298.940.440-69", tutor.getId()));
-        Mockito.when(tutorRepository.existsByEmailAndIdNot("joao@example.com", tutor.getId()));
-        Mockito.when(tutorRepository.existsByTelefoneAndIdNot("4599999999", tutor.getId()));
 
-        var resposta = assertThrows(EntityNotFoundException.class, ()->{
+        Mockito.when(tutorRepository.existsByTelefoneAndIdNot(anyString(), anyLong()))
+                .thenReturn(false);
 
+        Mockito.when(tutorRepository.existsByEmailAndIdNot(anyString(), anyLong()))
+                .thenReturn(false);
 
-        });
+        Mockito.when(tutorRepository.existsByCpfAndIdNot(anyString(), anyLong()))
+                .thenReturn(false);
+
+        Mockito.when(tutorRepository.save(tutor)).thenReturn(tutor);
+
+        var resposta = tutorService.update(tutor.getId(), outroTutor);
+
+        Assertions.assertEquals(resposta, tutor);
 
         Mockito.verify(tutorRepository, Mockito.times(1)).findById(any());
+        Mockito.verify(tutorRepository, Mockito.times(1)).save(any());
 
     }
+
+    @Test
+    @DisplayName("teste de atualizar um tutor invalido e receber exceção")
+    void testUpdateTutorIdInvalido() {
+
+        Mockito.when(tutorRepository.findById(tutor.getId()))
+                .thenThrow(new EntityNotFoundException("Usuário com id " + tutor.getId() + " não encontrado."));
+
+
+        var resposta = Assertions.assertThrows(Exception.class, () -> {
+            tutorService.update(tutor.getId(), outroTutor);
+        });
+
+    }
+
+    @Test
+    @DisplayName("teste de atualizar com cpf e ja existir e receber exceção")
+    void testUpdateTutorCpfJaExiste(){
+
+        Mockito.when(tutorRepository.findById(tutor.getId())).thenReturn(Optional.of(tutor));
+        Mockito.when(tutorRepository.existsByCpfAndIdNot(anyString(), anyLong())).thenReturn(true);
+
+        var resposta = Assertions.assertThrows(IllegalArgumentException.class, ()->{
+            tutorService.update(tutor.getId(), outroTutor);
+        });
+
+        Assertions.assertEquals(resposta.getMessage(), "Já existe um usuário com este CPF.");
+        Mockito.verify(tutorRepository, Mockito.times(1)).findById(any());
+        Mockito.verify(tutorRepository, Mockito.times(1)).existsByCpfAndIdNot(any(), anyLong());
+        Mockito.verify(tutorRepository, Mockito.times(0)).save(any());
+    }
+
+
+    @Test
+    @DisplayName("teste de atualizar com email e ja existir e receber exceção")
+    void testUpdateTutorEmailJaExiste(){
+
+        Mockito.when(tutorRepository.findById(tutor.getId())).thenReturn(Optional.of(tutor));
+        Mockito.when(tutorRepository.existsByEmailAndIdNot(anyString(), anyLong())).thenReturn(true);
+
+        var resposta = Assertions.assertThrows(IllegalArgumentException.class, ()->{
+            tutorService.update(tutor.getId(), outroTutor);
+        });
+
+        Assertions.assertEquals(resposta.getMessage(), "Já existe um usuário com este email.");
+        Mockito.verify(tutorRepository, Mockito.times(1)).findById(any());
+        Mockito.verify(tutorRepository, Mockito.times(1)).existsByEmailAndIdNot(anyString(), anyLong());
+        Mockito.verify(tutorRepository, Mockito.times(1)).existsByCpfAndIdNot(anyString(), anyLong());
+        Mockito.verify(tutorRepository, Mockito.times(1)).existsByTelefoneAndIdNot(anyString(), anyLong());
+        Mockito.verify(tutorRepository, Mockito.times(0)).save(any());
+    }
+
+
 
 
 

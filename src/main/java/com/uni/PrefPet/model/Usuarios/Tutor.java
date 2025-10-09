@@ -8,10 +8,12 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
-
+import lombok.ToString;
 import java.util.List;
+
 @Entity
 @Data
+@ToString(exclude = {"notificacoesRecebidas", "notificacoesEnviadas"})
 public class Tutor extends Usuario {
 
     @OneToMany(mappedBy = "tutor", cascade = CascadeType.ALL)
