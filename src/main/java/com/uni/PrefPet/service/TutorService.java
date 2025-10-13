@@ -55,20 +55,21 @@ public class TutorService {
         Tutor existente = tutorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário com id " + id + " não encontrado."));
 
-        // Verifica CPF em outro tutor
-        Optional<Tutor> outroCpf = tutorRepository.findByCpf(tutorAtualizado.getCpf());
-        if(outroCpf.isPresent() && !outroCpf.get().getId().equals(id)) {
+        boolean cpfEmUso = tutorRepository.existsByCpfAndIdNot(tutorAtualizado.getCpf(), id);
+        if (cpfEmUso) {
             throw new IllegalArgumentException("Já existe um usuário com este CPF.");
         }
 
-        // Verifica telefone em outro tutor
-        Optional<Tutor> outroTelefone = tutorRepository.findByTelefone(tutorAtualizado.getTelefone());
-        if(outroTelefone.isPresent() && !outroTelefone.get().getId().equals(id)) {
+        boolean telefoneEmUso = tutorRepository.existsByTelefoneAndIdNot(tutorAtualizado.getTelefone(), id);
+        if (telefoneEmUso) {
             throw new IllegalArgumentException("Já existe um usuário com este telefone.");
         }
 
+        boolean emailEmUso = tutorRepository.existsByEmailAndIdNot(tutorAtualizado.getEmail(), id);
+        if (emailEmUso) {
+            throw new IllegalArgumentException("Já existe um usuário com este email.");
+        }
 
-        // Atualiza campos
         existente.setEstado(tutorAtualizado.getEstado());
         existente.setCidade(tutorAtualizado.getCidade());
         existente.setCep(tutorAtualizado.getCep());
@@ -80,7 +81,6 @@ public class TutorService {
         existente.setImagemUrlPerfil(tutorAtualizado.getImagemUrlPerfil());
         existente.setEmail(tutorAtualizado.getEmail());
         existente.setSenha(tutorAtualizado.getSenha());
-
 
         return tutorRepository.save(existente);
     }
@@ -97,13 +97,6 @@ public class TutorService {
 
     //serviços especificos:
 
-    public boolean existsByCPF(String cpf) {
-        return tutorRepository.existsByCpf(cpf);
-    }
-
-    public boolean existsByEmail(String email) {
-        return tutorRepository.existsByEmail(email);
-    }
 
     public Tutor findByNome(String nome) {
         return tutorRepository.findByNomeContainingIgnoreCase(nome)

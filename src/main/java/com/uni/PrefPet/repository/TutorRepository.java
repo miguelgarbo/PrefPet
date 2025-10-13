@@ -28,6 +28,11 @@ public interface TutorRepository extends JpaRepository<Tutor, Long> {
 
     Optional<Tutor> findByEmail(String email);
 
+    boolean existsByCpfAndIdNot(String cpf, Long id);
+
+    boolean existsByTelefoneAndIdNot(String telefone, Long id);
+
+    boolean existsByEmailAndIdNot(String email, Long id);
 
 }
 
