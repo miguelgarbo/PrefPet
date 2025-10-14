@@ -19,7 +19,6 @@ public class PublicacaoService {
 
     @Autowired
     private PublicacaoRepository publicacaoRepository;
-    private ImagemRepository imagemRepository;
 
     public List<Publicacao> findAll() {
         return publicacaoRepository.findAll();
@@ -33,21 +32,20 @@ public class PublicacaoService {
         return publicacaoRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }
 
-    public Imagem saveImagem(Imagem imagem) {
-        Long publicacaoId = imagem.getPublicacao().getId();
-        Publicacao publicacao = publicacaoRepository.findById(publicacaoId)
-                .orElseThrow(() -> new EntityNotFoundException("Publicação com id " + publicacaoId + " não encontrada"));
-
-        imagem.setPublicacao(publicacao);
-        return imagemRepository.save(imagem);
-    }
+//    public Imagem saveImagem(Imagem imagem) {
+//        Long publicacaoId = imagem.getPublicacao().getId();
+//        Publicacao publicacao = publicacaoRepository.findById(publicacaoId)
+//                .orElseThrow(() -> new EntityNotFoundException("Publicação com id " + publicacaoId + " não encontrada"));
+//
+//        imagem.setPublicacao(publicacao);
+//        return imagemRepository.save(imagem);
+//    }
 
 
     public Publicacao update(Long id, Publicacao publicacaoAtualizada) {
         Publicacao publicacaoSelecionada = publicacaoRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("Publicacao com id " + id + " não encontrado."));
         
-
 
 
         if (publicacaoAtualizada.getDescricao() != null) {
@@ -86,12 +84,6 @@ public class PublicacaoService {
                 new EntityNotFoundException("Publicacoes não encontradas"));
     }
 
-    public List<Publicacao> findByDataCriacao(LocalDate data){
-
-        return publicacaoRepository.findByDataCriacao(data).orElseThrow(()->
-                new EntityNotFoundException("Publicacoes não encontradas"));
-
-    }
 
     public List<Publicacao> findByTipoPublicacao(String tipoPublicacao){
         return publicacaoRepository.findByTipoPublicacao(tipoPublicacao).orElseThrow(()->
