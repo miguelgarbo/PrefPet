@@ -72,13 +72,7 @@ public class PublicacaoController {
 
     }
 
-    @GetMapping("/byDataCriacao")
-    public ResponseEntity<List<Publicacao>> findByDataCriacao(@RequestParam LocalDate data) {
-        
-            var result = publicacaoService.findByDataCriacao(data);
-            return new ResponseEntity<>(result, HttpStatus.OK);
 
-    }
 
     @GetMapping("/byTipoPublicacao")
     public ResponseEntity<List<Publicacao>> findByTipoPublicacao(@RequestParam String tipoPublicacao) {
