@@ -10,4 +10,7 @@ import java.util.List;
 public interface NotificacaoRepository extends JpaRepository<Notificacao, Long> {
 
     List<Notificacao> findByTutorDestinatarioId(Long id);
+
+    List<Notificacao> findByTutorRemetenteId(Long id);
+
 }

@@ -75,31 +75,29 @@ public class PublicacaoService {
     public List<Publicacao> findByEntidade(Entidade entidade){
 
         return publicacaoRepository.findByEntidade(entidade).orElseThrow(()->
-                new EntityNotFoundException("Publicacoes não encontradas"));
+                entityNotFound());
     }
 
     public List<Publicacao> findByEntidadeNome(String nomeEntidade){
 
         return publicacaoRepository.findByEntidadeNome(nomeEntidade).orElseThrow(()->
-                new EntityNotFoundException("Publicacoes não encontradas"));
+                entityNotFound());
     }
 
 
     public List<Publicacao> findByTipoPublicacao(String tipoPublicacao){
         return publicacaoRepository.findByTipoPublicacao(tipoPublicacao).orElseThrow(()->
-                new EntityNotFoundException("Publicacoes não encontradas"));
+                entityNotFound());
     }
 
     public List<Publicacao> findByDescricao(String descricao){
 
         return publicacaoRepository.findByDescricaoContaining(descricao).orElseThrow(()->
-                new EntityNotFoundException("Publicacoes não encontradas"));
+                entityNotFound());
     }
 
-
-
-
-
-
+    public EntityNotFoundException entityNotFound(){
+        return new EntityNotFoundException("Publicacoes não encontradas");
+    }
 
 }

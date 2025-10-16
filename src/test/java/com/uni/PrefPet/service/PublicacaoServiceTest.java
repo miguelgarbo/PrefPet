@@ -3,6 +3,7 @@ package com.uni.PrefPet.service;
 import com.uni.PrefPet.model.Publicacao;
 import com.uni.PrefPet.model.Usuarios.Entidade;
 import com.uni.PrefPet.repository.PublicacaoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -20,7 +21,7 @@ import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.*;
 
-
+//100%
 @ExtendWith(MockitoExtension.class)
 public class PublicacaoServiceTest {
 
@@ -73,6 +74,7 @@ public class PublicacaoServiceTest {
 
     }
 
+
     @Test
     @DisplayName("esse teste deve retornar uma publicacao pelo id")
     void findById() {
@@ -84,6 +86,22 @@ public class PublicacaoServiceTest {
         Assertions.assertEquals(resposta, publicacao);
         Mockito.verify(publicacaoRepository, Mockito.times(1)).findById(any());
     }
+
+    @Test
+    @DisplayName("esse teste deve retornar uma exceção ao publicar pelo id")
+    void findByIdError() {
+
+        Mockito.when(publicacaoRepository.findById(1L))
+                .thenThrow(new EntityNotFoundException("Publicacao com id " + 1 + " não encontrado."));
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+            publicacaoService.findById(1L);
+        });
+
+        Mockito.verify(publicacaoRepository, Mockito.times(1)).findById(any());
+    }
+
+
 
 
     @Test
@@ -105,6 +123,59 @@ public class PublicacaoServiceTest {
     }
 
     @Test
+    void updateError() {
+
+        Mockito.when(publicacaoRepository.findById(publicacao.getId())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(EntityNotFoundException.class, ()->{
+            publicacaoService.update(publicacao.getId(), any());
+        });
+
+        Mockito.verify(publicacaoRepository, Mockito.times(1)).findById(any());
+    }
+
+    @Test
+    void testFindByDescricaoNotFound() {
+        Mockito.when(publicacaoRepository.findByDescricaoContaining(any()))
+                .thenReturn(Optional.empty());
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+            publicacaoService.findByDescricao("hdfhsd");
+        });
+    }
+
+    @Test
+    void testFindByTipoPublicacaoNotFound() {
+        Mockito.when(publicacaoRepository.findByTipoPublicacao(any()))
+                .thenReturn(Optional.empty());
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+            publicacaoService.findByTipoPublicacao("CAMPANHA DE CASTRAÇÃO");
+        });
+    }
+
+    @Test
+    void testFindByEntidadeNotFound() {
+        Mockito.when(publicacaoRepository.findByEntidade(any()))
+                .thenReturn(Optional.empty());
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+            publicacaoService.findByEntidade(new Entidade());
+        });
+    }
+
+    @Test
+    void testFindByEntidadeNomeNotFound() {
+        Mockito.when(publicacaoRepository.findByEntidadeNome(any()))
+                .thenReturn(Optional.empty());
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+            publicacaoService.findByEntidadeNome("Prefeitura");
+        });
+    }
+
+
+    @Test
     void delete() {
 
         Mockito.when(publicacaoRepository.existsById(1L)).thenReturn(true);
@@ -114,6 +185,19 @@ public class PublicacaoServiceTest {
 
         Assertions.assertEquals("Publicacao com id 1 foi excluído com sucesso." ,mensagem);
         Mockito.verify(publicacaoRepository, Mockito.times(1)).deleteById(any());
+
+    }
+
+    @Test
+    void deleteError() {
+
+        Mockito.when(publicacaoRepository.existsById(1L)).thenReturn(false);
+
+        Assertions.assertThrows(EntityNotFoundException.class, ()->{
+            publicacaoService.delete(1L);
+        });
+
+        Mockito.verify(publicacaoRepository, Mockito.times(1)).existsById(any());
 
     }
 

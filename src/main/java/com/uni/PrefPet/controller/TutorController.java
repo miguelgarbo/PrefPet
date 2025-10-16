@@ -62,11 +62,6 @@ public class TutorController {
             return new ResponseEntity<>(tutor, HttpStatus.OK);
     }
 
-    @GetMapping("/findByTelefone")
-    public ResponseEntity<Tutor> findByTelefone(@RequestParam String telefone) {
-        Tutor tutor = tutorService.findByTelefone(telefone);
-        return new ResponseEntity<>(tutor, HttpStatus.OK);
-    }
 
     @GetMapping("/findByEmail")
     public ResponseEntity<Tutor> findByEmail(@RequestParam String email) {

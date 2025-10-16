@@ -47,15 +47,17 @@ public class NotificacaoService {
 
     public String delete(Long id) {
         if (!notificacaoRepository.existsById(id)) {
-            throw new EntityNotFoundException("Publicaco com id " + id + " não encontrado.");
+            throw new EntityNotFoundException("Notificacao com id " + id + " não encontrado.");
         }
         notificacaoRepository.deleteById(id);
         return "Notificacao com id " + id + " foi excluído com sucesso.";
     }
 
-    public List<Notificacao> findByTutorId(Long id){
+    public List<Notificacao> findByTutorDestinatario(Long id){
         return notificacaoRepository.findByTutorDestinatarioId(id);
     }
+
+
 
 
     public Notificacao gerarNotificacaoDataValidadeVacina(AplicacaoVacina aplicacaoVacina){
@@ -80,7 +82,6 @@ public class NotificacaoService {
             nivel = 2;
 
         }
-
 
         if(LocalDate.now().isAfter(aplicacaoVacina.getDataValidade())){
 

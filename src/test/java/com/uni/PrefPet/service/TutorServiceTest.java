@@ -21,8 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 
 //Definindo que quem vai gerenciar essa classe de tests será o mockito
@@ -97,43 +96,42 @@ public class TutorServiceTest {
     @DisplayName("teste de cadastro invalido, email ja existe")
     void testTutorSaveErrorEmailDuplicate(){
 
-        Mockito.when(tutorRepository.save(tutor)).thenThrow(new IllegalArgumentException("Já existe um usuário com este email"));
+        Mockito.when(tutorRepository.existsByEmail(any())).thenReturn(true);
 
         var exception = assertThrows(IllegalArgumentException.class, ()->{
             tutorService.save(tutor);
         });
 
-        assertEquals(exception.getMessage(),"Já existe um usuário com este email");
-        Mockito.verify(tutorRepository, Mockito.times(1)).save(any());
+        assertEquals(exception.getMessage(),"Já existe um usuário com este email.");
     }
 
     @Test
     @DisplayName("teste de cadastro invalido, CPF ja existe")
     void testTutorSaveErrorCPFDuplicate(){
 
-        Mockito.when(tutorRepository.save(tutor)).thenThrow(new IllegalArgumentException("Já existe um usuário com este CPF"));
+        Mockito.when(tutorRepository.existsByCpf(any())).thenReturn(true);
 
         var exception = assertThrows(IllegalArgumentException.class, ()->{
             tutorService.save(tutor);
         });
-        assertEquals(exception.getMessage(),"Já existe um usuário com este CPF");
-        Mockito.verify(tutorRepository, Mockito.times(1)).save(any());
+        assertEquals(exception.getMessage(),"Já existe um usuário com este CPF.");
     }
 
     @Test
     @DisplayName("teste de cadastro invalido, telefone ja existe")
     void testTutorSaveErrorTelefoneDuplicate(){
 
-        Mockito.when(tutorRepository.save(tutor)).thenThrow(new IllegalArgumentException("Já existe um usuário com este telefone"));
+        Mockito.when(tutorRepository.existsByTelefone(any())).thenReturn(true);
 
         var exception = assertThrows(IllegalArgumentException.class, ()->{
             tutorService.save(tutor);
         });
-        assertEquals(exception.getMessage(),"Já existe um usuário com este telefone");
-        Mockito.verify(tutorRepository, Mockito.times(1)).save(any());
+
+        assertEquals("Já existe um usuário com este telefone.", exception.getMessage());
+
+        Mockito.verify(tutorRepository, Mockito.never()).save(any());
     }
 
-    //new EntityNotFoundException("Nenhum Tutor Com esse Id")
 
     @Test
     @DisplayName("teste de procurar tutor por id valido")
@@ -152,9 +150,9 @@ public class TutorServiceTest {
     @DisplayName("teste de procurar tutor por id invalido e retornar excepection")
     void testTutorFindTutorByIdInvalid(){
 
-        Mockito.when(tutorRepository.findById(1L)).thenThrow(new EntityNotFoundException("Nenhum Tutor Com esse Id"));
+        Mockito.when(tutorRepository.findById(1L)).thenReturn(Optional.empty());
 
-        var excepetion = assertThrows(Exception.class, ()->{
+        var excepetion = assertThrows(EntityNotFoundException.class, ()->{
            tutorService.findById(1L);
         });
 
@@ -202,10 +200,7 @@ public class TutorServiceTest {
     @DisplayName("teste de deletar um tutor invalido com id")
     void testDeleteTutorIdInvalid(){
 
-        Mockito.when(tutorRepository.existsById(tutor.getId()))
-                .thenThrow(new EntityNotFoundException("Usuário com id " + tutor.getId() + " não encontrado."));
-
-//        Mockito.doNothing().when(tutorRepository).deleteById(tutor.getId());
+        Mockito.when(tutorRepository.existsById(tutor.getId())).thenReturn(false);
 
         var resposta = assertThrows(EntityNotFoundException.class, ()->{
            tutorService.delete(tutor.getId());
@@ -246,11 +241,9 @@ public class TutorServiceTest {
     @DisplayName("teste de atualizar um tutor invalido e receber exceção")
     void testUpdateTutorIdInvalido() {
 
-        Mockito.when(tutorRepository.findById(tutor.getId()))
-                .thenThrow(new EntityNotFoundException("Usuário com id " + tutor.getId() + " não encontrado."));
+        Mockito.when(tutorRepository.findById(tutor.getId())).thenReturn(Optional.empty());
 
-
-        var resposta = Assertions.assertThrows(Exception.class, () -> {
+        Assertions.assertThrows(Exception.class, () -> {
             tutorService.update(tutor.getId(), outroTutor);
         });
 
@@ -293,18 +286,130 @@ public class TutorServiceTest {
         Mockito.verify(tutorRepository, Mockito.times(0)).save(any());
     }
 
+    @Test
+    @DisplayName("teste de atualizar com email e ja existir e receber exceção")
+    void testUpdateTutorTelefoneJaExiste(){
+
+        Mockito.when(tutorRepository.findById(tutor.getId())).thenReturn(Optional.of(tutor));
+        Mockito.when(tutorRepository.existsByTelefoneAndIdNot(anyString(), anyLong())).thenReturn(true);
+
+        var resposta = Assertions.assertThrows(IllegalArgumentException.class, ()->{
+            tutorService.update(tutor.getId(), outroTutor);
+        });
+
+        Assertions.assertEquals(resposta.getMessage(), "Já existe um usuário com este telefone.");
+        Mockito.verify(tutorRepository, Mockito.times(1)).findById(any());
+        Mockito.verify(tutorRepository, Mockito.times(1)).existsByCpfAndIdNot(anyString(), anyLong());
+        Mockito.verify(tutorRepository, Mockito.times(1)).existsByTelefoneAndIdNot(anyString(), anyLong());
+        Mockito.verify(tutorRepository, Mockito.times(0)).save(any());
+    }
 
 
+    @Test
+    void findByNome() {
+        Mockito.when(tutorRepository.findByNomeContainingIgnoreCase(any())).thenReturn(Optional.of(tutor));
+
+        var resposta = tutorService.findByNome(tutor.getNome());
+
+        Assertions.assertEquals(tutor.getNome(), resposta.getNome());
+    }
+
+    @Test
+    void findByNomeError() {
+        Mockito.when(tutorRepository.findByNomeContainingIgnoreCase(any())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(EntityNotFoundException.class, ()->{
+            tutorService.findByNome(tutor.getNome());
+        });
+    }
+
+    @Test
+    void findByCPF() {
+
+        Mockito.when(tutorRepository.findByCpf(any())).thenReturn(Optional.of(tutor));
+
+        var resposta = tutorService.findByCPF(tutor.getCpf());
+
+        Assertions.assertEquals(tutor.getCpf(), resposta.getCpf());
+    }
+
+    @Test
+    void findByCPFerror() {
+        Mockito.when(tutorRepository.findByCpf(any())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(EntityNotFoundException.class, ()->{
+            tutorService.findByCPF(tutor.getCpf());
+        });
+    }
 
 
+    @Test
+    void findByEmail() {
+
+        Mockito.when(tutorRepository.findByEmail(any())).thenReturn(Optional.of(tutor));
+
+        var resposta = tutorService.findByEmail(tutor.getEmail());
+
+        Assertions.assertEquals(tutor.getEmail(), resposta.getEmail());
+    }
+
+    @Test
+    void findByEmailerror() {
+        Mockito.when(tutorRepository.findByEmail(any())).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(EntityNotFoundException.class, ()->{
+            tutorService.findByEmail(tutor.getEmail());
+        });
+    }
+
+    @Test
+    void login() {
+
+        Mockito.when(tutorService.findAll()).thenReturn(tutores);
+
+        var login = tutorService.login(tutor.getEmail(), tutor.getSenha());
+
+        Tutor current_user = tutorService.getCurrentUser();
+
+        Assertions.assertTrue(login);
+        Assertions.assertNotNull(current_user);
+        assertEquals(tutor, current_user);
+
+    }
+
+    @Test
+    void loginFalse() {
+
+        Mockito.when(tutorService.findAll()).thenReturn(new ArrayList<>());
+
+        var login = tutorService.login(tutor.getEmail(), tutor.getSenha());
+        Tutor current = tutorService.getCurrentUser();
+
+        assertNull(current);
+        Assertions.assertFalse(login);
+    }
 
 
+//    @Test
+//    void getCurrentUser() {
+//
+//
+//
+//
+//
+//    }
 
+    @Test
+    void logout() {
+        Mockito.when(tutorService.findAll()).thenReturn(tutores);
 
+        var login = tutorService.login(tutor.getEmail(), tutor.getSenha());
 
+        Assertions.assertTrue(login);
 
+        tutorService.logout();
 
+        assertNull(tutorService.getCurrentUser());
 
-
-
+    }
 }

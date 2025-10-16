@@ -311,31 +311,7 @@ public class TutorControllerTest {
                 );
     }
 
-    @Test
-    @DisplayName("deve retornar um tutor pelo seu telefone")
-    void testFindByTelefoneOk() throws Exception{
 
-        Mockito.when(tutorService.findByTelefone("45988366777")).thenReturn(tutor);
-
-        mockMvc.perform(get("/tutores/findByTelefone")
-                        .param("telefone", "45988366777"))
-                .andExpect(status().isOk())
-                .andExpect(content().json(tutorJson)
-                );
-    }
-
-    @Test
-    @DisplayName("deve retornar um erro ao buscar tutor pelo telefone")
-    void testFindByTelefoneError() throws Exception{
-
-        Mockito.when(tutorService.findByTelefone("45988366777")).thenThrow(new EntityNotFoundException("Nenhum usuário encontrado com o telefone informado"));
-
-        mockMvc.perform(get("/tutores/findByTelefone")
-                        .param("telefone", "45988366777"))
-                .andExpect(status().is5xxServerError())
-                .andExpect(jsonPath("$.message").value("Nenhum usuário encontrado com o telefone informado")
-                );
-    }
 
     @Test
     @DisplayName("deve retornar um tutor pelo seu email")

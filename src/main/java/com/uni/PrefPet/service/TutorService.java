@@ -45,11 +45,7 @@ public class TutorService {
         return tutorRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Nenhum Tutor Com esse Id"));
     }
 
-    public Tutor findByCnpj(String cnpj){
 
-        return tutorRepository.findByCnpj(cnpj)
-                .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o cnpj informado"));
-    }
 
     public Tutor update(Long id, Tutor tutorAtualizado) {
         Tutor existente = tutorRepository.findById(id)
@@ -108,30 +104,13 @@ public class TutorService {
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o CPF informado"));
     }
 
-    public Tutor findByTelefone(String telefone) {
-        return tutorRepository.findByTelefone(telefone)
-                .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o telefone informado"));
-    }
 
     public Tutor findByEmail(String email) {
         return tutorRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o email informado"));
     }
 
-    public String mudarTutor(Long tutorDestinatario_id, Long animal_id){
 
-        Tutor tutorDestinatario  = findById(tutorDestinatario_id);
-        Animal animal = animalService.findById(animal_id);
-
-        Tutor tutorAntes = animal.getTutor();
-        animal.setTutor(tutorDestinatario);
-
-        animalService.save(animal);
-
-        Tutor tutorDepois = animal.getTutor();
-
-        return "Tutor Alterado com Sucesso, Antes:"+tutorAntes.getNome()+" Agora: "+tutorDepois.getNome();
-    }
 
     public boolean login(String email, String senha) {
         for(Tutor tutor : tutorRepository.findAll()) {
