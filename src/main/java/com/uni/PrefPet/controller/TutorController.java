@@ -71,9 +71,15 @@ public class TutorController {
 
     @GetMapping("/login")
     public ResponseEntity<Boolean> login(@RequestParam String email, @RequestParam String senha) {
-            var result = tutorService.login(email, senha);
-            return new ResponseEntity<Boolean>(result, HttpStatus.OK);
+        boolean result = tutorService.login(email, senha);
+
+        if (result) {
+            return ResponseEntity.ok(true); // 200 OK
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false); // 401
+        }
     }
+
 
     @GetMapping("/current-user")
     public ResponseEntity<Tutor> getCurrentUser() {

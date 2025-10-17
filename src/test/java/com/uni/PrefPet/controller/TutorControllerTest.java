@@ -339,6 +339,70 @@ public class TutorControllerTest {
                 );
     }
 
+    @Test
+    @DisplayName("esse test deve liberar um login")
+    void testLoginOk() throws Exception{
+
+        Mockito.when(tutorService.login(tutor.getEmail(), tutor.getSenha())).thenReturn(true);
+
+        mockMvc.perform(get("/tutores/login")
+                        .param("senha", tutor.getSenha())
+                        .param("email", tutor.getEmail()))
+                .andExpect(status().isOk())
+                .andExpect(content().string("true"));
+    }
+
+    @Test
+    @DisplayName("esse test deve lançar uma exceção ao realizar um login")
+    void testLoginError() throws Exception{
+
+        Mockito.when(tutorService.login("email@example.com", "senha123")).thenReturn(false);
+
+        mockMvc.perform(get("/tutores/login")
+                        .param("senha", "email@example.com")
+                        .param("email", "senha123"))
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().string("false"));
+    }
+
+    @Test
+    @DisplayName("esse test deve retornar o usuario atual ")
+    void testGetCurrentUser() throws Exception{
+
+        Mockito.when(tutorService.getCurrentUser()).thenReturn(tutor);
+
+        mockMvc.perform(get("/tutores/current-user"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(tutorJson));
+    }
+
+    @Test
+    @DisplayName("esse test deve lançar uma exceção ao buscar um usuario atual ")
+    void testGetCurrentUserError() throws Exception{
+
+        Mockito.when(tutorService.getCurrentUser()).thenReturn(null);
+
+        mockMvc.perform(get("/tutores/current-user"))
+                .andExpect(status().isUnauthorized());
+    }
+
+
+    @Test
+    @DisplayName("esse test deve realizar o logout do usuario atual ")
+    void testLogout() throws Exception{
+
+        Mockito.doNothing().when(tutorService).logout();
+
+        mockMvc.perform(post("/tutores/logout"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Logout realizado com sucesso!"));
+    }
+
+
+
+
+
+
 
 }
 
