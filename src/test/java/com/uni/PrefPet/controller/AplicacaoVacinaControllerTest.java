@@ -5,6 +5,7 @@ import com.uni.PrefPet.model.AplicacaoVacina;
 import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.Vacina;
 import com.uni.PrefPet.service.AplicacaoVacinaService;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -55,6 +56,26 @@ class AplicacaoVacinaControllerTest {
     }
 
     @Test
+    @DisplayName("Deve retornar erro 404 ao tentar salvar aplicação com vacina inexistente")
+    void salvarAplicacaoVacinaErro() throws Exception {
+        AplicacaoVacina aplicacao = new AplicacaoVacina();
+        aplicacao.setLote("L404");
+        aplicacao.setVacina(new Vacina());
+        aplicacao.getVacina().setId(999L);
+        aplicacao.setAnimal(new Animal());
+
+        Mockito.when(aplicacaoVacinaService.save(any(AplicacaoVacina.class), anyInt()))
+                .thenThrow(new EntityNotFoundException("Vacina não encontrada"));
+
+        mockMvc.perform(post("/aplicacao")
+                        .param("meses", "6")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(aplicacao)))
+                .andExpect(status().isInternalServerError());
+    }
+
+
+    @Test
     @DisplayName("Deve retornar aplicação existente (GET /aplicacao/{id})")
     void buscarAplicacaoPorId() throws Exception {
         AplicacaoVacina aplicacao = new AplicacaoVacina();
@@ -66,6 +87,16 @@ class AplicacaoVacinaControllerTest {
         mockMvc.perform(get("/aplicacao/2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.lote").value("XYZ"));
+    }
+
+    @Test
+    @DisplayName("Deve retornar 404 quando aplicação não for encontrada (GET /aplicacao/{id})")
+    void buscarAplicacaoPorIdNaoEncontrada() throws Exception {
+        Mockito.when(aplicacaoVacinaService.findById(999L))
+                .thenThrow(new EntityNotFoundException("Aplicação não encontrada"));
+
+        mockMvc.perform(get("/aplicacao/999"))
+                .andExpect(status().isInternalServerError());
     }
 
     @Test
@@ -99,6 +130,22 @@ class AplicacaoVacinaControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.lote").value("L999"));
     }
+
+    @Test
+    @DisplayName("Deve retornar erro 404 ao tentar atualizar aplicação inexistente (PUT /aplicacao/{id})")
+    void atualizarAplicacaoVacinaErro() throws Exception {
+        AplicacaoVacina aplicacao = new AplicacaoVacina();
+        aplicacao.setLote("L999");
+
+        Mockito.when(aplicacaoVacinaService.update(eq(999L), any(AplicacaoVacina.class)))
+                .thenThrow(new EntityNotFoundException("Aplicação não encontrada"));
+
+        mockMvc.perform(put("/aplicacao/999")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(aplicacao)))
+                .andExpect(status().isInternalServerError());
+    }
+
 
     @Test
     @DisplayName("Deve deletar aplicação de vacina (DELETE /aplicacao/{id})")

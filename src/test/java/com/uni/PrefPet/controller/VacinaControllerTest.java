@@ -3,6 +3,7 @@ package com.uni.PrefPet.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uni.PrefPet.model.Vacina;
 import com.uni.PrefPet.service.VacinaService;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -51,6 +52,21 @@ class VacinaControllerTest {
     }
 
     @Test
+    @DisplayName("Deve retornar erro 400 ao tentar salvar vacina inválida (POST /vacinas/save)")
+    void salvarVacinaErro() throws Exception {
+        Vacina vacina = new Vacina();
+        vacina.setNome(""); // nome inválido
+
+        Mockito.when(vacinaService.save(any(Vacina.class)))
+                .thenThrow(new IllegalArgumentException("Dados inválidos"));
+
+        mockMvc.perform(post("/vacinas/save")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(vacina)))
+                .andExpect(status().isInternalServerError());
+    }
+
+    @Test
     @DisplayName("Deve retornar vacina existente (GET /vacinas/findById/{id})")
     void buscarVacinaPorId() throws Exception {
         Vacina vacina = new Vacina();
@@ -62,6 +78,16 @@ class VacinaControllerTest {
         mockMvc.perform(get("/vacinas/findById/2"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.nome").value("V8"));
+    }
+
+    @Test
+    @DisplayName("Deve retornar erro 404 quando vacina não for encontrada (GET /vacinas/findById/{id})")
+    void buscarVacinaPorIdErro() throws Exception {
+        Mockito.when(vacinaService.findById(99L))
+                .thenThrow(new EntityNotFoundException("Vacina não encontrada"));
+
+        mockMvc.perform(get("/vacinas/findById/99"))
+                .andExpect(status().isInternalServerError());
     }
 
     @Test
@@ -94,10 +120,38 @@ class VacinaControllerTest {
     }
 
     @Test
+    @DisplayName("Deve retornar erro 404 ao tentar atualizar vacina inexistente (PUT /vacinas/update/{id})")
+    void atualizarVacinaErro() throws Exception {
+        Vacina vacina = new Vacina();
+        vacina.setNome("V99");
+
+        Mockito.when(vacinaService.update(eq(99L), any(Vacina.class)))
+                .thenThrow(new EntityNotFoundException("Vacina não encontrada"));
+
+        mockMvc.perform(put("/vacinas/update/99")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(vacina)))
+                .andExpect(status().isInternalServerError());
+    }
+
+
+    @Test
     @DisplayName("Deve deletar vacina (DELETE /vacinas/delete/{id})")
     void deletarVacina() throws Exception {
         mockMvc.perform(delete("/vacinas/delete/1"))
                 .andExpect(status().isNoContent());
         Mockito.verify(vacinaService).delete(anyLong());
     }
+
+    @Test
+    @DisplayName("Deve retornar erro 404 ao deletar vacina inexistente (DELETE /vacinas/delete/{id})")
+    void deletarVacinaErro() throws Exception {
+        Mockito.doThrow(new EntityNotFoundException("Vacina não encontrada"))
+                .when(vacinaService).delete(99L);
+
+        mockMvc.perform(delete("/vacinas/delete/99"))
+                .andExpect(status().isInternalServerError());
+    }
+
+
 }

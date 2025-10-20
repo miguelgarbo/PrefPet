@@ -121,6 +121,18 @@ class AplicacaoVacinaServiceTest {
     }
 
     @Test
+    @DisplayName("Lançar exceção ao tentar atualizar aplicação inexistente")
+    void atualizarAplicacaoInexistente() {
+        AplicacaoVacina atualizada = new AplicacaoVacina();
+        atualizada.setDataAplicacao(LocalDate.of(2023, 4, 4));
+
+        when(aplicacaoVacinaRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> aplicacaoVacinaService.update(99L, atualizada));
+    }
+
+
+    @Test
     @DisplayName("Deletar aplicação de vacina existente")
     void deletarAplicacaoExistente() {
         when(aplicacaoVacinaRepository.existsById(1L)).thenReturn(true);
@@ -129,5 +141,13 @@ class AplicacaoVacinaServiceTest {
 
         assertEquals("AplicacaoVacina Deletada com Sucesso", msg);
         verify(aplicacaoVacinaRepository).deleteById(1L);
+    }
+
+    @Test
+    @DisplayName("Lançar exceção ao tentar deletar aplicação inexistente")
+    void deletarAplicacaoInexistente() {
+        when(aplicacaoVacinaRepository.existsById(99L)).thenReturn(false);
+
+        assertThrows(EntityNotFoundException.class, () -> aplicacaoVacinaService.delete(99L));
     }
 }

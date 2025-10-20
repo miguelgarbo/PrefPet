@@ -132,4 +132,28 @@ class VacinaServiceTest {
 
         assertThrows(EntityNotFoundException.class, () -> vacinaService.update(99L, new Vacina()));
     }
+
+    @Test
+    @DisplayName("Buscar vacinas por nome contendo parte do texto")
+    void buscarVacinasPorNome() {
+        Vacina v1 = new Vacina(); v1.setNome("Antirrábica");
+        Vacina v2 = new Vacina(); v2.setNome("Antitetânica");
+
+        when(vacinaRepository.findByNomeContainingIgnoreCase("anti"))
+                .thenReturn(Optional.of(List.of(v1, v2)));
+
+        List<Vacina> resultado = vacinaService.findByNome("anti");
+
+        assertEquals(2, resultado.size());
+        assertTrue(resultado.get(0).getNome().contains("Anti") || resultado.get(0).getNome().contains("anti"));
+    }
+
+    @Test
+    @DisplayName("Buscar vacinas por nome inexistente deve lançar exceção")
+    void buscarVacinasPorNomeInexistente() {
+        when(vacinaRepository.findByNomeContainingIgnoreCase("xyz"))
+                .thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> vacinaService.findByNome("xyz"));
+    }
 }
