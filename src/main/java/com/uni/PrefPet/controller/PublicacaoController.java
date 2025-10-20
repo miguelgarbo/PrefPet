@@ -57,12 +57,7 @@ public class PublicacaoController {
 
     }
 
-    @GetMapping("/byEntidade")
-    public ResponseEntity<List<Publicacao>> findByEntidade(@RequestParam Entidade entidade) {
-        
-            var result = publicacaoService.findByEntidade(entidade);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-       }
+
 
     @GetMapping("/byEntidadeNome")
     public ResponseEntity<List<Publicacao>> findByEntidadeNome(@RequestParam String nomeEntidade) {
@@ -86,7 +81,6 @@ public class PublicacaoController {
         
             var result = publicacaoService.findByDescricao(descricao);
             return new ResponseEntity<>(result, HttpStatus.OK);
-
     }
 
 

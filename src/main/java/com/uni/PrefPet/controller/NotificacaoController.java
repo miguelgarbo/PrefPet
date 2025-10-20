@@ -55,8 +55,8 @@ public class NotificacaoController {
     }
 
     @GetMapping("/findByTutorId")
-    public ResponseEntity<List<Notificacao>> findByTutorId(@RequestParam Long id) {
-        var result = notificacaoService.findByTutorId(id);
+    public ResponseEntity<List<Notificacao>> findByTutorDestinatarioId(@RequestParam Long id) {
+        var result = notificacaoService.findByTutorDestinatario(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -23,6 +24,7 @@ public class Imagem {
     @ManyToOne
     @JoinColumn(name = "publicacao_id")
     @JsonIgnore
+    @ToString.Exclude
     private Publicacao publicacao;
 
 

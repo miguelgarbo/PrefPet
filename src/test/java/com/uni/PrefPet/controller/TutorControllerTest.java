@@ -311,31 +311,7 @@ public class TutorControllerTest {
                 );
     }
 
-    @Test
-    @DisplayName("deve retornar um tutor pelo seu telefone")
-    void testFindByTelefoneOk() throws Exception{
 
-        Mockito.when(tutorService.findByTelefone("45988366777")).thenReturn(tutor);
-
-        mockMvc.perform(get("/tutores/findByTelefone")
-                        .param("telefone", "45988366777"))
-                .andExpect(status().isOk())
-                .andExpect(content().json(tutorJson)
-                );
-    }
-
-    @Test
-    @DisplayName("deve retornar um erro ao buscar tutor pelo telefone")
-    void testFindByTelefoneError() throws Exception{
-
-        Mockito.when(tutorService.findByTelefone("45988366777")).thenThrow(new EntityNotFoundException("Nenhum usuário encontrado com o telefone informado"));
-
-        mockMvc.perform(get("/tutores/findByTelefone")
-                        .param("telefone", "45988366777"))
-                .andExpect(status().is5xxServerError())
-                .andExpect(jsonPath("$.message").value("Nenhum usuário encontrado com o telefone informado")
-                );
-    }
 
     @Test
     @DisplayName("deve retornar um tutor pelo seu email")
@@ -362,6 +338,70 @@ public class TutorControllerTest {
                 .andExpect(jsonPath("$.message").value("Nenhum usuário encontrado com o email informado")
                 );
     }
+
+    @Test
+    @DisplayName("esse test deve liberar um login")
+    void testLoginOk() throws Exception{
+
+        Mockito.when(tutorService.login(tutor.getEmail(), tutor.getSenha())).thenReturn(true);
+
+        mockMvc.perform(get("/tutores/login")
+                        .param("senha", tutor.getSenha())
+                        .param("email", tutor.getEmail()))
+                .andExpect(status().isOk())
+                .andExpect(content().string("true"));
+    }
+
+    @Test
+    @DisplayName("esse test deve lançar uma exceção ao realizar um login")
+    void testLoginError() throws Exception{
+
+        Mockito.when(tutorService.login("email@example.com", "senha123")).thenReturn(false);
+
+        mockMvc.perform(get("/tutores/login")
+                        .param("senha", "email@example.com")
+                        .param("email", "senha123"))
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().string("false"));
+    }
+
+    @Test
+    @DisplayName("esse test deve retornar o usuario atual ")
+    void testGetCurrentUser() throws Exception{
+
+        Mockito.when(tutorService.getCurrentUser()).thenReturn(tutor);
+
+        mockMvc.perform(get("/tutores/current-user"))
+                .andExpect(status().isOk())
+                .andExpect(content().json(tutorJson));
+    }
+
+    @Test
+    @DisplayName("esse test deve lançar uma exceção ao buscar um usuario atual ")
+    void testGetCurrentUserError() throws Exception{
+
+        Mockito.when(tutorService.getCurrentUser()).thenReturn(null);
+
+        mockMvc.perform(get("/tutores/current-user"))
+                .andExpect(status().isUnauthorized());
+    }
+
+
+    @Test
+    @DisplayName("esse test deve realizar o logout do usuario atual ")
+    void testLogout() throws Exception{
+
+        Mockito.doNothing().when(tutorService).logout();
+
+        mockMvc.perform(post("/tutores/logout"))
+                .andExpect(status().isOk())
+                .andExpect(content().string("Logout realizado com sucesso!"));
+    }
+
+
+
+
+
 
 
 }
