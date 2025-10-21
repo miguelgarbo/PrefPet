@@ -18,26 +18,28 @@ public class VeterinarioController {
     @Autowired
     private VeterinarioService veterinarioService;
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<Veterinario> save(@RequestBody @Valid Veterinario veterinario) {
             var result = veterinarioService.save(veterinario);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
 
     }
-    @GetMapping("/findById/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Veterinario> findById(@PathVariable Long id) {
 
             var result = veterinarioService.findById(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
 
     }
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-            veterinarioService.delete(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+            var mensagem = veterinarioService.delete(id);
+            return new ResponseEntity<>(mensagem,HttpStatus.NO_CONTENT);
 
     }
-    @PutMapping("/update/{id}")
+
+    @PutMapping("/{id}")
     public ResponseEntity<Veterinario> update(@PathVariable Long id, @RequestBody Veterinario veterinario) {
             var updatedVeterinario = veterinarioService.update(id, veterinario);
             return new ResponseEntity<>(updatedVeterinario, HttpStatus.OK);
