@@ -63,7 +63,7 @@ class VacinaControllerTest {
         mockMvc.perform(post("/vacinas/save")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(vacina)))
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
