@@ -69,11 +69,11 @@ public class NotificacaoControllerTest {
         veterinario.setNome("Ana");
         veterinario.setTelefone("+5545999998878");
         veterinario.setCep("85851-000");
-        veterinario.setCpf("434.484.890-00"); // CPF válido só pra exemplo de teste
+        veterinario.setCpf("434.484.890-00");
         veterinario.setCidade("Foz do Iguaçu");
         veterinario.setEstado("PR");
         veterinario.setSenha("senha123");
-        veterinario.setEmail("ana.garbo@example.com");
+        veterinario.setEmail("anavet@example.com");
         veterinario.setCRMV("1234");
 
         animal.setId(1L);

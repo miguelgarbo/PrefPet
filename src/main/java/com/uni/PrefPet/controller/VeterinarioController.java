@@ -50,19 +50,6 @@ public class VeterinarioController {
 
     }
 
-    @GetMapping("/existsByCPF")
-    public ResponseEntity<Boolean> existsByCPF(@RequestParam String cpf) {
-            boolean exists = veterinarioService.existsByCPF(cpf);
-            return new ResponseEntity<>(exists, HttpStatus.OK);
-
-    }
-
-    @GetMapping("/existsByEmail")
-    public ResponseEntity<Boolean> existsByEmail(@RequestParam String email) {
-            boolean exists = veterinarioService.existsByEmail(email);
-            return new ResponseEntity<>(exists, HttpStatus.OK);
-
-    }
 
     @GetMapping("/findByNome")
     public ResponseEntity<List<Veterinario>> findByNome(@RequestParam String nome) {
@@ -72,29 +59,17 @@ public class VeterinarioController {
     }
 
     @GetMapping("/findByCPF")
-    public ResponseEntity<List<Veterinario>> findByCPF(@RequestParam String cpf) {
-            List<Veterinario> veterinario = veterinarioService.findByCPF(cpf);
-            return new ResponseEntity<>(veterinario, HttpStatus.OK);
-
-    }
-
-    @GetMapping("/findByTelefone")
-    public ResponseEntity<List<Veterinario>> findByTelefone(@RequestParam String telefone) {
-            List<Veterinario> veterinario = veterinarioService.findByTelefone(telefone);
+    public ResponseEntity<Veterinario> findByCPF(@RequestParam String cpf) {
+            var veterinario = veterinarioService.findByCPF(cpf);
             return new ResponseEntity<>(veterinario, HttpStatus.OK);
 
     }
 
     @GetMapping("/findByEmail")
-    public ResponseEntity<List<Veterinario>> findByEmail(@RequestParam String email) {
-            var veterinarios = veterinarioService.findByEmail(email);
-            return new ResponseEntity<>(veterinarios, HttpStatus.OK);
+    public ResponseEntity<Veterinario> findByEmail(@RequestParam String email) {
+            var veterinario = veterinarioService.findByEmail(email);
+            return new ResponseEntity<>(veterinario, HttpStatus.OK);
 
     }
 
-    @GetMapping("/findByCnpj")
-    public ResponseEntity<Veterinario> findByCnpj(@RequestParam String cnpj) {
-        var veterinario = veterinarioService.findByCnpj(cnpj);
-        return new ResponseEntity<>(veterinario, HttpStatus.OK);
-    }
 }
