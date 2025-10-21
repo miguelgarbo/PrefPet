@@ -61,6 +61,16 @@ public class VeterinarioServiceTest {
     }
 
     @Test
+    void saveError() {
+        Mockito.when(veterinarioRepository.existsByCRMV(veterinario.getCRMV())).thenReturn(true);
+
+        Assertions.assertThrows(IllegalArgumentException.class, ()->{
+                veterinarioService.save(veterinario);
+        });
+
+    }
+
+    @Test
     void findAll() {
 
         Mockito.when(veterinarioRepository.findAll()).thenReturn(veterinarios);
@@ -107,6 +117,190 @@ public class VeterinarioServiceTest {
         Assertions.assertEquals(veterinario,response);
 
     }
+
+    @Test
+    void updateError1() {
+
+        Veterinario veterinario_update = new Veterinario();
+
+        veterinario_update.setNome("Miguel");
+        veterinario_update.setTelefone("+5545999998876");
+        veterinario_update.setCep("85851-000");
+        veterinario_update.setCpf("434.484.890-00");
+        veterinario_update.setCidade("Foz do Iguaçu");
+        veterinario_update.setEstado("PR");
+        veterinario_update.setSenha("senha123");
+        veterinario_update.setEmail("miguel@example.com");
+        veterinario_update.setCRMV("123456");
+
+        veterinario.setNome(veterinario_update.getNome());
+        veterinario.setTelefone(veterinario_update.getTelefone());
+        veterinario.setCep(veterinario_update.getCep());
+        veterinario.setCpf(veterinario_update.getCpf());
+        veterinario.setCidade(veterinario_update.getCidade());
+        veterinario.setEstado(veterinario_update.getEstado());
+        veterinario.setSenha(veterinario_update.getSenha());
+        veterinario.setEmail(veterinario_update.getEmail());
+        veterinario.setCRMV(veterinario_update.getCRMV());
+
+        Mockito.when(veterinarioRepository.findById(1L)).thenReturn(Optional.empty());
+
+        Assertions.assertThrows(EntityNotFoundException.class, ()->{
+
+            veterinarioService.update(1L, veterinario_update);
+        });
+
+
+    }
+
+    @Test
+    void updateError2() {
+
+        Veterinario veterinario_update = new Veterinario();
+
+        veterinario_update.setNome("Miguel");
+        veterinario_update.setTelefone("+5545999998876");
+        veterinario_update.setCep("85851-000");
+        veterinario_update.setCpf("434.484.890-00");
+        veterinario_update.setCidade("Foz do Iguaçu");
+        veterinario_update.setEstado("PR");
+        veterinario_update.setSenha("senha123");
+        veterinario_update.setEmail("miguel@example.com");
+        veterinario_update.setCRMV("123456");
+
+        veterinario.setNome(veterinario_update.getNome());
+        veterinario.setTelefone(veterinario_update.getTelefone());
+        veterinario.setCep(veterinario_update.getCep());
+        veterinario.setCpf(veterinario_update.getCpf());
+        veterinario.setCidade(veterinario_update.getCidade());
+        veterinario.setEstado(veterinario_update.getEstado());
+        veterinario.setSenha(veterinario_update.getSenha());
+        veterinario.setEmail(veterinario_update.getEmail());
+        veterinario.setCRMV(veterinario_update.getCRMV());
+
+        Mockito.when(veterinarioRepository.findById(1L)).thenReturn(Optional.of(veterinario));
+
+        Mockito.when(veterinarioRepository.existsByCpf(any())).thenReturn(true);
+
+        Assertions.assertThrows(IllegalArgumentException.class, ()->{
+
+            veterinarioService.update(1L, veterinario_update);
+        });
+
+
+    }
+
+    @Test
+    void updateError3() {
+
+        Veterinario veterinario_update = new Veterinario();
+
+        veterinario_update.setNome("Miguel");
+        veterinario_update.setTelefone("+5545999998876");
+        veterinario_update.setCep("85851-000");
+        veterinario_update.setCpf("434.484.890-00");
+        veterinario_update.setCidade("Foz do Iguaçu");
+        veterinario_update.setEstado("PR");
+        veterinario_update.setSenha("senha123");
+        veterinario_update.setEmail("miguel@example.com");
+        veterinario_update.setCRMV("123456");
+
+        veterinario.setNome(veterinario_update.getNome());
+        veterinario.setTelefone(veterinario_update.getTelefone());
+        veterinario.setCep(veterinario_update.getCep());
+        veterinario.setCpf(veterinario_update.getCpf());
+        veterinario.setCidade(veterinario_update.getCidade());
+        veterinario.setEstado(veterinario_update.getEstado());
+        veterinario.setSenha(veterinario_update.getSenha());
+        veterinario.setEmail(veterinario_update.getEmail());
+        veterinario.setCRMV(veterinario_update.getCRMV());
+
+        Mockito.when(veterinarioRepository.findById(1L)).thenReturn(Optional.of(veterinario));
+
+        Mockito.when(veterinarioRepository.existsByTelefone(any())).thenReturn(true);
+
+        Assertions.assertThrows(IllegalArgumentException.class, ()->{
+
+            veterinarioService.update(1L, veterinario_update);
+        });
+
+
+    }
+
+    @Test
+    void updateError4() {
+
+        Veterinario veterinario_update = new Veterinario();
+
+        veterinario_update.setNome("Miguel");
+        veterinario_update.setTelefone("+5545999998876");
+        veterinario_update.setCep("85851-000");
+        veterinario_update.setCpf("434.484.890-00");
+        veterinario_update.setCidade("Foz do Iguaçu");
+        veterinario_update.setEstado("PR");
+        veterinario_update.setSenha("senha123");
+        veterinario_update.setEmail("miguel@example.com");
+        veterinario_update.setCRMV("123456");
+
+        veterinario.setNome(veterinario_update.getNome());
+        veterinario.setTelefone(veterinario_update.getTelefone());
+        veterinario.setCep(veterinario_update.getCep());
+        veterinario.setCpf(veterinario_update.getCpf());
+        veterinario.setCidade(veterinario_update.getCidade());
+        veterinario.setEstado(veterinario_update.getEstado());
+        veterinario.setSenha(veterinario_update.getSenha());
+        veterinario.setEmail(veterinario_update.getEmail());
+        veterinario.setCRMV(veterinario_update.getCRMV());
+
+        Mockito.when(veterinarioRepository.findById(1L)).thenReturn(Optional.of(veterinario));
+
+        Mockito.when(veterinarioRepository.existsByCnpj(any())).thenReturn(true);
+
+        Assertions.assertThrows(IllegalArgumentException.class, ()->{
+
+            veterinarioService.update(1L, veterinario_update);
+        });
+    }
+
+    @Test
+    void updateError5() {
+
+        Veterinario veterinario_update = new Veterinario();
+
+        veterinario_update.setNome("Miguel");
+        veterinario_update.setTelefone("+5545999998876");
+        veterinario_update.setCep("85851-000");
+        veterinario_update.setCpf("434.484.890-00");
+        veterinario_update.setCidade("Foz do Iguaçu");
+        veterinario_update.setEstado("PR");
+        veterinario_update.setSenha("senha123");
+        veterinario_update.setEmail("miguel@example.com");
+        veterinario_update.setCRMV("123456");
+
+        veterinario.setNome(veterinario_update.getNome());
+        veterinario.setTelefone(veterinario_update.getTelefone());
+        veterinario.setCep(veterinario_update.getCep());
+        veterinario.setCpf(veterinario_update.getCpf());
+        veterinario.setCidade(veterinario_update.getCidade());
+        veterinario.setEstado(veterinario_update.getEstado());
+        veterinario.setSenha(veterinario_update.getSenha());
+        veterinario.setEmail(veterinario_update.getEmail());
+        veterinario.setCRMV(veterinario_update.getCRMV());
+
+        Mockito.when(veterinarioRepository.findById(1L)).thenReturn(Optional.of(veterinario));
+
+        Mockito.when(veterinarioRepository.existsByEmail(any())).thenReturn(true);
+
+        Assertions.assertThrows(IllegalArgumentException.class, ()->{
+
+            veterinarioService.update(1L, veterinario_update);
+        });
+
+
+    }
+
+
+
 
     @Test
     void findById() {

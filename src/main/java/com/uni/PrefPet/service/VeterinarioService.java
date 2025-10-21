@@ -44,6 +44,9 @@ public class VeterinarioService {
         if (veterinarioRepository.existsByCnpj(veterinarioAtualizado.getCnpj())) {
             throw new IllegalArgumentException("Já existe um usuário com este cnpj.");
         }
+        if (veterinarioRepository.existsByEmail(veterinarioAtualizado.getCnpj())) {
+            throw new IllegalArgumentException("Já existe um usuário com este email.");
+        }
 
         existente.setEstado(veterinarioAtualizado.getEstado());
         existente.setCidade(veterinarioAtualizado.getCidade());
