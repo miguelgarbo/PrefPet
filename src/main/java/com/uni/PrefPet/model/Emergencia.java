@@ -31,9 +31,9 @@ public class Emergencia {
         contatos.add(c);
         c.getEmergencias().add(this);
     }
-    public void removeContato(Contato c) {
+
+    public void removeContato(Contato c){
         contatos.remove(c);
         c.getEmergencias().remove(this);
     }
-
 }

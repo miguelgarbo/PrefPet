@@ -20,18 +20,17 @@ public class EmergenciaService {
     @Autowired
     private ContatoRepository contatoRepository;
 
-    /// CRUD básico
     public Emergencia save(Emergencia denuncia) {
         if (denuncia.getContatos() != null && !denuncia.getContatos().isEmpty()) {
             List<Contato> contatosTratados = new ArrayList<>();
             for (Contato c : denuncia.getContatos()) {
                 if (c.getId() != null) {
-                    // Se já tem ID, busca no banco (entidade gerenciada)
+
                     Contato existente = contatoRepository.findById(c.getId())
                             .orElseThrow(() -> new RuntimeException("Contato não encontrado: " + c.getId()));
                     contatosTratados.add(existente);
                 } else {
-                    // Se não tem ID, é um novo contato
+
                     contatosTratados.add(contatoRepository.save(c));
                 }
             }
@@ -39,7 +38,6 @@ public class EmergenciaService {
         }
         return emergenciaRepository.save(denuncia);
     }
-
 
     public Emergencia findById(Long id) {
         return emergenciaRepository.findById(id).orElseThrow(() ->
@@ -83,6 +81,5 @@ public class EmergenciaService {
         return emergenciaRepository.findByNome(nome).orElseThrow(()->
                 new EntityNotFoundException("Tipo de Emergencia Não Encontrada"));
     }
-
 
 }
