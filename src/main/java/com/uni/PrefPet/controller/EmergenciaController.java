@@ -23,26 +23,26 @@ public class EmergenciaController {
     @Autowired
     private ContatoService contatoService;
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<Emergencia> save(@RequestBody @Valid Emergencia emergencia) {
         var result = emergenciaService.save(emergencia);
         return new ResponseEntity<>(result, HttpStatus.CREATED);}
 
-    @GetMapping("/findById/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Emergencia> findById(@PathVariable Long id) {
         
             var result = emergenciaService.findById(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
 
     }
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
         
-            emergenciaService.delete(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            var mensagem = emergenciaService.delete(id);
+            return new ResponseEntity<>(mensagem,HttpStatus.OK);
 
     }
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Emergencia> update(@PathVariable Long id, @RequestBody Emergencia emergencia) {
         
             var updatedEmergencia = emergenciaService.update(id, emergencia);

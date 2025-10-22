@@ -11,5 +11,7 @@ import java.util.Optional;
 public interface EmergenciaRepository extends JpaRepository<Emergencia, Long> {
 
     Optional<List<Emergencia>> findByNome(String nome);
+
+    boolean existsByNome (String nome);
 }
 

@@ -90,11 +90,12 @@ public class TutorControllerTest {
         //give
         Mockito.when(tutorService.save(tutor)).thenReturn(tutor);
 
-        mockMvc.perform(post("http://localhost:8080/tutores")
+        mockMvc.perform(post("/tutores")
                         .contentType("application/json")
                         .content(tutorJson))
                 .andDo(print())
-                .andExpect(status().isCreated()).andExpect(content().json(tutorJson));
+                .andExpect(status().isCreated())
+                .andExpect(content().json(tutorJson));
     }
 
     @Test
