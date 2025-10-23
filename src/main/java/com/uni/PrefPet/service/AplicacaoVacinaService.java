@@ -59,12 +59,8 @@ public class AplicacaoVacinaService {
     }
 
     public String delete(Long id) {
-
-        if (!existById(id)) {
-            throw new EntityNotFoundException("");
-        }
+        existById(id);
         aplicacaoVacinaRepository.deleteById(id);
-
         return "AplicacaoVacina Deletada com Sucesso";
     }
 
@@ -99,9 +95,6 @@ public class AplicacaoVacinaService {
                         "Nenhuma aplicacaoVacina encontrada com o lote informado"));
     }
 
-    public boolean existsByLote(String lote) {
-        return aplicacaoVacinaRepository.existsByLote(lote);
-    }
 
     public List<AplicacaoVacina> findByDataAplicacao(LocalDate dataAplicacao) {
         return aplicacaoVacinaRepository.findByDataAplicacao(dataAplicacao)

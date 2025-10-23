@@ -7,11 +7,13 @@ import com.uni.PrefPet.repository.AplicacaoVacinaRepository;
 import com.uni.PrefPet.repository.AnimalRepository;
 import com.uni.PrefPet.repository.VacinaRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
@@ -224,7 +226,6 @@ class AplicacaoVacinaServiceTest {
     @Test
     @DisplayName("Deve buscar aplicação por animal")
     void buscarPorAnimal() {
-
         List<AplicacaoVacina> aplicacaoVacinas = new ArrayList<>();
 
         when(aplicacaoVacinaRepository.findByAnimalId(1L)).thenReturn(Optional.of(aplicacaoVacinas));
@@ -232,10 +233,9 @@ class AplicacaoVacinaServiceTest {
         var resposta = aplicacaoVacinaService.findByAnimal(1L);
 
         assertEquals(aplicacaoVacinas,resposta);
-
     }
 
-
+    @Test
     @DisplayName("Teste deve listar as vacinas aplicadas")
     void listarVacinasAplicadas() {
         AplicacaoVacina a1 = new AplicacaoVacina();
@@ -249,13 +249,21 @@ class AplicacaoVacinaServiceTest {
         verify(aplicacaoVacinaRepository, times(1)).findAll();
     }
 
+
     @Test
     @DisplayName("delete deve lançar EntityNotFoundException quando id inexistente")
     void delete_deveLancarQuandoIdInexistente() {
-        Long idInexistente = 999L;
-        when(aplicacaoVacinaRepository.existsById(idInexistente)).thenReturn(false);
+        Long idInexistente = 1L;
 
-        assertThrows(EntityNotFoundException.class, () -> aplicacaoVacinaService.delete(idInexistente));
-        verify(aplicacaoVacinaRepository, never()).deleteById(anyLong());
+        Mockito.when(aplicacaoVacinaRepository.existsById(idInexistente)).thenReturn(false);
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+            aplicacaoVacinaService.delete(idInexistente);
+        });
+
+        Mockito.verify(aplicacaoVacinaRepository, never()).deleteById(anyLong());
     }
+
+
+
 }

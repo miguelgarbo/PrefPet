@@ -168,18 +168,7 @@ class AplicacaoVacinaControllerTest {
         Mockito.verify(aplicacaoVacinaService).findByLote("L1");
     }
 
-    @Test
-    @DisplayName("GET /aplicacao/exists-lote deve retornar booleano")
-    void deveVerificarSeExisteLote() throws Exception {
-        Mockito.when(aplicacaoVacinaService.existsByLote("L1")).thenReturn(true);
 
-        mockMvc.perform(get("/aplicacao/exists-lote")
-                        .param("lote", "L1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").value(true));
-
-        Mockito.verify(aplicacaoVacinaService).existsByLote("L1");
-    }
 
     @Test
     @DisplayName("GET /aplicacao/findByAnimalId deve retornar lista de aplicações")
