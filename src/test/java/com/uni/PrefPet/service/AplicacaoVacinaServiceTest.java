@@ -15,6 +15,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,13 +27,16 @@ class AplicacaoVacinaServiceTest {
 
     @Mock
     private AplicacaoVacinaRepository aplicacaoVacinaRepository;
+
     @Mock
     private VacinaRepository vacinaRepository;
+
     @Mock
     private AnimalRepository animalRepository;
 
     @InjectMocks
     private AplicacaoVacinaService aplicacaoVacinaService;
+
 
     @Test
     @DisplayName("Salvar aplicação de vacina com sucesso")
@@ -215,4 +220,20 @@ class AplicacaoVacinaServiceTest {
         assertThrows(EntityNotFoundException.class, () ->
                 aplicacaoVacinaService.findByAnimal(1L));
     }
+
+    @Test
+    @DisplayName("Deve buscar aplicação por animal")
+    void buscarPorAnimal() {
+
+        List<AplicacaoVacina> aplicacaoVacinas = new ArrayList<>();
+
+        when(aplicacaoVacinaRepository.findByAnimalId(1L)).thenReturn(Optional.of(aplicacaoVacinas));
+
+        var resposta = aplicacaoVacinaService.findByAnimal(1L);
+
+        assertEquals(aplicacaoVacinas,resposta);
+
+    }
+
+
 }

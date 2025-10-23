@@ -18,7 +18,6 @@ class EmergenciaTest {
 
     Contato contato = new Contato();
 
-    List<Contato> contatos = new ArrayList<>();
 
     @BeforeEach
     void setUp(){
