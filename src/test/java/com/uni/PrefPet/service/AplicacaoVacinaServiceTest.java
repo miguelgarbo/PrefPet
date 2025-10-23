@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -214,5 +215,29 @@ class AplicacaoVacinaServiceTest {
 
         assertThrows(EntityNotFoundException.class, () ->
                 aplicacaoVacinaService.findByAnimal(1L));
+    }
+
+    @Test
+    @DisplayName("Teste deve listar as vacinas aplicadas")
+    void listarVacinasAplicadas() {
+        AplicacaoVacina a1 = new AplicacaoVacina();
+        AplicacaoVacina a2 = new AplicacaoVacina();
+        when(aplicacaoVacinaRepository.findAll()).thenReturn(List.of(a1, a2));
+
+        var resultado = aplicacaoVacinaService.findAll();
+
+        assertNotNull(resultado);
+        assertEquals(2, resultado.size());
+        verify(aplicacaoVacinaRepository, times(1)).findAll();
+    }
+
+    @Test
+    @DisplayName("delete deve lançar EntityNotFoundException quando id inexistente")
+    void delete_deveLancarQuandoIdInexistente() {
+        Long idInexistente = 999L;
+        when(aplicacaoVacinaRepository.existsById(idInexistente)).thenReturn(false);
+
+        assertThrows(EntityNotFoundException.class, () -> aplicacaoVacinaService.delete(idInexistente));
+        verify(aplicacaoVacinaRepository, never()).deleteById(anyLong());
     }
 }
