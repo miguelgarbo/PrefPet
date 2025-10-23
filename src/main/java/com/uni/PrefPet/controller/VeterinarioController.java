@@ -18,26 +18,28 @@ public class VeterinarioController {
     @Autowired
     private VeterinarioService veterinarioService;
 
-    @PostMapping("/save")
+    @PostMapping
     public ResponseEntity<Veterinario> save(@RequestBody @Valid Veterinario veterinario) {
             var result = veterinarioService.save(veterinario);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
 
     }
-    @GetMapping("/findById/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Veterinario> findById(@PathVariable Long id) {
 
             var result = veterinarioService.findById(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
 
     }
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-            veterinarioService.delete(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+            var mensagem = veterinarioService.delete(id);
+            return new ResponseEntity<>(mensagem,HttpStatus.NO_CONTENT);
 
     }
-    @PutMapping("/update/{id}")
+
+    @PutMapping("/{id}")
     public ResponseEntity<Veterinario> update(@PathVariable Long id, @RequestBody Veterinario veterinario) {
             var updatedVeterinario = veterinarioService.update(id, veterinario);
             return new ResponseEntity<>(updatedVeterinario, HttpStatus.OK);
@@ -50,19 +52,6 @@ public class VeterinarioController {
 
     }
 
-    @GetMapping("/existsByCPF")
-    public ResponseEntity<Boolean> existsByCPF(@RequestParam String cpf) {
-            boolean exists = veterinarioService.existsByCPF(cpf);
-            return new ResponseEntity<>(exists, HttpStatus.OK);
-
-    }
-
-    @GetMapping("/existsByEmail")
-    public ResponseEntity<Boolean> existsByEmail(@RequestParam String email) {
-            boolean exists = veterinarioService.existsByEmail(email);
-            return new ResponseEntity<>(exists, HttpStatus.OK);
-
-    }
 
     @GetMapping("/findByNome")
     public ResponseEntity<List<Veterinario>> findByNome(@RequestParam String nome) {
@@ -72,29 +61,17 @@ public class VeterinarioController {
     }
 
     @GetMapping("/findByCPF")
-    public ResponseEntity<List<Veterinario>> findByCPF(@RequestParam String cpf) {
-            List<Veterinario> veterinario = veterinarioService.findByCPF(cpf);
-            return new ResponseEntity<>(veterinario, HttpStatus.OK);
-
-    }
-
-    @GetMapping("/findByTelefone")
-    public ResponseEntity<List<Veterinario>> findByTelefone(@RequestParam String telefone) {
-            List<Veterinario> veterinario = veterinarioService.findByTelefone(telefone);
+    public ResponseEntity<Veterinario> findByCPF(@RequestParam String cpf) {
+            var veterinario = veterinarioService.findByCPF(cpf);
             return new ResponseEntity<>(veterinario, HttpStatus.OK);
 
     }
 
     @GetMapping("/findByEmail")
-    public ResponseEntity<List<Veterinario>> findByEmail(@RequestParam String email) {
-            var veterinarios = veterinarioService.findByEmail(email);
-            return new ResponseEntity<>(veterinarios, HttpStatus.OK);
+    public ResponseEntity<Veterinario> findByEmail(@RequestParam String email) {
+            var veterinario = veterinarioService.findByEmail(email);
+            return new ResponseEntity<>(veterinario, HttpStatus.OK);
 
     }
 
-    @GetMapping("/findByCnpj")
-    public ResponseEntity<Veterinario> findByCnpj(@RequestParam String cnpj) {
-        var veterinario = veterinarioService.findByCnpj(cnpj);
-        return new ResponseEntity<>(veterinario, HttpStatus.OK);
-    }
 }

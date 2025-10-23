@@ -7,6 +7,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -30,7 +32,7 @@ public class Contato {
 
     @JsonIgnoreProperties("emergencias")
     @ManyToMany(mappedBy = "contatos")
-    private List<Emergencia> emergencias;
+    private List<Emergencia> emergencias  =new ArrayList<>();
 
     private Boolean ativo;
 

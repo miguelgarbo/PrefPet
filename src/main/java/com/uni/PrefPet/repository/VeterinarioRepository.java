@@ -27,11 +27,9 @@ public interface VeterinarioRepository extends JpaRepository<Veterinario, Long> 
 
     Optional<List<Veterinario>> findByNomeContainingIgnoreCase(String nome);
 
-    Optional<List<Veterinario>> findByCpf(String cpf);
+    Optional<Veterinario> findByCpf(String cpf);
 
-    Optional<List<Veterinario>> findByTelefone(String telefone);
-
-    Optional<List<Veterinario>> findByEmail(String email);
+    Optional<Veterinario> findByEmail(String email);
 
 
 

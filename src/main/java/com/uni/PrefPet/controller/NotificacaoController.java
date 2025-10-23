@@ -37,9 +37,9 @@ public class NotificacaoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        notificacaoService.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        var mensagem = notificacaoService.delete(id);
+        return new ResponseEntity<>(mensagem,HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
@@ -91,4 +91,5 @@ public class NotificacaoController {
         notificacaoService.conviteAceito(notificacaoId);
         return new ResponseEntity<>("Convite aceito e tutor atualizado com sucesso!", HttpStatus.OK);
     }
+
 }

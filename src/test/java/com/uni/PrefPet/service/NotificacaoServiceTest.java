@@ -159,7 +159,7 @@ public class NotificacaoServiceTest {
         tutor.setNome("Miguel Garbo");
         tutor.setTelefone("+5545999998888");
         tutor.setCep("85851-000");
-        tutor.setCpf("123.456.789-09"); // CPF válido só pra exemplo de teste
+        tutor.setCpf("123.456.789-09");
         tutor.setCidade("Foz do Iguaçu");
         tutor.setEstado("PR");
         tutor.setSenha("senha123");
@@ -185,27 +185,29 @@ public class NotificacaoServiceTest {
         aplicacaoVacina.setLote("1234");
         aplicacaoVacina.setVeterinario(veterinario);
         aplicacaoVacina.setNumeroDose(1);
-        aplicacaoVacina.setDataAplicacao(LocalDate.of(2024, 10,16));
+        aplicacaoVacina.setDataAplicacao(LocalDate.now());
+        aplicacaoVacina.setDataValidade(LocalDate.now());
 
         aplicacaoVacina2.setVacina(vacina);
         aplicacaoVacina2.setAnimal(animal);
         aplicacaoVacina2.setLote("1234");
         aplicacaoVacina2.setVeterinario(veterinario);
         aplicacaoVacina2.setNumeroDose(1);
-        aplicacaoVacina2.setDataAplicacao(LocalDate.of(2024, 10,21));
-
+        aplicacaoVacina2.setDataAplicacao(LocalDate.now());
+        aplicacaoVacina2.setDataValidade(LocalDate.now().plusDays(3));
 
         aplicacaoVacina3.setVacina(vacina);
         aplicacaoVacina3.setAnimal(animal);
         aplicacaoVacina3.setLote("1234");
         aplicacaoVacina3.setVeterinario(veterinario);
         aplicacaoVacina3.setNumeroDose(1);
-        aplicacaoVacina3.setDataAplicacao(LocalDate.of(2024, 10,13));
+        aplicacaoVacina3.setDataAplicacao(LocalDate.now());
+        aplicacaoVacina3.setDataValidade(LocalDate.now().minusDays(5));
 
-        aplicacaoVacinaService.save(aplicacaoVacina3,12);
-        aplicacaoVacinaService.save(aplicacaoVacina2,12);
-        aplicacaoVacinaService.save(aplicacaoVacina,12);
 
+//        aplicacaoVacinaService.save(aplicacaoVacina3,12);
+//       aplicacaoVacinaService.save(aplicacaoVacina2,12);
+//       aplicacaoVacinaService.save(aplicacaoVacina,12);
     }
 
     @Test
@@ -286,8 +288,9 @@ public class NotificacaoServiceTest {
 
     @Test
     void gerarNotificacaoDataValidadeVacina() {
-
         var resposta = notificacaoService.gerarNotificacaoDataValidadeVacina(aplicacaoVacina);
+
+        System.out.println(resposta);
 
             Notificacao notificacaoCriada = new Notificacao();
             notificacaoCriada.setTexto("A vacina " + aplicacaoVacina.getVacina().getNome() + " do seu animal " + aplicacaoVacina.getAnimal().getNome() + " vence hoje! Não esqueça de renovar.");
@@ -307,7 +310,7 @@ public class NotificacaoServiceTest {
         Notificacao notificacaoCriada = new Notificacao();
         notificacaoCriada.setTexto("A vacina " + aplicacaoVacina2.getVacina().getNome() +
                 " do seu animal " + aplicacaoVacina2.getAnimal().getNome() +
-                " vence em " + 5 + " dia(s). Agende a renovação.");
+                " vence em " + 3 + " dia(s). Agende a renovação.");
 
         notificacaoCriada.setNivel(1);
         notificacaoCriada.setTutorDestinatario(aplicacaoVacina2.getAnimal().getTutor());

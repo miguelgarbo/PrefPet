@@ -44,6 +44,9 @@ public class VeterinarioService {
         if (veterinarioRepository.existsByCnpj(veterinarioAtualizado.getCnpj())) {
             throw new IllegalArgumentException("Já existe um usuário com este cnpj.");
         }
+        if (veterinarioRepository.existsByEmail(veterinarioAtualizado.getCnpj())) {
+            throw new IllegalArgumentException("Já existe um usuário com este email.");
+        }
 
         existente.setEstado(veterinarioAtualizado.getEstado());
         existente.setCidade(veterinarioAtualizado.getCidade());
@@ -70,47 +73,28 @@ public class VeterinarioService {
         return "Veterinario com id " + id + " foi excluído com sucesso.";
     }
 
-    //serviços especificos:
 
-    public Veterinario findByCnpj(String cnpj){
-        return veterinarioRepository.findByCnpj(cnpj)
-                .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o cnpj informado"));
-    }
+
     //serviços especificos:
 
     public Veterinario findByCRMV(String crmv){
         return veterinarioRepository.findByCRMV(crmv)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o crmv informado"));
     }
-    
-    public boolean existsByCPF(String cpf) {
-        return veterinarioRepository.existsByCpf(cpf);
-    }
 
-    public boolean existsByEmail(String email) {
-        return veterinarioRepository.existsByEmail(email);
-    }
-
-    public boolean existsByTelefone(String telefone) {
-        return veterinarioRepository.existsByTelefone(telefone);
-    }
 
     public List<Veterinario> findByNome(String nome) {
         return veterinarioRepository.findByNomeContainingIgnoreCase(nome)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o nome informado"));
     }
 
-    public List<Veterinario> findByCPF(String cpf) {
+    public Veterinario findByCPF(String cpf) {
         return veterinarioRepository.findByCpf(cpf)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o CPF informado"));
     }
 
-    public List<Veterinario> findByTelefone(String telefone) {
-        return veterinarioRepository.findByTelefone(telefone)
-                .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o telefone informado"));
-    }
 
-    public List<Veterinario> findByEmail(String email) {
+    public Veterinario findByEmail(String email) {
         return veterinarioRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o email informado"));
     }

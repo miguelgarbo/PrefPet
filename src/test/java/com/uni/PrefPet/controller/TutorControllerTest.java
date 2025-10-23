@@ -5,12 +5,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uni.PrefPet.model.Usuarios.Tutor;
 import com.uni.PrefPet.service.TutorService;
 import jakarta.persistence.EntityNotFoundException;
-import jdk.jshell.spi.ExecutionControl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,11 +90,12 @@ public class TutorControllerTest {
         //give
         Mockito.when(tutorService.save(tutor)).thenReturn(tutor);
 
-        mockMvc.perform(post("http://localhost:8080/tutores")
+        mockMvc.perform(post("/tutores")
                         .contentType("application/json")
                         .content(tutorJson))
                 .andDo(print())
-                .andExpect(status().isCreated()).andExpect(content().json(tutorJson));
+                .andExpect(status().isCreated())
+                .andExpect(content().json(tutorJson));
     }
 
     @Test
