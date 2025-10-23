@@ -150,4 +150,69 @@ class AplicacaoVacinaServiceTest {
 
         assertThrows(EntityNotFoundException.class, () -> aplicacaoVacinaService.delete(99L));
     }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao buscar aplicação por lote inexistente")
+    void buscarPorLoteInexistente() {
+        when(aplicacaoVacinaRepository.findByLote("X999")).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () ->
+                aplicacaoVacinaService.findByLote("X999"));
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao buscar por data de aplicação inexistente")
+    void buscarPorDataAplicacaoInexistente() {
+        when(aplicacaoVacinaRepository.findByDataAplicacao(any())).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () ->
+                aplicacaoVacinaService.findByDataAplicacao(LocalDate.now()));
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao buscar por validade anterior inexistente")
+    void buscarPorValidadeBeforeInexistente() {
+        when(aplicacaoVacinaRepository.findByDataValidadeBefore(any())).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () ->
+                aplicacaoVacinaService.findByValidadeBefore(LocalDate.now()));
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao buscar por validade posterior inexistente")
+    void buscarPorValidadeAfterInexistente() {
+        when(aplicacaoVacinaRepository.findByDataValidadeAfter(any())).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () ->
+                aplicacaoVacinaService.findByValidadeAfter(LocalDate.now()));
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao validar data de aplicação posterior à validade")
+    void validarDataAplicacaoPosteriorAValidade() {
+        LocalDate aplicacao = LocalDate.of(2025, 10, 10);
+        LocalDate validade = LocalDate.of(2025, 9, 10); // antes → deve dar erro
+
+        assertThrows(IllegalArgumentException.class, () ->
+                aplicacaoVacinaService.validarDataAplicacaoEValidade(aplicacao, validade));
+    }
+
+    @Test
+    @DisplayName("Deve gerar data de validade corretamente com meses adicionados")
+    void gerarDataValidadeCorretamente() {
+        LocalDate aplicacao = LocalDate.of(2024, 1, 10);
+
+        LocalDate validade = aplicacaoVacinaService.gerarDataValidade(aplicacao, 6);
+
+        assertEquals(LocalDate.of(2024, 7, 10), validade);
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao buscar aplicação por animal inexistente")
+    void buscarPorAnimalInexistente() {
+        when(aplicacaoVacinaRepository.findByAnimalId(1L)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () ->
+                aplicacaoVacinaService.findByAnimal(1L));
+    }
 }
