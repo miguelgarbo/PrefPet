@@ -90,7 +90,6 @@ public class ContatoServiceTest {
 
 
         verify(contatoRepository, times(1)).findAll();
-
     }
 
     @Test
@@ -104,14 +103,14 @@ public class ContatoServiceTest {
 
     @Test
     @DisplayName("Tenta deletar um contato inexistente")
-    void deleteContantoInexistente(){
+    void deleteContantoInexistente() {
         when(contatoRepository.existsById(999L)).thenReturn(false);
-        assertThrows(EntityNotFoundException.class, ()-> contatoService.delete(999L));
+        assertThrows(EntityNotFoundException.class, () -> contatoService.delete(999L));
         verify(contatoRepository, never()).deleteById(anyLong());
     }
 
     @Test
-    @DisplayName("update atualiza apenas os campos que não são nulos")
+    @DisplayName("atualiza apenas os campos que não são nulos")
     void updateContatoComSucesso() {
         when(contatoRepository.findById(1L)).thenReturn(Optional.of(contato));
 
@@ -132,43 +131,114 @@ public class ContatoServiceTest {
     @Test
     @DisplayName("lança a exceção se o contato não existir")
     void updateContatoInexistente() {
-        // 1️⃣ Simula que o contato não existe
+
         when(contatoRepository.findById(999L)).thenReturn(Optional.empty());
 
         // 2️⃣ Verifica que a exceção é lançada
-        assertThrows(EntityNotFoundException.class, () ->
-                contatoService.update(999L, new Contato()));
-
-        // 3️⃣ Garante que não tenta salvar nada
+        assertThrows(EntityNotFoundException.class, () -> contatoService.update(999L, new Contato()));
         verify(contatoRepository, never()).save(any());
     }
 
-/*
     @Test
-    void existById() {
+    @DisplayName("existsByEmail retorna true quando email existe")
+    void existsByEmailTrue() {
+        when(contatoRepository.existsByEmail("pablo@mail.com")).thenReturn(true);
+        boolean resultado = contatoService.existsByEmail("pablo@mail.com");
+        assertTrue(resultado);
+        verify(contatoRepository, times(1)).existsByEmail("pablo@mail.com");
     }
 
     @Test
-    void update() {
+    @DisplayName("existsByEmail retorna false quando email não existe")
+    void existsByEmailFalse() {
+        when(contatoRepository.existsByEmail("naoexiste@mail.com")).thenReturn(false);
+        boolean resultado = contatoService.existsByEmail("naoexiste@mail.com");
+        assertFalse(resultado);
+        verify(contatoRepository, times(1)).existsByEmail("naoexiste@mail.com");
     }
 
     @Test
-    void existsByEmail() {
+    @DisplayName("findByEmail retorna contatos com sucesso")
+    void findByEmailSucesso() {
+        when(contatoRepository.findByEmail("pablo@mail.com")).thenReturn(Optional.of(List.of(contato)));
+
+        List<Contato> resultado = contatoService.findByEmail("pablo@mail.com");
+
+        assertNotNull(resultado);
+        assertEquals(1, resultado.size());
+        assertEquals("pablo@mail.com", resultado.get(0).getEmail());
+        verify(contatoRepository, times(1)).findByEmail("pablo@mail.com");
     }
 
     @Test
-    void findByEmail() {
+    @DisplayName("findByEmail lança exceção quando não encontra")
+    void findByEmailErro() {
+        when(contatoRepository.findByEmail("naoexiste@mail.com")).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class,
+                () -> contatoService.findByEmail("naoexiste@mail.com"));
+
+        verify(contatoRepository, times(1)).findByEmail("naoexiste@mail.com");
     }
 
     @Test
-    void findByNomeOrgaoContainingIgnoreCase() {
+    @DisplayName("findByNomeOrgaoContainingIgnoreCase retorna contatos com sucesso")
+    void findByNomeOrgaoSucesso() {
+        when(contatoRepository.findByNomeOrgaoContainingIgnoreCase("Prefeitura"))
+                .thenReturn(Optional.of(List.of(contato)));
+
+        List<Contato> resultado = contatoService.findByNomeOrgaoContainingIgnoreCase("Prefeitura");
+
+        assertNotNull(resultado);
+        assertEquals(1, resultado.size());
+        assertEquals("Prefeitura de Foz", resultado.get(0).getNomeOrgao());
+        verify(contatoRepository, times(1)).findByNomeOrgaoContainingIgnoreCase("Prefeitura");
     }
 
     @Test
-    void findByTelefone() {
+    @DisplayName("findByNomeOrgaoContainingIgnoreCase lança exceção quando não encontra")
+    void findByNomeOrgaoErro() {
+        when(contatoRepository.findByNomeOrgaoContainingIgnoreCase("NaoExiste"))
+                .thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class,
+                () -> contatoService.findByNomeOrgaoContainingIgnoreCase("NaoExiste"));
+
+        verify(contatoRepository, times(1)).findByNomeOrgaoContainingIgnoreCase("NaoExiste");
     }
 
     @Test
+    @DisplayName("findByTelefone retorna contatos com sucesso")
+    void findByTelefoneSucesso() {
+        when(contatoRepository.findByTelefoneContaining("45991240945"))
+                .thenReturn(Optional.of(List.of(contato)));
+
+        List<Contato> resultado = contatoService.findByTelefone("45991240945");
+
+        assertNotNull(resultado);
+        assertEquals(1, resultado.size());
+        assertEquals("45991240945", resultado.get(0).getTelefone());
+        verify(contatoRepository, times(1)).findByTelefoneContaining("45991240945");
+    }
+
+    @Test
+    @DisplayName("findByTelefone lança exceção quando não encontra")
+    void findByTelefoneErro() {
+        when(contatoRepository.findByTelefoneContaining("0000000000"))
+                .thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class,
+                () -> contatoService.findByTelefone("0000000000"));
+
+        verify(contatoRepository, times(1)).findByTelefoneContaining("0000000000");
+    }
+
+    @Test
+    @DisplayName("mensagemContatoNotFounded retorna EntityNotFoundException com mensagem correta")
     void mensagemContatoNotFounded() {
-    }*/
+        EntityNotFoundException excecao = contatoService.mensagemContatoNotFounded();
+        assertEquals("Contato Não Encontrado", excecao.getMessage());
+    }
+
 }
+
