@@ -154,4 +154,86 @@ class AplicacaoVacinaControllerTest {
                 .andExpect(status().isNoContent());
         Mockito.verify(aplicacaoVacinaService).delete(anyLong());
     }
+
+    @Test
+    @DisplayName("GET /aplicacao/by-lote deve retornar aplicação de vacina")
+    void deveBuscarAplicacaoPorLote() throws Exception {
+        AplicacaoVacina app = new AplicacaoVacina();
+        Mockito.when(aplicacaoVacinaService.findByLote("L1")).thenReturn(app);
+
+        mockMvc.perform(get("/aplicacao/by-lote")
+                        .param("lote", "L1"))
+                .andExpect(status().isOk());
+
+        Mockito.verify(aplicacaoVacinaService).findByLote("L1");
+    }
+
+
+
+    @Test
+    @DisplayName("GET /aplicacao/findByAnimalId deve retornar lista de aplicações")
+    void deveBuscarAplicacaoPorAnimalId() throws Exception {
+        List<AplicacaoVacina> lista = List.of(new AplicacaoVacina());
+        Mockito.when(aplicacaoVacinaService.findByAnimal(1L)).thenReturn(lista);
+
+        mockMvc.perform(get("/aplicacao/findByAnimalId/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(1));
+
+        Mockito.verify(aplicacaoVacinaService).findByAnimal(1L);
+    }
+
+    @Test
+    @DisplayName("GET /aplicacao/validade-before deve retornar lista")
+    void deveBuscarPorValidadeBefore() throws Exception {
+        List<AplicacaoVacina> lista = List.of(new AplicacaoVacina());
+        Mockito.when(aplicacaoVacinaService.findByValidadeBefore(any())).thenReturn(lista);
+
+        mockMvc.perform(get("/aplicacao/validade-before")
+                        .param("data", LocalDate.now().toString()))
+                .andExpect(status().isOk());
+
+        Mockito.verify(aplicacaoVacinaService).findByValidadeBefore(any());
+    }
+
+    @Test
+    @DisplayName("GET /aplicacao/validade-after deve retornar lista")
+    void deveBuscarPorValidadeAfter() throws Exception {
+        List<AplicacaoVacina> lista = List.of(new AplicacaoVacina());
+        Mockito.when(aplicacaoVacinaService.findByValidadeAfter(any())).thenReturn(lista);
+
+        mockMvc.perform(get("/aplicacao/validade-after")
+                        .param("data", LocalDate.now().toString()))
+                .andExpect(status().isOk());
+
+        Mockito.verify(aplicacaoVacinaService).findByValidadeAfter(any());
+    }
+
+    @Test
+    @DisplayName("GET /aplicacao/aplicacaoData deve retornar lista")
+    void deveBuscarPorDataAplicacao() throws Exception {
+        List<AplicacaoVacina> lista = List.of(new AplicacaoVacina());
+        Mockito.when(aplicacaoVacinaService.findByDataAplicacao(any())).thenReturn(lista);
+
+        mockMvc.perform(get("/aplicacao/aplicacaoData")
+                        .param("data", LocalDate.now().toString()))
+                .andExpect(status().isOk());
+
+        Mockito.verify(aplicacaoVacinaService).findByDataAplicacao(any());
+    }
+
+    @Test
+    @DisplayName("GET /aplicacao/aplicacao-after deve retornar lista")
+    void deveBuscarPorDataAplicacaoAfter() throws Exception {
+        List<AplicacaoVacina> lista = List.of(new AplicacaoVacina());
+        Mockito.when(aplicacaoVacinaService.findByDataAplicacaoAfter(any())).thenReturn(lista);
+
+        mockMvc.perform(get("/aplicacao/aplicacao-after")
+                        .param("data", LocalDate.now().toString()))
+                .andExpect(status().isOk());
+
+        Mockito.verify(aplicacaoVacinaService).findByDataAplicacaoAfter(any());
+    }
+
+
 }

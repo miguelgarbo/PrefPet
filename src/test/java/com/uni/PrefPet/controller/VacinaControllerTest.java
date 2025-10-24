@@ -19,6 +19,7 @@ import java.util.List;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -41,7 +42,7 @@ class VacinaControllerTest {
         vacina.setId(1L);
         vacina.setNome("Antirrábica");
 
-        Mockito.when(vacinaService.save(any(Vacina.class))).thenReturn(vacina);
+        when(vacinaService.save(any(Vacina.class))).thenReturn(vacina);
 
         mockMvc.perform(post("/vacinas/save")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -57,7 +58,7 @@ class VacinaControllerTest {
         Vacina vacina = new Vacina();
         vacina.setNome(""); // nome inválido
 
-        Mockito.when(vacinaService.save(any(Vacina.class)))
+        when(vacinaService.save(any(Vacina.class)))
                 .thenThrow(new IllegalArgumentException("Dados inválidos"));
 
         mockMvc.perform(post("/vacinas/save")
@@ -73,7 +74,7 @@ class VacinaControllerTest {
         vacina.setId(2L);
         vacina.setNome("V8");
 
-        Mockito.when(vacinaService.findById(2L)).thenReturn(vacina);
+        when(vacinaService.findById(2L)).thenReturn(vacina);
 
         mockMvc.perform(get("/vacinas/findById/2"))
                 .andExpect(status().isOk())
@@ -83,7 +84,7 @@ class VacinaControllerTest {
     @Test
     @DisplayName("Deve retornar erro 404 quando vacina não for encontrada (GET /vacinas/findById/{id})")
     void buscarVacinaPorIdErro() throws Exception {
-        Mockito.when(vacinaService.findById(99L))
+        when(vacinaService.findById(99L))
                 .thenThrow(new EntityNotFoundException("Vacina não encontrada"));
 
         mockMvc.perform(get("/vacinas/findById/99"))
@@ -96,7 +97,7 @@ class VacinaControllerTest {
         Vacina v1 = new Vacina(); v1.setNome("A");
         Vacina v2 = new Vacina(); v2.setNome("B");
 
-        Mockito.when(vacinaService.findAll()).thenReturn(List.of(v1, v2));
+        when(vacinaService.findAll()).thenReturn(List.of(v1, v2));
 
         mockMvc.perform(get("/vacinas/findAll"))
                 .andExpect(status().isOk())
@@ -110,7 +111,7 @@ class VacinaControllerTest {
         vacinaAtualizada.setId(1L);
         vacinaAtualizada.setNome("Nova Vacina");
 
-        Mockito.when(vacinaService.update(eq(1L), any(Vacina.class))).thenReturn(vacinaAtualizada);
+        when(vacinaService.update(eq(1L), any(Vacina.class))).thenReturn(vacinaAtualizada);
 
         mockMvc.perform(put("/vacinas/update/1")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -125,7 +126,7 @@ class VacinaControllerTest {
         Vacina vacina = new Vacina();
         vacina.setNome("V99");
 
-        Mockito.when(vacinaService.update(eq(99L), any(Vacina.class)))
+        when(vacinaService.update(eq(99L), any(Vacina.class)))
                 .thenThrow(new EntityNotFoundException("Vacina não encontrada"));
 
         mockMvc.perform(put("/vacinas/update/99")
@@ -152,6 +153,23 @@ class VacinaControllerTest {
         mockMvc.perform(delete("/vacinas/delete/99"))
                 .andExpect(status().isInternalServerError());
     }
+
+    @Test
+    @DisplayName("GET /vacinas/by-nome deve retornar lista de vacinas")
+    void deveBuscarVacinasPorNome() throws Exception{
+        Vacina vacina = new Vacina();
+        vacina.setId(1L);
+        vacina.setNome("antirrabica");
+        Mockito.when(vacinaService.findByNome("Antirrábica")).thenReturn(List.of(vacina));
+
+        mockMvc.perform(get("/vacinas/by-nome")
+                        .param("nome", "antirrabica"))
+                .andExpect(status().isOk());
+
+        Mockito.verify(vacinaService).findByNome(any());
+    }
+
+
 
 
 }

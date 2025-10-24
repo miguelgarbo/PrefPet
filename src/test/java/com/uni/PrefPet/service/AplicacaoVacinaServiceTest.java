@@ -7,14 +7,18 @@ import com.uni.PrefPet.repository.AplicacaoVacinaRepository;
 import com.uni.PrefPet.repository.AnimalRepository;
 import com.uni.PrefPet.repository.VacinaRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -25,13 +29,16 @@ class AplicacaoVacinaServiceTest {
 
     @Mock
     private AplicacaoVacinaRepository aplicacaoVacinaRepository;
+
     @Mock
     private VacinaRepository vacinaRepository;
+
     @Mock
     private AnimalRepository animalRepository;
 
     @InjectMocks
     private AplicacaoVacinaService aplicacaoVacinaService;
+
 
     @Test
     @DisplayName("Salvar aplicação de vacina com sucesso")
@@ -150,4 +157,113 @@ class AplicacaoVacinaServiceTest {
 
         assertThrows(EntityNotFoundException.class, () -> aplicacaoVacinaService.delete(99L));
     }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao buscar aplicação por lote inexistente")
+    void buscarPorLoteInexistente() {
+        when(aplicacaoVacinaRepository.findByLote("X999")).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () ->
+                aplicacaoVacinaService.findByLote("X999"));
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao buscar por data de aplicação inexistente")
+    void buscarPorDataAplicacaoInexistente() {
+        when(aplicacaoVacinaRepository.findByDataAplicacao(any())).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () ->
+                aplicacaoVacinaService.findByDataAplicacao(LocalDate.now()));
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao buscar por validade anterior inexistente")
+    void buscarPorValidadeBeforeInexistente() {
+        when(aplicacaoVacinaRepository.findByDataValidadeBefore(any())).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () ->
+                aplicacaoVacinaService.findByValidadeBefore(LocalDate.now()));
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao buscar por validade posterior inexistente")
+    void buscarPorValidadeAfterInexistente() {
+        when(aplicacaoVacinaRepository.findByDataValidadeAfter(any())).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () ->
+                aplicacaoVacinaService.findByValidadeAfter(LocalDate.now()));
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao validar data de aplicação posterior à validade")
+    void validarDataAplicacaoPosteriorAValidade() {
+        LocalDate aplicacao = LocalDate.of(2025, 10, 10);
+        LocalDate validade = LocalDate.of(2025, 9, 10); // antes → deve dar erro
+
+        assertThrows(IllegalArgumentException.class, () ->
+                aplicacaoVacinaService.validarDataAplicacaoEValidade(aplicacao, validade));
+    }
+
+    @Test
+    @DisplayName("Deve gerar data de validade corretamente com meses adicionados")
+    void gerarDataValidadeCorretamente() {
+        LocalDate aplicacao = LocalDate.of(2024, 1, 10);
+
+        LocalDate validade = aplicacaoVacinaService.gerarDataValidade(aplicacao, 6);
+
+        assertEquals(LocalDate.of(2024, 7, 10), validade);
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao buscar aplicação por animal inexistente")
+    void buscarPorAnimalInexistente() {
+        when(aplicacaoVacinaRepository.findByAnimalId(1L)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () ->
+                aplicacaoVacinaService.findByAnimal(1L));
+    }
+
+    @Test
+    @DisplayName("Deve buscar aplicação por animal")
+    void buscarPorAnimal() {
+        List<AplicacaoVacina> aplicacaoVacinas = new ArrayList<>();
+
+        when(aplicacaoVacinaRepository.findByAnimalId(1L)).thenReturn(Optional.of(aplicacaoVacinas));
+
+        var resposta = aplicacaoVacinaService.findByAnimal(1L);
+
+        assertEquals(aplicacaoVacinas,resposta);
+    }
+
+    @Test
+    @DisplayName("Teste deve listar as vacinas aplicadas")
+    void listarVacinasAplicadas() {
+        AplicacaoVacina a1 = new AplicacaoVacina();
+        AplicacaoVacina a2 = new AplicacaoVacina();
+        when(aplicacaoVacinaRepository.findAll()).thenReturn(List.of(a1, a2));
+
+        var resultado = aplicacaoVacinaService.findAll();
+
+        assertNotNull(resultado);
+        assertEquals(2, resultado.size());
+        verify(aplicacaoVacinaRepository, times(1)).findAll();
+    }
+
+
+    @Test
+    @DisplayName("delete deve lançar EntityNotFoundException quando id inexistente")
+    void delete_deveLancarQuandoIdInexistente() {
+        Long idInexistente = 1L;
+
+        Mockito.when(aplicacaoVacinaRepository.existsById(idInexistente)).thenReturn(false);
+
+        Assertions.assertThrows(EntityNotFoundException.class, () -> {
+            aplicacaoVacinaService.delete(idInexistente);
+        });
+
+        Mockito.verify(aplicacaoVacinaRepository, never()).deleteById(anyLong());
+    }
+
+
+
 }

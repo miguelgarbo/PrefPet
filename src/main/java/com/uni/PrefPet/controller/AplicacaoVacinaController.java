@@ -72,12 +72,6 @@ public class AplicacaoVacinaController {
 
     }
 
-    @GetMapping("/exists-lote")
-    public ResponseEntity<Boolean> existsByLote(@RequestParam String lote) {
-        boolean exists = aplicacaoVacinaService.existsByLote(lote);
-        return ResponseEntity.ok(exists);
-    }
-
     @GetMapping("/validade-before")
     public ResponseEntity<List<AplicacaoVacina>> findByValidadeBefore(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {

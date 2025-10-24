@@ -15,8 +15,6 @@ public interface AplicacaoVacinaRepository extends JpaRepository<AplicacaoVacina
 
     Optional<AplicacaoVacina> findByLote(String lote);
 
-    boolean existsByLote(String lote);
-
     Optional<List<AplicacaoVacina>> findByDataAplicacao(LocalDate dataAplicacao);
 
     Optional<List<AplicacaoVacina>> findByDataAplicacaoAfter(LocalDate data);
