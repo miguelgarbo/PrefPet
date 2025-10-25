@@ -157,7 +157,9 @@ class VacinaControllerTest {
     @Test
     @DisplayName("GET /vacinas/by-nome deve retornar lista de vacinas")
     void deveBuscarVacinasPorNome() throws Exception {
-        Vacina vacina = new Vacina(1L, "Antirrábica");
+        Vacina vacina = new Vacina();
+        vacina.setId(1L);
+        vacina.setNome("Antirrábica");
         Mockito.when(vacinaService.findByNome("Antirrábica")).thenReturn(List.of(vacina));
 
         mockMvc.perform(get("/vacinas/by-nome")

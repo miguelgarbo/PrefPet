@@ -232,12 +232,76 @@ class AplicacaoVacinaServiceTest {
     }
 
     @Test
-    @DisplayName("delete deve lançar EntityNotFoundException quando id inexistente")
-    void delete_deveLancarQuandoIdInexistente() {
-        Long idInexistente = 999L;
-        when(aplicacaoVacinaRepository.existsById(idInexistente)).thenReturn(false);
+    @DisplayName("Tentar deletar aplicação de vacina inexistente deve lançar exceção")
+    void deletarAplicacaoVacinaInexistente() {
+        when(aplicacaoVacinaRepository.existsById(1L)).thenReturn(false);
 
-        assertThrows(EntityNotFoundException.class, () -> aplicacaoVacinaService.delete(idInexistente));
+        assertThrows(EntityNotFoundException.class, () -> aplicacaoVacinaService.delete(1L));
         verify(aplicacaoVacinaRepository, never()).deleteById(anyLong());
     }
+
+    @Test
+    @DisplayName("Deve lançar exceção ao buscar por data de aplicação após uma data inexistente")
+    void buscarPorDataAplicacaoAfterInexistente() {
+        when(aplicacaoVacinaRepository.findByDataAplicacaoAfter(any()))
+                .thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () ->
+                aplicacaoVacinaService.findByDataAplicacaoAfter(LocalDate.now()));
+
+        verify(aplicacaoVacinaRepository).findByDataAplicacaoAfter(any());
+    }
+
+    @Test
+    @DisplayName("Deve retornar lista de aplicações ao buscar por data de aplicação após uma data existente")
+    void buscarPorDataAplicacaoAfterExistente() {
+        AplicacaoVacina aplicacao = new AplicacaoVacina();
+        when(aplicacaoVacinaRepository.findByDataAplicacaoAfter(any()))
+                .thenReturn(Optional.of(List.of(aplicacao)));
+
+        var resultado = aplicacaoVacinaService.findByDataAplicacaoAfter(LocalDate.now().minusDays(5));
+
+        assertNotNull(resultado);
+        assertEquals(1, resultado.size());
+        verify(aplicacaoVacinaRepository).findByDataAplicacaoAfter(any());
+    }
+
+    @Test
+    @DisplayName("Deve retornar lista de aplicações ao buscar por validade anterior a uma data existente")
+    void buscarPorDataValidadeBeforeExistente() {
+        AplicacaoVacina aplicacao = new AplicacaoVacina();
+        when(aplicacaoVacinaRepository.findByDataValidadeBefore(any()))
+                .thenReturn(Optional.of(List.of(aplicacao)));
+
+        var resultado = aplicacaoVacinaService.findByValidadeBefore(LocalDate.now().plusDays(10));
+
+        assertNotNull(resultado);
+        assertEquals(1, resultado.size());
+        verify(aplicacaoVacinaRepository).findByDataValidadeBefore(any());
+    }
+
+    @Test
+    @DisplayName("Deve retornar lista de aplicações ao buscar por validade posterior a uma data existente")
+    void buscarPorValidadeAfterExistente() {
+        AplicacaoVacina aplicacao = new AplicacaoVacina();
+        when(aplicacaoVacinaRepository.findByDataValidadeAfter(any()))
+                .thenReturn(Optional.of(List.of(aplicacao)));
+
+        var resultado = aplicacaoVacinaService.findByValidadeAfter(LocalDate.now().minusDays(10));
+
+        assertNotNull(resultado);
+        assertEquals(1, resultado.size());
+        verify(aplicacaoVacinaRepository).findByDataValidadeAfter(any());
+    }
+
+    @Test
+    @DisplayName("Não deve lançar exceção se a data de aplicação for antes da validade")
+    void validarDataAplicacaoValida() {
+        LocalDate aplicacao = LocalDate.of(2025, 1, 1);
+        LocalDate validade = LocalDate.of(2025, 6, 1);
+
+        assertDoesNotThrow(() ->
+                aplicacaoVacinaService.validarDataAplicacaoEValidade(aplicacao, validade));
+    }
+
 }
