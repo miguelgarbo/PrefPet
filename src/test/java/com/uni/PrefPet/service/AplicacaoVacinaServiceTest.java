@@ -240,6 +240,11 @@ class AplicacaoVacinaServiceTest {
         verify(aplicacaoVacinaRepository, never()).deleteById(anyLong());
     }
 
+
+
+
+
+
     @Test
     @DisplayName("Deve lançar exceção ao buscar por data de aplicação após uma data inexistente")
     void buscarPorDataAplicacaoAfterInexistente() {
