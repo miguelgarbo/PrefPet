@@ -26,7 +26,7 @@ class AnimalTest {
         animal.setCastrado(true);
         animal.setMicrochip(true);
         animal.setNumeroMicrochip("1234567890");
-        animal.setDataNascimento(LocalDate.now());
+        animal.setDataNascimento(LocalDate.now().plusYears(5));
         animal.setNaturalidade("Foz do Iguaçu");
     }
 
@@ -34,7 +34,7 @@ class AnimalTest {
     @DisplayName("TESTE UNITARIO: esse teste deve retornar a idade do animal de acordo com sua data de nascimento")
     void getIdade() {
         var idade = animal.getIdade();
-        Assertions.assertEquals(0, idade);
+        Assertions.assertEquals(-5, idade);
 
     }
 }

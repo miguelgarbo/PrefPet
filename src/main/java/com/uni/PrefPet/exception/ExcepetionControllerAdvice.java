@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 @RestControllerAdvice
-
 public class ExcepetionControllerAdvice {
 
         private static final Logger LOG = LoggerFactory.getLogger(ExcepetionControllerAdvice.class);

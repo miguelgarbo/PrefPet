@@ -74,7 +74,6 @@ public class ContatoService {
         
         return contatoRepository.save(contatoSelecionada);    }
 
-    ///fim crud basico
 
     //serviços especificos:
     public boolean existsByEmail(String email) {

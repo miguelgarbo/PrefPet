@@ -4,6 +4,7 @@ import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.AplicacaoVacina;
 import com.uni.PrefPet.model.Notificacao;
 import com.uni.PrefPet.model.Vacina;
+
 import com.uni.PrefPet.repository.AnimalRepository;
 import com.uni.PrefPet.repository.AplicacaoVacinaRepository;
 import com.uni.PrefPet.repository.VacinaRepository;
@@ -58,12 +59,8 @@ public class AplicacaoVacinaService {
     }
 
     public String delete(Long id) {
-
-        if (!existById(id)) {
-            throw new EntityNotFoundException("");
-        }
+        existById(id);
         aplicacaoVacinaRepository.deleteById(id);
-
         return "AplicacaoVacina Deletada com Sucesso";
     }
 
@@ -98,9 +95,6 @@ public class AplicacaoVacinaService {
                         "Nenhuma aplicacaoVacina encontrada com o lote informado"));
     }
 
-    public boolean existsByLote(String lote) {
-        return aplicacaoVacinaRepository.existsByLote(lote);
-    }
 
     public List<AplicacaoVacina> findByDataAplicacao(LocalDate dataAplicacao) {
         return aplicacaoVacinaRepository.findByDataAplicacao(dataAplicacao)
