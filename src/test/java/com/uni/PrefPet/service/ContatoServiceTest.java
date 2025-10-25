@@ -41,7 +41,7 @@ public class ContatoServiceTest {
     }
 
     @Test
-    @DisplayName("Salvar vacina Funcionou")
+    @DisplayName("Salvar contato Funcionou")
     void save() {
         Mockito.when(contatoRepository.save(contato)).thenReturn(contato);
         var resposta = contatoService.save(contato);
@@ -49,6 +49,14 @@ public class ContatoServiceTest {
         assertEquals(contato, resposta);
         Mockito.verify(contatoRepository, Mockito.times(1)).save(any());
     }
+
+    @Test
+    @DisplayName("save lança exceção se o repository falhar")
+    void saveFalha() {
+        when(contatoRepository.save(any())).thenThrow(new RuntimeException("Erro no banco"));
+        assertThrows(RuntimeException.class, () -> contatoService.save(contato));
+    }
+
 
     @Test
     @DisplayName("FindById Funcionou")
@@ -98,13 +106,14 @@ public class ContatoServiceTest {
         String resposta = contatoService.delete(1L);
         assertEquals("Contato Deletado com Sucesso", resposta);
         verify(contatoRepository, times(1)).existsById(1L);
+        verify(contatoRepository, times(1)).deleteById(1L);
     }
 
     @Test
     @DisplayName("Tenta deletar um contato inexistente")
     void deleteContantoInexistente() {
         when(contatoRepository.existsById(999L)).thenReturn(false);
-        assertThrows(EntityNotFoundException.class, () -> contatoService.delete(999L));
+        assertThrows(EntityNotFoundException.class,() -> contatoService.delete(999L));
         verify(contatoRepository, never()).deleteById(anyLong());
     }
 
@@ -128,15 +137,72 @@ public class ContatoServiceTest {
     }
 
     @Test
+    @DisplayName("update atualiza todos os campos não nulos")
+    void updateTodosCampos() {
+        when(contatoRepository.findById(1L)).thenReturn(Optional.of(contato));
+        when(contatoRepository.save(any(Contato.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Contato atualizado = new Contato();
+        atualizado.setEmail("novo@mail.com");
+        atualizado.setTelefone("45998887777");
+        atualizado.setAtivo(false);
+        atualizado.setNomeOrgao("Prefeitura Atualizada");
+
+        Contato resultado = contatoService.update(1L, atualizado);
+
+        assertAll(
+                () -> assertEquals("novo@mail.com", resultado.getEmail()),
+                () -> assertEquals("45998887777", resultado.getTelefone()),
+                () -> assertEquals(false, resultado.getAtivo()),
+                () -> assertEquals("Prefeitura Atualizada", resultado.getNomeOrgao())
+        );
+
+        verify(contatoRepository, times(1)).save(any(Contato.class));
+    }
+
+
+    @Test
     @DisplayName("lança a exceção se o contato não existir")
     void updateContatoInexistente() {
 
         when(contatoRepository.findById(999L)).thenReturn(Optional.empty());
 
-        // 2️⃣ Verifica que a exceção é lançada
+        // Verifica que a exceção é lançada
         assertThrows(EntityNotFoundException.class, () -> contatoService.update(999L, new Contato()));
         verify(contatoRepository, never()).save(any());
     }
+
+    @Test
+    @DisplayName("update não altera campos nulos")
+    void updateCamposNulos() {
+        when(contatoRepository.findById(1L)).thenReturn(Optional.of(contato));
+        when(contatoRepository.save(any(Contato.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        Contato atualizado = new Contato(); // todos os campos null
+
+        Contato resultado = contatoService.update(1L, atualizado);
+
+        // Todos os campos devem permanecer iguais
+        assertEquals("pablo@mail.com", resultado.getEmail());
+        assertEquals("45991240945", resultado.getTelefone());
+        assertEquals("Prefeitura de Foz", resultado.getNomeOrgao());
+        assertTrue(resultado.getAtivo());
+
+        verify(contatoRepository, times(1)).save(any());
+    }
+
+
+    @Test
+    @DisplayName("update lança exceção quando id não existe (existById)")
+    void updateIdNaoExiste() { // aqui usamos o método existById
+        when(contatoRepository.findById(999L)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class,
+                () -> contatoService.update(999L, new Contato()));
+
+        verify(contatoRepository, never()).save(any());
+    }
+
 
     @Test
     @DisplayName("existsByEmail retorna true quando email existe")
