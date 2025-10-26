@@ -2,6 +2,7 @@ package com.uni.PrefPet.service;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.uni.PrefPet.exception.DeniedAcessException;
 import com.uni.PrefPet.model.Usuarios.Tutor;
 import com.uni.PrefPet.repository.TutorRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -375,26 +376,15 @@ public class TutorServiceTest {
     }
 
     @Test
-    void loginFalse() {
+    void loginExceptionDeniedAccess() {
 
         Mockito.when(tutorService.findAll()).thenReturn(new ArrayList<>());
 
-        var login = tutorService.login(tutor.getEmail(), tutor.getSenha());
-        Tutor current = tutorService.getCurrentUser();
+        Assertions.assertThrows(DeniedAcessException.class, ()->{
+            tutorService.login(tutor.getEmail(), "senhaErrada");
 
-        assertNull(current);
-        Assertions.assertFalse(login);
+        });
     }
-
-
-//    @Test
-//    void getCurrentUser() {
-//
-//
-//
-//
-//
-//    }
 
     @Test
     void logout() {

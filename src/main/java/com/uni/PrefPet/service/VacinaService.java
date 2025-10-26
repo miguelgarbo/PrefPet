@@ -35,9 +35,7 @@ public class VacinaService {
 
     public String delete(Long id) {
 
-        if (!existById(id)) {
-            throw new EntityNotFoundException("");
-        }
+       existById(id);
         vacinaRepository.deleteById(id);
 
         return "Vacina Deletada com Sucesso";

@@ -17,11 +17,13 @@ import java.util.List;
 public class NotificacaoService {
     
     @Autowired
-     NotificacaoRepository notificacaoRepository;
+    NotificacaoRepository notificacaoRepository;
+
     @Autowired
-     TutorService tutorService;
+    TutorService tutorService;
+
     @Autowired
-     AnimalService animalService;
+    AnimalService animalService;
 
     public List<Notificacao> findAll() {
         return notificacaoRepository.findAll();
@@ -98,7 +100,6 @@ public class NotificacaoService {
             notificacao.setNivel(nivel);
             return notificacao;
         }
-
         return null;
 }
 

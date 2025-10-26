@@ -12,9 +12,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -153,6 +155,22 @@ class AplicacaoVacinaServiceTest {
     }
 
     @Test
+    @DisplayName("Deve retornar uma aplicacao ao buscar por lote")
+    void buscarPorLote() {
+
+        AplicacaoVacina aplicacaoVacina = new AplicacaoVacina();
+        aplicacaoVacina.setLote("123");
+
+        when(aplicacaoVacinaRepository.findByLote("123")).thenReturn(Optional.of(aplicacaoVacina));
+
+        var resposta = aplicacaoVacinaService.findByLote("123");
+
+        assertEquals("123",resposta.getLote());
+
+        Mockito.verify(aplicacaoVacinaRepository, Mockito.times(1)).findByLote(any());
+    }
+
+    @Test
     @DisplayName("Deve lançar exceção ao buscar aplicação por lote inexistente")
     void buscarPorLoteInexistente() {
         when(aplicacaoVacinaRepository.findByLote("X999")).thenReturn(Optional.empty());
@@ -168,6 +186,23 @@ class AplicacaoVacinaServiceTest {
 
         assertThrows(EntityNotFoundException.class, () ->
                 aplicacaoVacinaService.findByDataAplicacao(LocalDate.now()));
+    }
+
+    @Test
+    @DisplayName("Deve retornar aplicacao ao buscar por data de aplicação")
+    void buscarPorDataAplicacao() {
+
+        AplicacaoVacina aplicacaoVacina = new AplicacaoVacina();
+        aplicacaoVacina.setDataAplicacao(LocalDate.of(2025,2,2));
+
+        when(aplicacaoVacinaRepository.findByDataAplicacao(any())).thenReturn(Optional.of(Collections.singletonList(aplicacaoVacina)));
+
+        var resposta  = aplicacaoVacinaService.findByDataAplicacao(LocalDate.of(2025,2,2));
+
+        assertEquals(LocalDate.of(2025,2,2),resposta.get(0).getDataAplicacao());
+        Mockito.verify(aplicacaoVacinaRepository, Mockito.times(1)).findByDataAplicacao(any());
+
+
     }
 
     @Test

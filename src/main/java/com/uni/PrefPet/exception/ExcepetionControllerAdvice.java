@@ -44,6 +44,17 @@ public class ExcepetionControllerAdvice {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
         }
 
+    @ExceptionHandler(DeniedAcessException.class)
+    public ResponseEntity<Map<String, Object>> handleNotFoundException(DeniedAcessException ex) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "Credenciais Inválidas");
+        body.put("message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
+    }
+
         @ExceptionHandler(Exception.class)
         public ResponseEntity<Map<String, Object>> handleGenericException(Exception ex) {
             LOG.error("Erro inesperado: ", ex);

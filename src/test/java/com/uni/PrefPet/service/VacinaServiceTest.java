@@ -21,6 +21,7 @@ class VacinaServiceTest {
 
     @Mock
     private VacinaRepository vacinaRepository;
+
     @InjectMocks
     private VacinaService vacinaService;
 

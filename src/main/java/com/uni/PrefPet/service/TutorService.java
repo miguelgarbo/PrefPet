@@ -1,4 +1,5 @@
 package com.uni.PrefPet.service;
+import com.uni.PrefPet.exception.DeniedAcessException;
 import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.Usuarios.Tutor;
 import com.uni.PrefPet.repository.TutorRepository;
@@ -119,9 +120,9 @@ public class TutorService {
                 return true;
             }
         }
-        return false; // não encontrou ninguém
+        throw new DeniedAcessException("Acesso Negado");
+//        return false;
     }
-
 
     public Tutor getCurrentUser(){
         return currentUser;
