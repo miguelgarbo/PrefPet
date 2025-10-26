@@ -206,7 +206,7 @@ public class ContatoServiceTest {
 
     @Test
     @DisplayName("existsByEmail retorna true quando email existe")
-    void existsByEmailTrue() {
+    void existsByEmailSucesso() {
         when(contatoRepository.existsByEmail("pablo@mail.com")).thenReturn(true);
         boolean resultado = contatoService.existsByEmail("pablo@mail.com");
         assertTrue(resultado);
@@ -215,7 +215,7 @@ public class ContatoServiceTest {
 
     @Test
     @DisplayName("existsByEmail retorna false quando email não existe")
-    void existsByEmailFalse() {
+    void existsByEmailErro() {
         when(contatoRepository.existsByEmail("naoexiste@mail.com")).thenReturn(false);
         boolean resultado = contatoService.existsByEmail("naoexiste@mail.com");
         assertFalse(resultado);
