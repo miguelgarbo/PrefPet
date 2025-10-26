@@ -34,10 +34,10 @@ public class EmergenciaService {
 //        }
 //        return emergenciaRepository.save(denuncia);
 //    }
-    
-    
+
+
     public Emergencia save(Emergencia emergencia){
-        
+
         if (emergenciaRepository.existsByNome(emergencia.getNome())){
             throw new IllegalArgumentException("Esse Tipo de Emergencia já existe");
         }
@@ -75,7 +75,6 @@ public class EmergenciaService {
         return emergenciaRepository.save(denunciaSelecionada);
     }
 
-    /// Filtros extras
     public List<Emergencia> findByNome(String nome) {
         return emergenciaRepository.findByNome(nome).orElseThrow(()->
                 new EntityNotFoundException("Tipo de Emergencia Não Encontrada"));
