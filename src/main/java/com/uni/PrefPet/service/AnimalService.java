@@ -101,19 +101,37 @@ public class AnimalService  {
     }
     // servicos especificos
 
+//    public List<Animal> findAnimaisIdadeAcima(int idade) {
+//        LocalDate limite = LocalDate.now().minusYears(idade);
+//
+//        return animalRepository.findAnimaisIdadeAcima(limite)
+//                .orElseThrow(() -> new EntityNotFoundException("Nenhum animal com a espécie informada foi encontrado"));
+//    }
+
     public List<Animal> findAnimaisIdadeAcima(int idade) {
         LocalDate limite = LocalDate.now().minusYears(idade);
-        return animalRepository.findAnimaisIdadeAcima(limite);
+
+        List<Animal> animais = animalRepository.findAnimaisIdadeAcima(limite);
+
+        if (animais.isEmpty()) {
+            throw new EntityNotFoundException("Nenhum animal encontrado com idade acima de " + idade + " anos");
+        }
+
+        return animais;
     }
 
-    public List<Animal> findAnimaisEntreIdade(int idadeMax, int idadeMin){
 
-
+    public List<Animal> findAnimaisEntreIdade(int idadeMax, int idadeMin) {
         LocalDate anoMax = LocalDate.now().minusYears(idadeMax);
         LocalDate anoMin = LocalDate.now().minusYears(idadeMin);
 
-        return animalRepository.findAnimaisIdadeEntre(anoMax, anoMin);
+        List<Animal> animais = animalRepository.findAnimaisIdadeEntre(anoMax, anoMin);
 
+        if (animais.isEmpty()) {
+            throw new EntityNotFoundException("Nenhum animal encontrado entre as idades informadas");
+        }
+
+        return animais;
     }
 
     public Animal findByNome(String nome){

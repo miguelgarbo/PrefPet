@@ -160,7 +160,10 @@ class VacinaControllerTest {
         Vacina vacina = new Vacina();
         vacina.setId(1L);
         vacina.setNome("Antirrábica");
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
         Mockito.when(vacinaService.findByNome("Antirrábica")).thenReturn(List.of(vacina));
 
         mockMvc.perform(get("/vacinas/by-nome")
