@@ -163,27 +163,6 @@ class EntidadeControllerTest {
                 .andExpect(status().isNotFound());
     }
 
-    @Test
-    @DisplayName("Deve retornar true se CPF existir (GET /entidades/existsByCPF)")
-    void existsByCPFSucesso() throws Exception {
-        when(entidadeService.existsByCPF("111.444.777-35")).thenReturn(true);
-
-        mockMvc.perform(get("/entidades/existsByCPF")
-                        .param("cpf", "111.444.777-35"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("true"));
-    }
-
-    @Test
-    @DisplayName("Deve retornar false se CPF não existir (GET /entidades/existsByCPF)")
-    void existsByCPFErro() throws Exception {
-        when(entidadeService.existsByCPF("000.000.000-00")).thenReturn(false);
-
-        mockMvc.perform(get("/entidades/existsByCPF")
-                        .param("cpf", "000.000.000-00"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("false"));
-    }
 
     @Test
     @DisplayName("Deve buscar entidades por tipo (GET /entidades/findByTipoEntidade)")
@@ -206,6 +185,50 @@ class EntidadeControllerTest {
                         .param("nome", "Prefeitura"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].nome").value("Prefeitura de Foz"));
+    }
+
+    @Test
+    @DisplayName("Deve buscar entidades por email ")
+    void findByEmailSucesso() throws Exception {
+        when(entidadeService.findByEmail("prefeitura@foz.gov.br")).thenReturn(entidade);
+
+        mockMvc.perform(get("/entidades/findByEmail")
+                        .param("email", "prefeitura@foz.gov.br"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.email").value("prefeitura@foz.gov.br"));
+    }
+
+    @Test
+    @DisplayName("Deve buscar entidades por nome")
+    void findByCnpjSucesso() throws Exception {
+        when(entidadeService.findByCnpj("11.222.333/0001-81")).thenReturn(entidade);
+
+        mockMvc.perform(get("/entidades/findByCnpj")
+                        .param("cnpj", "11.222.333/0001-81"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.cnpj").value("11.222.333/0001-81"));
+    }
+
+    @Test
+    @DisplayName("Deve buscar entidades por cpf")
+    void findByCpfSucesso() throws Exception {
+        when(entidadeService.findByCPF("111.444.777-35")).thenReturn(entidade);
+
+        mockMvc.perform(get("/entidades/findByCPF")
+                        .param("cpf", "111.444.777-35"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.cpf").value("111.444.777-35"));
+    }
+
+    @Test
+    @DisplayName("Deve buscar entidades por telefone")
+    void findByTelefoneSucesso() throws Exception {
+        when(entidadeService.findByTelefone("+5545999999999")).thenReturn(List.of(entidade));
+
+        mockMvc.perform(get("/entidades/findByTelefone")
+                        .param("telefone", "+5545999999999"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].telefone").value("+5545999999999"));
     }
 
 }

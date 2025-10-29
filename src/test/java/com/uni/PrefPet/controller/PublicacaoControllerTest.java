@@ -9,6 +9,7 @@ import com.uni.PrefPet.repository.PublicacaoRepository;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -42,7 +43,6 @@ public class PublicacaoControllerTest {
 
     @BeforeEach
     void setUp(){
-
         publicacaoRepository.deleteAll();
 
         entidade.setNome("Unila");
@@ -70,12 +70,10 @@ public class PublicacaoControllerTest {
         publicacaoRepository.save(publicacao);
     }
 
-
     @Test
+    @DisplayName("Teste de Integração: salvar uma publicação")
     void save() {
-
         Publicacao publicacao1 = new Publicacao();
-
         publicacao1.setTipoPublicacao("CAMPANA");
         publicacao1.setEntidade(entidade);
         publicacao1.setDescricao("Testeee");
@@ -87,81 +85,76 @@ public class PublicacaoControllerTest {
 
         Assertions.assertEquals(HttpStatus.CREATED, resposta.getStatusCode());
         Assertions.assertNotNull(resposta.getBody().getId());
-        Assertions.assertEquals(publicacao1.getDescricao(),resposta.getBody().getDescricao());
-
+        Assertions.assertEquals(publicacao1.getDescricao(), resposta.getBody().getDescricao());
     }
 
     @Test
+    @DisplayName("Teste de Integração: buscar publicação por ID")
     void findById() {
+        var resposta = restTemplate.exchange("/publicacao/1", HttpMethod.GET, null, Publicacao.class);
 
-        var resposta = restTemplate.exchange("/publicacao/1", HttpMethod.GET,null, Publicacao.class);
-
-        Assertions.assertEquals(publicacao.getId(),resposta.getBody().getId());
-        Assertions.assertEquals(publicacao.getDescricao(),resposta.getBody().getDescricao());
-
+        Assertions.assertEquals(publicacao.getId(), resposta.getBody().getId());
+        Assertions.assertEquals(publicacao.getDescricao(), resposta.getBody().getDescricao());
     }
 
     @Test
+    @DisplayName("Teste de Integração: deletar publicação por ID")
     void delete() {
+        var resposta = restTemplate.exchange("/publicacao/1", HttpMethod.DELETE, null, Void.class);
 
-
-        var resposta = restTemplate.exchange("/publicacao/1", HttpMethod.DELETE,null, Void.class);
-
-        Assertions.assertEquals(HttpStatus.NO_CONTENT,resposta.getStatusCode());
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, resposta.getStatusCode());
         Assertions.assertEquals(publicacaoRepository.findAll().size(), 0);
-
     }
 
     @Test
+    @DisplayName("Teste de Integração: atualizar uma publicação")
     void update() {
-
         Publicacao publicacao1 = new Publicacao();
-
         publicacao1.setDescricao("Updated");
         publicacao1.setTipoPublicacao("ATIVIDADES");
 
         HttpEntity<Publicacao> publicacaoHttpEntity = new HttpEntity<>(publicacao1);
 
-        var resposta = restTemplate.exchange("/publicacao/1", HttpMethod.PUT,publicacaoHttpEntity, Publicacao.class);
+        var resposta = restTemplate.exchange("/publicacao/1", HttpMethod.PUT, publicacaoHttpEntity, Publicacao.class);
 
-        Assertions.assertEquals(HttpStatus.OK,resposta.getStatusCode());
+        Assertions.assertEquals(HttpStatus.OK, resposta.getStatusCode());
         Assertions.assertEquals(resposta.getBody().getDescricao(), publicacao1.getDescricao());
     }
 
     @Test
+    @DisplayName("Teste de Integração: listar todas as publicações")
     void findAll() {
+        var resposta = restTemplate.exchange("/publicacao/findAll", HttpMethod.GET, null, List.class);
 
-        var resposta = restTemplate.exchange("/publicacao/findAll", HttpMethod.GET,null, List.class);
-
-        Assertions.assertEquals(HttpStatus.OK,resposta.getStatusCode());
+        Assertions.assertEquals(HttpStatus.OK, resposta.getStatusCode());
         Assertions.assertEquals(resposta.getBody().size(), 1);
     }
 
     @Test
+    @DisplayName("Teste de Integração: buscar publicações por nome da entidade")
     void findByEntidadeNome() {
+        var resposta = restTemplate.exchange("/publicacao/byEntidadeNome?nomeEntidade=Unila", HttpMethod.GET, null, List.class);
 
-        var resposta = restTemplate.exchange("/publicacao/byEntidadeNome?nomeEntidade=Unila", HttpMethod.GET,null, List.class);
-
-        Assertions.assertEquals(HttpStatus.OK,resposta.getStatusCode());
+        Assertions.assertEquals(HttpStatus.OK, resposta.getStatusCode());
         Assertions.assertTrue(resposta.getBody().toString().contains("Teste"));
     }
 
-
     @Test
+    @DisplayName("Teste de Integração: buscar publicações por tipo de publicação")
     void findByTipoPublicacao() {
+        var resposta = restTemplate.exchange("/publicacao/byTipoPublicacao?tipoPublicacao=CAMPANHA", HttpMethod.GET, null, List.class);
 
-        var resposta = restTemplate.exchange("/publicacao/byTipoPublicacao?tipoPublicacao=CAMPANHA", HttpMethod.GET,null, List.class);
-
-        Assertions.assertEquals(HttpStatus.OK,resposta.getStatusCode());
+        Assertions.assertEquals(HttpStatus.OK, resposta.getStatusCode());
         Assertions.assertTrue(resposta.getBody().toString().contains("CAMPANHA"));
     }
 
     @Test
+    @DisplayName("Teste de Integração: buscar publicações por descrição")
     void findByDescricao() {
+        var resposta = restTemplate.exchange("/publicacao/byDescricao?descricao=Teste", HttpMethod.GET, null, List.class);
 
-        var resposta = restTemplate.exchange("/publicacao/byDescricao?descricao=Teste", HttpMethod.GET,null, List.class);
-
-        Assertions.assertEquals(HttpStatus.OK,resposta.getStatusCode());
+        Assertions.assertEquals(HttpStatus.OK, resposta.getStatusCode());
         Assertions.assertTrue(resposta.getBody().toString().contains("Teste"));
     }
 }
+

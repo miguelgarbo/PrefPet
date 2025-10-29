@@ -115,7 +115,7 @@ public class EntidadeService {
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o nome informado"));
     }
 
-    public List<Entidade> findByCPF(String cpf) {
+    public Entidade findByCPF(String cpf) {
         return entidadeRepository.findByCpf(cpf)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o CPF informado"));
     }
@@ -125,7 +125,7 @@ public class EntidadeService {
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o telefone informado"));
     }
 
-    public List<Entidade> findByEmail(String email) {
+    public Entidade findByEmail(String email) {
         return entidadeRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o email informado"));
     }

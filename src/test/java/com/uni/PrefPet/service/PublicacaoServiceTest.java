@@ -14,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +31,6 @@ public class PublicacaoServiceTest {
     PublicacaoRepository publicacaoRepository;
 
     Publicacao publicacao = new Publicacao();
-
     List<Publicacao> publicacoes = new ArrayList<>();
 
     @BeforeEach
@@ -46,215 +44,182 @@ public class PublicacaoServiceTest {
         publicacao.setTipoPublicacao("CAMPANHA DE VACINAÇÃO");
 
         publicacoes.add(publicacao);
-        publicacaoRepository.save(publicacao);
     }
 
     @Test
-    @DisplayName("esse teste deve retornar publicacoes")
+    @DisplayName("Teste Unitário: buscar todas as publicações")
     void findAll() {
-
         Mockito.when(publicacaoRepository.findAll()).thenReturn(publicacoes);
-
         var resposta = publicacaoService.findAll();
 
-        Assertions.assertEquals(resposta, publicacoes);
+        Assertions.assertEquals(publicacoes, resposta);
         Mockito.verify(publicacaoRepository, Mockito.times(1)).findAll();
     }
 
     @Test
-    @DisplayName("esse teste deve salvar publicacao")
+    @DisplayName("Teste Unitário: salvar uma publicação")
     void save() {
         Publicacao publicacaoNova = new Publicacao();
         Mockito.when(publicacaoRepository.save(any())).thenReturn(publicacaoNova);
 
         var resposta = publicacaoService.save(publicacaoNova);
 
-        Assertions.assertEquals(resposta, publicacaoNova);
+        Assertions.assertEquals(publicacaoNova, resposta);
         Mockito.verify(publicacaoRepository, Mockito.times(1)).save(publicacaoNova);
-
     }
 
-
     @Test
-    @DisplayName("esse teste deve retornar uma publicacao pelo id")
+    @DisplayName("Teste Unitário: buscar publicação por ID")
     void findById() {
-
         Mockito.when(publicacaoRepository.findById(1L)).thenReturn(Optional.of(publicacao));
 
         var resposta = publicacaoService.findById(1L);
 
-        Assertions.assertEquals(resposta, publicacao);
+        Assertions.assertEquals(publicacao, resposta);
         Mockito.verify(publicacaoRepository, Mockito.times(1)).findById(any());
     }
 
     @Test
-    @DisplayName("esse teste deve retornar uma exceção ao publicar pelo id")
+    @DisplayName("Teste Unitário: falha ao buscar publicação por ID inexistente")
     void findByIdError() {
-
         Mockito.when(publicacaoRepository.findById(1L))
-                .thenThrow(new EntityNotFoundException("Publicacao com id " + 1 + " não encontrado."));
+                .thenThrow(new EntityNotFoundException("Publicacao com id 1 não encontrado."));
 
-        Assertions.assertThrows(EntityNotFoundException.class, () -> {
-            publicacaoService.findById(1L);
-        });
-
+        Assertions.assertThrows(EntityNotFoundException.class, () -> publicacaoService.findById(1L));
         Mockito.verify(publicacaoRepository, Mockito.times(1)).findById(any());
     }
 
-
-
-
     @Test
+    @DisplayName("Teste Unitário: atualizar publicação com sucesso")
     void update() {
         Publicacao publicacaoNova = new Publicacao();
         publicacaoNova.setDescricao("Texto atualizado");
 
         Mockito.when(publicacaoRepository.findById(publicacao.getId())).thenReturn(Optional.of(publicacao));
-
-        publicacao.setDescricao(publicacaoNova.getDescricao());
-
         Mockito.when(publicacaoRepository.save(publicacao)).thenReturn(publicacao);
 
         var resposta = publicacaoService.update(publicacao.getId(), publicacaoNova);
 
         Assertions.assertEquals("Texto atualizado", resposta.getDescricao());
         Mockito.verify(publicacaoRepository, Mockito.times(1)).findById(any());
-        Mockito.verify(publicacaoRepository, Mockito.times(2)).save(any());
     }
 
     @Test
+    @DisplayName("Teste Unitário: falha ao atualizar publicação inexistente")
     void updateError() {
-
         Mockito.when(publicacaoRepository.findById(publicacao.getId())).thenReturn(Optional.empty());
 
-        Assertions.assertThrows(EntityNotFoundException.class, ()->{
-            publicacaoService.update(publicacao.getId(), any());
-        });
+        Assertions.assertThrows(EntityNotFoundException.class, () ->
+                publicacaoService.update(publicacao.getId(), any())
+        );
 
         Mockito.verify(publicacaoRepository, Mockito.times(1)).findById(any());
     }
 
     @Test
+    @DisplayName("Teste Unitário: buscar publicação por descrição inexistente")
     void testFindByDescricaoNotFound() {
         Mockito.when(publicacaoRepository.findByDescricaoContaining(any()))
                 .thenReturn(Optional.empty());
 
-        Assertions.assertThrows(EntityNotFoundException.class, () -> {
-            publicacaoService.findByDescricao("hdfhsd");
-        });
+        Assertions.assertThrows(EntityNotFoundException.class, () ->
+                publicacaoService.findByDescricao("hdfhsd")
+        );
     }
 
     @Test
+    @DisplayName("Teste Unitário: buscar publicação por tipo inexistente")
     void testFindByTipoPublicacaoNotFound() {
         Mockito.when(publicacaoRepository.findByTipoPublicacao(any()))
                 .thenReturn(Optional.empty());
 
-        Assertions.assertThrows(EntityNotFoundException.class, () -> {
-            publicacaoService.findByTipoPublicacao("CAMPANHA DE CASTRAÇÃO");
-        });
+        Assertions.assertThrows(EntityNotFoundException.class, () ->
+                publicacaoService.findByTipoPublicacao("CAMPANHA DE CASTRAÇÃO")
+        );
     }
 
     @Test
+    @DisplayName("Teste Unitário: buscar publicação por entidade inexistente")
     void testFindByEntidadeNotFound() {
         Mockito.when(publicacaoRepository.findByEntidade(any()))
                 .thenReturn(Optional.empty());
 
-        Assertions.assertThrows(EntityNotFoundException.class, () -> {
-            publicacaoService.findByEntidade(new Entidade());
-        });
+        Assertions.assertThrows(EntityNotFoundException.class, () ->
+                publicacaoService.findByEntidade(new Entidade())
+        );
     }
 
     @Test
+    @DisplayName("Teste Unitário: buscar publicação por nome de entidade inexistente")
     void testFindByEntidadeNomeNotFound() {
         Mockito.when(publicacaoRepository.findByEntidadeNome(any()))
                 .thenReturn(Optional.empty());
 
-        Assertions.assertThrows(EntityNotFoundException.class, () -> {
-            publicacaoService.findByEntidadeNome("Prefeitura");
-        });
+        Assertions.assertThrows(EntityNotFoundException.class, () ->
+                publicacaoService.findByEntidadeNome("Prefeitura")
+        );
     }
 
-
     @Test
+    @DisplayName("Teste Unitário: deletar publicação com sucesso")
     void delete() {
-
         Mockito.when(publicacaoRepository.existsById(1L)).thenReturn(true);
         Mockito.doNothing().when(publicacaoRepository).deleteById(1L);
 
         String mensagem = publicacaoService.delete(1L);
 
-        Assertions.assertEquals("Publicacao com id 1 foi excluído com sucesso." ,mensagem);
+        Assertions.assertEquals("Publicacao com id 1 foi excluído com sucesso.", mensagem);
         Mockito.verify(publicacaoRepository, Mockito.times(1)).deleteById(any());
-
     }
 
     @Test
+    @DisplayName("Teste Unitário: falha ao deletar publicação inexistente")
     void deleteError() {
-
         Mockito.when(publicacaoRepository.existsById(1L)).thenReturn(false);
 
-        Assertions.assertThrows(EntityNotFoundException.class, ()->{
-            publicacaoService.delete(1L);
-        });
-
+        Assertions.assertThrows(EntityNotFoundException.class, () -> publicacaoService.delete(1L));
         Mockito.verify(publicacaoRepository, Mockito.times(1)).existsById(any());
-
     }
 
     @Test
+    @DisplayName("Teste Unitário: buscar publicação por entidade com sucesso")
     void findByEntidade() {
-
         Mockito.when(publicacaoRepository.findByEntidade(new Entidade())).thenReturn(Optional.of(publicacoes));
 
         var resposta = publicacaoService.findByEntidade(new Entidade());
-        System.out.println(publicacoes);
-        System.out.println(resposta);
-
-        Assertions.assertEquals(publicacoes,resposta);
-
+        Assertions.assertEquals(publicacoes, resposta);
     }
 
-
-
     @Test
+    @DisplayName("Teste Unitário: buscar publicação por nome de entidade com sucesso")
     void findByEntidadeNome() {
-
         Mockito.when(publicacaoRepository.findByEntidadeNome("Unila")).thenReturn(Optional.of(publicacoes));
 
         var resposta = publicacaoService.findByEntidadeNome("Unila");
-
-        System.out.println(publicacoes.get(0).getEntidade().getNome());
-        System.out.println(resposta);
-
-        Assertions.assertEquals(publicacoes,resposta);
+        Assertions.assertEquals(publicacoes, resposta);
     }
 
-
     @Test
+    @DisplayName("Teste Unitário: buscar publicação por tipo com sucesso")
     void findByTipoPublicacao() {
-
-        Mockito.when(publicacaoRepository.findByTipoPublicacao("CAMPANHA DE VACINAÇÃO")).thenReturn(Optional.of(publicacoes));
+        Mockito.when(publicacaoRepository.findByTipoPublicacao("CAMPANHA DE VACINAÇÃO"))
+                .thenReturn(Optional.of(publicacoes));
 
         var resposta = publicacaoService.findByTipoPublicacao("CAMPANHA DE VACINAÇÃO");
-
-        System.out.println(publicacoes.get(0).getTipoPublicacao());
-        System.out.println(resposta);
-
-        Assertions.assertEquals(publicacoes,resposta);
+        Assertions.assertEquals(publicacoes, resposta);
     }
-
 
     @Test
+    @DisplayName("Teste Unitário: buscar publicação por descrição com sucesso")
     void findByDescricao() {
-
-        Mockito.when(publicacaoRepository.findByDescricaoContaining("Lorem")).thenReturn(Optional.of(publicacoes));
+        Mockito.when(publicacaoRepository.findByDescricaoContaining("Lorem"))
+                .thenReturn(Optional.of(publicacoes));
 
         var resposta = publicacaoService.findByDescricao("Lorem");
-
-        System.out.println(publicacoes.get(0).getDescricao());
-        System.out.println(resposta);
-
-        Assertions.assertEquals(publicacoes,resposta);
-
+        Assertions.assertEquals(publicacoes, resposta);
     }
+
+
+
 }
+

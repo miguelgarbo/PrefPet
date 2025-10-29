@@ -79,7 +79,7 @@ class AnimalControllerTest {
     // ======================== TESTES SAVE ========================
 
     @Test
-    @DisplayName("Salvar animal com sucesso")
+    @DisplayName("Teste Unitario -Salvar animal com sucesso")
     void salvarAnimalSucesso() throws Exception {
         Mockito.when(animalService.save(Mockito.any(Animal.class))).thenReturn(animal);
 
@@ -92,7 +92,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Erro ao salvar animal por campo obrigatório ausente")
+    @DisplayName("Teste Unitario - Erro ao salvar animal por campo obrigatório ausente")
     void salvarAnimalErro() throws Exception {
         Mockito.when(animalService.save(Mockito.any(Animal.class)))
                 .thenThrow(new IllegalArgumentException("ERRO: campo obrigatório nome não preenchido"));
@@ -108,7 +108,7 @@ class AnimalControllerTest {
     // ======================== TESTES FIND BY ID ========================
 
     @Test
-    @DisplayName("Buscar animal por ID com sucesso")
+    @DisplayName(" Teste Unitario - Buscar animal por ID com sucesso")
     void buscarPorIdSucesso() throws Exception {
         Mockito.when(animalService.findById(1L)).thenReturn(animal);
 
@@ -119,7 +119,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Erro ao buscar animal por ID inexistente")
+    @DisplayName("Teste Unitario - Erro ao buscar animal por ID inexistente")
     void buscarPorIdErro() throws Exception {
         Mockito.when(animalService.findById(99L)).thenThrow(new RuntimeException("ERRO: Animal não encontrado"));
 
@@ -132,7 +132,7 @@ class AnimalControllerTest {
     // ======================== TESTES FIND ALL ========================
 
     @Test
-    @DisplayName("Listar todos os animais com sucesso")
+    @DisplayName("Teste Unitario - Listar todos os animais com sucesso")
     void listarTodosAnimaisSucesso() throws Exception {
         Mockito.when(animalService.findAll()).thenReturn(List.of(animal));
 
@@ -143,7 +143,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Erro ao listar animais (vazio ou falha no serviço)")
+    @DisplayName(" Teste Unitario - Erro ao listar animais (vazio ou falha no serviço)")
     void listarTodosAnimaisErro() throws Exception {
         Mockito.when(animalService.findAll()).thenThrow(new RuntimeException("ERRO: Nenhum animal encontrado"));
 
@@ -156,7 +156,7 @@ class AnimalControllerTest {
     // ======================== TESTES UPDATE ========================
 
     @Test
-    @DisplayName("Atualizar animal com sucesso")
+    @DisplayName("Teste Unitario - Atualizar animal com sucesso")
     void atualizarAnimalSucesso() throws Exception {
         Mockito.when(animalService.update(Mockito.eq(1L), Mockito.any(Animal.class))).thenReturn(animal);
 
@@ -169,7 +169,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Erro ao atualizar animal inexistente")
+    @DisplayName("Teste Unitario - Erro ao atualizar animal inexistente")
     void atualizarAnimalErro() throws Exception {
         Mockito.when(animalService.update(Mockito.eq(99L), Mockito.any(Animal.class)))
                 .thenThrow(new RuntimeException("ERRO: Animal não encontrado para atualização"));
@@ -185,7 +185,7 @@ class AnimalControllerTest {
     // ======================== TESTES DELETE ========================
 
     @Test
-    @DisplayName("Excluir animal com sucesso")
+    @DisplayName(" Teste Unitario -Excluir animal com sucesso")
     void deletarAnimalSucesso() throws Exception {
         Mockito.when(animalService.delete(animal.getId()))
                 .thenReturn("Animal com id " + animal.getId() + " foi excluído com sucesso.");
@@ -196,7 +196,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Erro ao excluir animal inexistente")
+    @DisplayName("Teste Unitario - Erro ao excluir animal inexistente")
     void deletarAnimalErro() throws Exception {
         Mockito.doThrow(new RuntimeException("ERRO: Animal não encontrado para exclusão"))
                 .when(animalService).delete(99L);
@@ -210,7 +210,7 @@ class AnimalControllerTest {
     // ======================== TESTES FIND BY NOME ========================
 
     @Test
-    @DisplayName("Buscar animal por nome com sucesso")
+    @DisplayName("Teste Unitario - Buscar animal por nome com sucesso")
     void buscarPorNomeSucesso() throws Exception {
         Mockito.when(animalService.findByNome("Rex")).thenReturn(animal);
 
@@ -221,7 +221,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Erro ao buscar animal por nome inexistente")
+    @DisplayName("Teste Unitario - Erro ao buscar animal por nome inexistente")
     void buscarPorNomeErro() throws Exception {
         Mockito.when(animalService.findByNome("Inexistente"))
                 .thenThrow(new RuntimeException("ERRO: Animal não encontrado"));
@@ -235,7 +235,7 @@ class AnimalControllerTest {
     // ======================== TESTES FIND POR ESPÉCIE ========================
 
     @Test
-    @DisplayName("Buscar animal por espécie com sucesso")
+    @DisplayName("Teste Unitario - Buscar animal por espécie com sucesso")
     void buscarPorEspecieSucesso() throws Exception {
         Mockito.when(animalService.findByEspecieNome("Cachorro")).thenReturn(List.of(animal));
 
@@ -246,7 +246,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Erro ao buscar animal por espécie inexistente")
+    @DisplayName("Teste Unitario - Erro ao buscar animal por espécie inexistente")
     void buscarPorEspecieErro() throws Exception {
         Mockito.when(animalService.findByEspecieNome("Gato"))
                 .thenThrow(new RuntimeException("ERRO: Nenhum animal encontrado para a espécie informada"));
@@ -258,7 +258,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar animais por cor - sucesso")
+    @DisplayName("Teste Unitario - Buscar animais por cor - sucesso")
     void findByCorSucesso() throws Exception {
         List<Animal> animais = List.of(animal);
 
@@ -271,7 +271,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar animais por sexo - sucesso")
+    @DisplayName("Teste Unitario - Buscar animais por sexo - sucesso")
     void findBySexoSucesso() throws Exception {
         List<Animal> animais = List.of(animal);
 
@@ -284,7 +284,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar animais por castrado - sucesso")
+    @DisplayName("Teste Unitario - Buscar animais por castrado - sucesso")
     void findByCastradoSucesso() throws Exception {
         List<Animal> animais = List.of(animal);
 
@@ -297,7 +297,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar animal por número do microchip - sucesso")
+    @DisplayName("Teste Unitario - Buscar animal por número do microchip - sucesso")
     void findByMicrochipSucesso() throws Exception {
         Mockito.when(animalService.findByMicrochip("123456789")).thenReturn(animal);
 
@@ -308,7 +308,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar animais por tutorId - sucesso")
+    @DisplayName("Teste Unitario - Buscar animais por tutorId - sucesso")
     void findByTutorIdSucesso() throws Exception {
         List<Animal> animais = List.of(animal);
 
@@ -320,7 +320,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar animais por data de nascimento - sucesso")
+    @DisplayName("Teste Unitario - Buscar animais por data de nascimento - sucesso")
     void findByDataNascimentoSucesso() throws Exception {
         List<Animal> animais = List.of(animal);
 
@@ -335,7 +335,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar animais por registro geral - sucesso")
+    @DisplayName("Teste Unitario - Buscar animais por registro geral - sucesso")
     void findByRegistroGeralSucesso() throws Exception {
         List<Animal> animais = List.of(animal);
 
@@ -348,7 +348,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar animais com idade acima - sucesso")
+    @DisplayName("Teste Unitario - Buscar animais com idade acima - sucesso")
     void findAnimaisIdadeAcimaSucesso() throws Exception {
         List<Animal> animais = List.of(animal);
 
@@ -361,7 +361,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar animais entre idades - sucesso")
+    @DisplayName("Teste Unitario - Buscar animais entre idades - sucesso")
     void findAnimaisEntreIdadeSucesso() throws Exception {
         List<Animal> animais = List.of(animal);
 
@@ -375,7 +375,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar animais por cor - erro")
+    @DisplayName("Teste Unitario - Buscar animais por cor - erro")
     void findByCorErro() throws Exception {
         Mockito.when(animalService.findByCor("vermelho"))
                 .thenThrow(new RuntimeException("Erro ao buscar por cor"));
@@ -386,7 +386,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar animais por sexo - erro")
+    @DisplayName("Teste Unitario - Buscar animais por sexo - erro")
     void findBySexoErro() throws Exception {
         Mockito.when(animalService.findBySexo("Desconhecido"))
                 .thenThrow(new RuntimeException("Sexo inválido"));
@@ -397,7 +397,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar animais por castrado - erro")
+    @DisplayName("Teste Unitario - Buscar animais por castrado - erro")
     void findByCastradoErro() throws Exception {
         Mockito.when(animalService.findByCastrado(true))
                 .thenThrow(new RuntimeException("Erro ao buscar castrados"));
@@ -408,7 +408,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar animal por número do microchip - erro")
+    @DisplayName("Teste Unitario - Buscar animal por número do microchip - erro")
     void findByMicrochipErro() throws Exception {
         Mockito.when(animalService.findByMicrochip("000000"))
                 .thenThrow(new RuntimeException("Microchip não encontrado"));
@@ -419,7 +419,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar animais por tutorId - erro")
+    @DisplayName("Teste Unitario - Buscar animais por tutorId - erro")
     void findByTutorIdErro() throws Exception {
         Mockito.when(animalService.findByTutorId(99L))
                 .thenThrow(new RuntimeException("Tutor não encontrado"));
@@ -429,7 +429,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar animais por data de nascimento - erro")
+    @DisplayName("Teste Unitario - Buscar animais por data de nascimento - erro")
     void findByDataNascimentoErro() throws Exception {
         LocalDate dataNascimento = LocalDate.of(2050, 1, 1);
 
@@ -442,7 +442,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar animais por registro geral - erro")
+    @DisplayName("Teste Unitario - Buscar animais por registro geral - erro")
     void findByRegistroGeralErro() throws Exception {
         Mockito.when(animalService.findByRegistroGeral("RG999"))
                 .thenThrow(new RuntimeException("Registro geral não encontrado"));
@@ -453,7 +453,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("Buscar animais entre idades - erro de validação (idadeMin > idadeMax)")
+    @DisplayName("Teste Unitario - Buscar animais entre idades - erro de validação (idadeMin > idadeMax)")
     void findAnimaisEntreIdadeErroValidacao() throws Exception {
         Mockito.when(animalService.findAnimaisEntreIdade(5, 10))
                 .thenThrow(new RuntimeException("erro de busca de animais entre idades"));
@@ -466,7 +466,7 @@ class AnimalControllerTest {
     }
 
     @Test
-    @DisplayName("erro ao buscar idade de animais acima")
+    @DisplayName("Teste Unitario - erro ao buscar idade de animais acima")
     void findAnimaisIdadeAcimaErro() throws Exception {
         Mockito.when(animalService.findAnimaisIdadeAcima(1))
                 .thenThrow(new RuntimeException("Erro ao buscar animais acima"));

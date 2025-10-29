@@ -1,7 +1,5 @@
 package com.uni.PrefPet.service;
 import com.uni.PrefPet.model.Animal;
-import com.uni.PrefPet.model.Usuario;
-import com.uni.PrefPet.model.Usuarios.Tutor;
 import com.uni.PrefPet.repository.AnimalRepository;
 import com.uni.PrefPet.repository.TutorRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,7 +15,6 @@ public class AnimalService  {
     private AnimalRepository animalRepository;
     private TutorRepository usuarioRepository;
 
-    // crud simples
     public Animal findById(Long id){
         return animalRepository.findById(id).orElseThrow(EntityNotFoundException::new);
     }

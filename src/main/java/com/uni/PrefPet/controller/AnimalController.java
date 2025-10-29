@@ -1,8 +1,6 @@
 package com.uni.PrefPet.controller;
 
 import com.uni.PrefPet.model.Animal;
-import com.uni.PrefPet.model.Usuario;
-import com.uni.PrefPet.model.Usuarios.Tutor;
 import com.uni.PrefPet.service.AnimalService;
 import com.uni.PrefPet.service.TutorService;
 import jakarta.validation.Valid;

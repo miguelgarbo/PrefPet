@@ -26,11 +26,11 @@ public interface EntidadeRepository extends JpaRepository<Entidade, Long> {
 
     Optional<List<Entidade>> findByNomeContainingIgnoreCase(String nome);
 
-    Optional<List<Entidade>> findByCpf(String cpf);
+    Optional<Entidade> findByCpf(String cpf);
 
     Optional<List<Entidade>> findByTelefone(String telefone);
 
-    Optional<List<Entidade>> findByEmail(String email);
+    Optional<Entidade> findByEmail(String email);
 
 
 

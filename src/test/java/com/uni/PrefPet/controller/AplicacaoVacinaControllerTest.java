@@ -35,7 +35,7 @@ class AplicacaoVacinaControllerTest {
     private ObjectMapper objectMapper;
 
     @Test
-    @DisplayName("Deve salvar aplicação de vacina com sucesso (POST /aplicacao)")
+    @DisplayName("Teste Unitario - Deve salvar aplicação de vacina com sucesso (POST /aplicacao)")
     void salvarAplicacaoVacina() throws Exception {
         AplicacaoVacina aplicacao = new AplicacaoVacina();
         aplicacao.setId(1L);
@@ -56,7 +56,7 @@ class AplicacaoVacinaControllerTest {
     }
 
     @Test
-    @DisplayName("Deve retornar erro 404 ao tentar salvar aplicação com vacina inexistente")
+    @DisplayName("Teste Unitario - Deve retornar erro 404 ao tentar salvar aplicação com vacina inexistente")
     void salvarAplicacaoVacinaErro() throws Exception {
         AplicacaoVacina aplicacao = new AplicacaoVacina();
         aplicacao.setLote("L404");
@@ -76,7 +76,7 @@ class AplicacaoVacinaControllerTest {
 
 
     @Test
-    @DisplayName("Deve retornar aplicação existente (GET /aplicacao/{id})")
+    @DisplayName("Teste Unitario -Deve retornar aplicação existente (GET /aplicacao/{id})")
     void buscarAplicacaoPorId() throws Exception {
         AplicacaoVacina aplicacao = new AplicacaoVacina();
         aplicacao.setId(2L);
@@ -90,7 +90,7 @@ class AplicacaoVacinaControllerTest {
     }
 
     @Test
-    @DisplayName("Deve retornar 404 quando aplicação não for encontrada (GET /aplicacao/{id})")
+    @DisplayName("Teste Unitario -Deve retornar 404 quando aplicação não for encontrada (GET /aplicacao/{id})")
     void buscarAplicacaoPorIdNaoEncontrada() throws Exception {
         Mockito.when(aplicacaoVacinaService.findById(999L))
                 .thenThrow(new EntityNotFoundException("Aplicação não encontrada"));
@@ -100,7 +100,7 @@ class AplicacaoVacinaControllerTest {
     }
 
     @Test
-    @DisplayName("Deve listar todas as aplicações (GET /aplicacao/findAll)")
+    @DisplayName("Teste Unitario -Deve listar todas as aplicações (GET /aplicacao/findAll)")
     void listarAplicacoes() throws Exception {
         AplicacaoVacina a1 = new AplicacaoVacina();
         a1.setLote("A");
@@ -115,7 +115,7 @@ class AplicacaoVacinaControllerTest {
     }
 
     @Test
-    @DisplayName("Deve atualizar aplicação de vacina (PUT /aplicacao/{id})")
+    @DisplayName("Teste Unitario -Deve atualizar aplicação de vacina (PUT /aplicacao/{id})")
     void atualizarAplicacaoVacina() throws Exception {
         AplicacaoVacina aplicacaoAtualizada = new AplicacaoVacina();
         aplicacaoAtualizada.setId(1L);
@@ -132,7 +132,7 @@ class AplicacaoVacinaControllerTest {
     }
 
     @Test
-    @DisplayName("Deve retornar erro 404 ao tentar atualizar aplicação inexistente (PUT /aplicacao/{id})")
+    @DisplayName("Teste Unitario -Deve retornar erro 404 ao tentar atualizar aplicação inexistente (PUT /aplicacao/{id})")
     void atualizarAplicacaoVacinaErro() throws Exception {
         AplicacaoVacina aplicacao = new AplicacaoVacina();
         aplicacao.setLote("L999");
@@ -148,7 +148,7 @@ class AplicacaoVacinaControllerTest {
 
 
     @Test
-    @DisplayName("Deve deletar aplicação de vacina (DELETE /aplicacao/{id})")
+    @DisplayName("Teste Unitario -Deve deletar aplicação de vacina (DELETE /aplicacao/{id})")
     void deletarAplicacaoVacina() throws Exception {
         mockMvc.perform(delete("/aplicacao/1"))
                 .andExpect(status().isNoContent());
@@ -156,7 +156,7 @@ class AplicacaoVacinaControllerTest {
     }
 
     @Test
-    @DisplayName("GET /aplicacao/by-lote deve retornar aplicação de vacina")
+    @DisplayName("Teste Unitario -GET /aplicacao/by-lote deve retornar aplicação de vacina")
     void deveBuscarAplicacaoPorLote() throws Exception {
         AplicacaoVacina app = new AplicacaoVacina();
         Mockito.when(aplicacaoVacinaService.findByLote("L1")).thenReturn(app);
@@ -171,7 +171,7 @@ class AplicacaoVacinaControllerTest {
 
 
     @Test
-    @DisplayName("GET /aplicacao/findByAnimalId deve retornar lista de aplicações")
+    @DisplayName("Teste Unitario -GET /aplicacao/findByAnimalId deve retornar lista de aplicações")
     void deveBuscarAplicacaoPorAnimalId() throws Exception {
         List<AplicacaoVacina> lista = List.of(new AplicacaoVacina());
         Mockito.when(aplicacaoVacinaService.findByAnimal(1L)).thenReturn(lista);
@@ -184,7 +184,7 @@ class AplicacaoVacinaControllerTest {
     }
 
     @Test
-    @DisplayName("GET /aplicacao/validade-before deve retornar lista")
+    @DisplayName("Teste Unitario -GET /aplicacao/validade-before deve retornar lista")
     void deveBuscarPorValidadeBefore() throws Exception {
         List<AplicacaoVacina> lista = List.of(new AplicacaoVacina());
         Mockito.when(aplicacaoVacinaService.findByValidadeBefore(any())).thenReturn(lista);
@@ -197,7 +197,7 @@ class AplicacaoVacinaControllerTest {
     }
 
     @Test
-    @DisplayName("GET /aplicacao/validade-after deve retornar lista")
+    @DisplayName("Teste Unitario -GET /aplicacao/validade-after deve retornar lista")
     void deveBuscarPorValidadeAfter() throws Exception {
         List<AplicacaoVacina> lista = List.of(new AplicacaoVacina());
         Mockito.when(aplicacaoVacinaService.findByValidadeAfter(any())).thenReturn(lista);
@@ -210,7 +210,7 @@ class AplicacaoVacinaControllerTest {
     }
 
     @Test
-    @DisplayName("GET /aplicacao/aplicacaoData deve retornar lista")
+    @DisplayName("Teste Unitario -GET /aplicacao/aplicacaoData deve retornar lista")
     void deveBuscarPorDataAplicacao() throws Exception {
         List<AplicacaoVacina> lista = List.of(new AplicacaoVacina());
         Mockito.when(aplicacaoVacinaService.findByDataAplicacao(any())).thenReturn(lista);
@@ -223,7 +223,7 @@ class AplicacaoVacinaControllerTest {
     }
 
     @Test
-    @DisplayName("GET /aplicacao/aplicacao-after deve retornar lista")
+    @DisplayName("Teste Unitario -GET /aplicacao/aplicacao-after deve retornar lista")
     void deveBuscarPorDataAplicacaoAfter() throws Exception {
         List<AplicacaoVacina> lista = List.of(new AplicacaoVacina());
         Mockito.when(aplicacaoVacinaService.findByDataAplicacaoAfter(any())).thenReturn(lista);
@@ -234,6 +234,5 @@ class AplicacaoVacinaControllerTest {
 
         Mockito.verify(aplicacaoVacinaService).findByDataAplicacaoAfter(any());
     }
-
 
 }

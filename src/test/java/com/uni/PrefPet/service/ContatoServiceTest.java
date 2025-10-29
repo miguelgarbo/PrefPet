@@ -3,7 +3,6 @@ package com.uni.PrefPet.service;
 import com.uni.PrefPet.model.Contato;
 import com.uni.PrefPet.repository.ContatoRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,6 +21,7 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 
 public class ContatoServiceTest {
+
     @Mock
     private ContatoRepository contatoRepository;
     @InjectMocks

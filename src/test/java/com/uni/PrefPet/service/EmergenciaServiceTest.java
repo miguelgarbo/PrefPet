@@ -6,6 +6,7 @@ import com.uni.PrefPet.repository.EmergenciaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -49,6 +50,7 @@ public class EmergenciaServiceTest {
     }
 
     @Test
+    @DisplayName("Teste Unitario - deve salvar uma emergencia e retornar ela")
     void save() {
         Mockito.when(emergenciaRepository.save(emergencia)).thenReturn(emergencia);
 
@@ -58,6 +60,7 @@ public class EmergenciaServiceTest {
     }
 
     @Test
+    @DisplayName("Teste Unitario - deve lançar uma excessão ao tentar salvar uma emergencia")
     void saveError() {
         Mockito.when(emergenciaRepository.existsByNome(emergencia.getNome())).thenReturn(true);
 
@@ -69,6 +72,7 @@ public class EmergenciaServiceTest {
 
 
     @Test
+    @DisplayName("Teste Unitario - deve retornar uma emergencia pelo seu id")
     void findById() {
         Mockito.when(emergenciaRepository.findById(1L)).thenReturn(Optional.of(emergencia));
 
@@ -78,6 +82,7 @@ public class EmergenciaServiceTest {
     }
 
     @Test
+    @DisplayName("Teste Unitario - deve lançar excessão ao buscar pelo seu id")
     void findByIdError() {
         Mockito.when(emergenciaRepository.findById(1L)).thenReturn(Optional.empty());
 
@@ -87,6 +92,7 @@ public class EmergenciaServiceTest {
     }
 
     @Test
+    @DisplayName("Teste Unitario - retornar a lista")
     void findAll() {
         Mockito.when(emergenciaRepository.findAll()).thenReturn(emergencias);
 
@@ -96,6 +102,7 @@ public class EmergenciaServiceTest {
     }
 
     @Test
+    @DisplayName("Teste Unitario - deve deletar uma emergencia")
     void delete() {
 
         Mockito.when(emergenciaRepository.existsById(1L)).thenReturn(true);
@@ -109,6 +116,7 @@ public class EmergenciaServiceTest {
 
 
     @Test
+    @DisplayName("Teste Unitario - deve lançar excessão ao deletar pelo seu id")
     void deleteError() {
         Mockito.when(emergenciaRepository.existsById(1L)).thenReturn(false);
 
@@ -118,6 +126,7 @@ public class EmergenciaServiceTest {
     }
 
     @Test
+    @DisplayName("Teste Unitario - deve retornar o objeto ao atualiza-lo")
     void update() {
         Emergencia emergencia1 = new Emergencia();
 
@@ -135,6 +144,7 @@ public class EmergenciaServiceTest {
     }
 
     @Test
+    @DisplayName("Teste Unitario - deve lançar excessão ao atualizar")
     void updateError() {
 
         Emergencia emergencia1 = new Emergencia();
@@ -152,6 +162,7 @@ public class EmergenciaServiceTest {
     }
 
     @Test
+    @DisplayName("Teste Unitario - deve retornar uma lista de emergencias pelo seu nome")
     void findByNome() {
         Mockito.when(emergenciaRepository.findByNome("Unila")).thenReturn(Optional.of(emergencias));
 
@@ -161,6 +172,7 @@ public class EmergenciaServiceTest {
     }
 
     @Test
+    @DisplayName("Teste Unitario - deve lançar excessão ao buscar pelo seu nome")
     void findByNomeError() {
         Mockito.when(emergenciaRepository.findByNome("Unila")).thenReturn(Optional.empty());
 

@@ -82,6 +82,8 @@ public class NotificacaoServiceTest {
 
     AplicacaoVacina aplicacaoVacina3 = new AplicacaoVacina();
 
+    AplicacaoVacina aplicacaoVacinaNull = new AplicacaoVacina();
+
     Animal animal = new Animal();
 
 
@@ -206,13 +208,18 @@ public class NotificacaoServiceTest {
         aplicacaoVacina3.setDataValidade(LocalDate.now().minusDays(5));
 
 
-//        aplicacaoVacinaService.save(aplicacaoVacina3,12);
-//       aplicacaoVacinaService.save(aplicacaoVacina2,12);
-//       aplicacaoVacinaService.save(aplicacaoVacina,12);
+
+        aplicacaoVacinaNull.setDataAplicacao(LocalDate.now());
+        aplicacaoVacinaNull.setDataValidade(LocalDate.now().plusYears(100));
+        aplicacaoVacinaNull.setVacina(vacina);
+        aplicacaoVacinaNull.setVeterinario(veterinario);
+        aplicacaoVacinaNull.setAnimal(animal);
+        aplicacaoVacinaNull.setNumeroDose(4);
+
     }
 
     @Test
-    @DisplayName("deve registrar uma notificação padrao do sistema")
+    @DisplayName("Teste integração - deve registrar uma notificação padrao do sistema")
     void save(){
         Notificacao notificacao = new Notificacao();
 
@@ -228,7 +235,7 @@ public class NotificacaoServiceTest {
 
 
     @Test
-    @DisplayName("Deve retornar todas as nots do banco")
+    @DisplayName("Teste integração - Deve retornar todas as nots do banco")
     void findAll() {
 
         var resposta = notificacaoService.findAll();
@@ -239,22 +246,30 @@ public class NotificacaoServiceTest {
 
 
     @Test
+    @DisplayName("Teste integração - deve retornar uma notificacao por id")
     void findById() {
 
         var resposta = notificacaoService.findById(1L);
-        System.out.println(notificacaoPadrao.getTexto() + " -- " +resposta.getTexto());
 
         Assertions.assertEquals(notificacaoPadrao.getTexto(), resposta.getTexto());
-
     }
 
     @Test
+    @DisplayName("Teste integração - deve lançar exceção ao buscar por id a notificacao")
+    void findByTutorId() {
+        var resposta = notificacaoService.findByTutorDestinatario(1L);
+        Assertions.assertEquals(resposta.get(0).getId(), notificacoes.get(0).getId());
+    }
+
+    @Test
+    @DisplayName("Teste integração - deve retornar atualizar uma notificacao ")
     void update() {
         var resposta = notificacaoService.update(1L, outraNotificacao);
         Assertions.assertEquals(resposta.getTexto(), "Texto Updated");
     }
 
     @Test
+    @DisplayName("Teste integração - deve lançar exceção ao atualizar a notificacao")
     void updateError() {
 
         var exception =  Assertions.assertThrows(EntityNotFoundException.class, ()->{
@@ -265,12 +280,14 @@ public class NotificacaoServiceTest {
     }
 
     @Test
+    @DisplayName("Teste integração - deve deletar uma notificacao")
     void delete() {
         var mensagem = notificacaoService.delete(1L);
         Assertions.assertEquals(mensagem, "Notificacao com id 1 foi excluído com sucesso.");
     }
 
     @Test
+    @DisplayName("Teste integração - deve lançar exceção ao deletar a notificacao inexistente")
     void deleteError() {
 
        var exception =  Assertions.assertThrows(EntityNotFoundException.class, ()->{
@@ -280,14 +297,11 @@ public class NotificacaoServiceTest {
         Assertions.assertEquals("Notificacao com id " + 10 + " não encontrado.", exception.getMessage());
     }
 
-    @Test
-    void findByTutorId() {
-        var resposta = notificacaoService.findByTutorDestinatario(1L);
-        Assertions.assertEquals(resposta.get(0).getId(), notificacoes.get(0).getId());
-    }
+
 
 
     @Test
+    @DisplayName("Teste integração - gerar uma notifcacao se a data estiver na condição correta")
     void gerarNotificacaoDataValidadeVacina() {
         var resposta = notificacaoService.gerarNotificacaoDataValidadeVacina(aplicacaoVacina);
 
@@ -304,6 +318,7 @@ public class NotificacaoServiceTest {
     }
 
     @Test
+    @DisplayName("Teste integração - gerar uma notifcacao se a data estiver na condição correta 2")
     void gerarNotificacaoDataValidadeVacina2() {
 
         var resposta = notificacaoService.gerarNotificacaoDataValidadeVacina(aplicacaoVacina2);
@@ -322,6 +337,7 @@ public class NotificacaoServiceTest {
     }
 
     @Test
+    @DisplayName("Teste integração - gerar uma notifcacao se a data estiver na condição correta 3")
     void gerarNotificacaoDataValidadeVacina3() {
 
         var resposta = notificacaoService.gerarNotificacaoDataValidadeVacina(aplicacaoVacina3);
@@ -341,6 +357,17 @@ public class NotificacaoServiceTest {
     }
 
     @Test
+    @DisplayName("Teste integração - retornar null se a mensagem nao tiver conteudo")
+    void gerarNotificacaoDataValidadeVacina4() {
+
+        var resposta = notificacaoService.gerarNotificacaoDataValidadeVacina(aplicacaoVacinaNull);
+
+        Assertions.assertNull(resposta);
+
+    }
+
+    @Test
+    @DisplayName("Teste integração - gerar um convite de tranferencia de tutor")
     void gerarConvite() {
 
         var resposta = notificacaoService.gerarConvite(tutorDestinatario.getId(), tutorRemetente.getId(), animal.getId());
@@ -362,6 +389,7 @@ public class NotificacaoServiceTest {
     }
 
     @Test
+    @DisplayName("Teste integração - lançar uma excessão ao gerar um convite de tranferencia de tutor")
     void gerarConviteError(){
 
         Assertions.assertThrows(IllegalArgumentException.class, ()->{
@@ -372,6 +400,7 @@ public class NotificacaoServiceTest {
     }
 
     @Test
+    @DisplayName("Teste integração - deve aceitar um convite de tranferencia de tutor")
     void conviteAceito() {
 
         notificacaoService.conviteAceito(convite.getId());
@@ -380,6 +409,7 @@ public class NotificacaoServiceTest {
     }
 
     @Test
+    @DisplayName("Teste integração - gerar uma exceção ao aceitar convite de tranferencia de tutor")
     void conviteAceitoError() {
 
         Assertions.assertThrows(RuntimeException.class, ()->{
@@ -388,6 +418,7 @@ public class NotificacaoServiceTest {
     }
 
     @Test
+    @DisplayName("Teste integração - gerar um nots de confirmação de tranferencia de tutor")
     void gerarNotificacaoConviteAceito() {
 
         notificacaoRepository.deleteAll();
@@ -410,5 +441,7 @@ public class NotificacaoServiceTest {
         Assertions.assertEquals(4, notsRemetente.get(0).getNivel());
         Assertions.assertTrue(notsRemetente.get(0).getAceito());
     }
+
+
 
 }

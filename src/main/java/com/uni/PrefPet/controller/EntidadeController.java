@@ -55,21 +55,6 @@ public class EntidadeController {
 
     }
 
-    @GetMapping("/existsByCPF")
-    public ResponseEntity<Boolean> existsByCPF(@RequestParam String cpf) {
-        
-            boolean exists = entidadeService.existsByCPF(cpf);
-            return new ResponseEntity<>(exists, HttpStatus.OK);
-
-    }
-
-    @GetMapping("/existsByEmail")
-    public ResponseEntity<Boolean> existsByEmail(@RequestParam String email) {
-        
-            boolean exists = entidadeService.existsByEmail(email);
-            return new ResponseEntity<>(exists, HttpStatus.OK);
-
-    }
 
     @GetMapping("/findByNome")
     public ResponseEntity<List<Entidade>> findByNome(@RequestParam String nome) {
@@ -80,9 +65,9 @@ public class EntidadeController {
     }
 
     @GetMapping("/findByCPF")
-    public ResponseEntity<List<Entidade>> findByCPF(@RequestParam String cpf) {
+    public ResponseEntity<Entidade> findByCPF(@RequestParam String cpf) {
         
-            List<Entidade> entidade = entidadeService.findByCPF(cpf);
+            Entidade entidade = entidadeService.findByCPF(cpf);
             return new ResponseEntity<>(entidade, HttpStatus.OK);
 
     }
@@ -96,7 +81,7 @@ public class EntidadeController {
     }
 
     @GetMapping("/findByEmail")
-    public ResponseEntity<List<Entidade>> findByEmail(@RequestParam String email) {
+    public ResponseEntity<Entidade> findByEmail(@RequestParam String email) {
         
             var entidades = entidadeService.findByEmail(email);
             return new ResponseEntity<>(entidades, HttpStatus.OK);

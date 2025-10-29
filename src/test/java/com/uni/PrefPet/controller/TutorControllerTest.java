@@ -31,8 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(TutorController.class)
 public class TutorControllerTest {
 
-
-    //simula chamadas http
     @Autowired
     MockMvc mockMvc;
 
@@ -43,18 +41,13 @@ public class TutorControllerTest {
     ObjectMapper objectMapper;
 
     Tutor tutor = new Tutor();
-
     Tutor outroTutor = new Tutor();
-
     String tutorJson;
-
     String outroTutorJson;
-
     List<Tutor> tutores = new ArrayList<>();
 
     @BeforeEach
     void setUp() throws Exception {
-
         tutor.setId(1L);
         tutor.setNome("Miguel");
         tutor.setSenha("senha123");
@@ -80,14 +73,11 @@ public class TutorControllerTest {
 
         tutores.add(tutor);
         tutores.add(outroTutor);
-
     }
 
-
     @Test
-    @DisplayName("Esse Teste Deve Retornar Ok e Cadastrar o Tutor de acordo com seus validations")
+    @DisplayName("Teste Unitário: salvar tutor com sucesso")
     void testValidationsSaveTutorOK() throws Exception {
-        //give
         Mockito.when(tutorService.save(tutor)).thenReturn(tutor);
 
         mockMvc.perform(post("/tutores")
@@ -99,13 +89,12 @@ public class TutorControllerTest {
     }
 
     @Test
-    @DisplayName("Esse Teste Deve Retornar uma exceção por integridade de dados pois ja existe tal cpf no banco")
+    @DisplayName("Teste Unitário: falha ao salvar tutor por CPF duplicado")
     void testValidationsSaveTutorError() throws Exception {
-        //give
+        Mockito.when(tutorService.save(tutor))
+                .thenThrow(new IllegalArgumentException("Já existe um usuário com este CPF."));
 
-        Mockito.when(tutorService.save(tutor)).thenThrow(new IllegalArgumentException("Já existe um usuário com este CPF."));
-
-        mockMvc.perform(post("http://localhost:8080/tutores")
+        mockMvc.perform(post("/tutores")
                         .contentType("application/json")
                         .content(tutorJson))
                 .andDo(print())
@@ -113,28 +102,23 @@ public class TutorControllerTest {
                 .andExpect(content().string(containsString("Já existe um usuário com este CPF.")));
     }
 
-
     @Test
-    @DisplayName("Esse TEste Deve Retornar um tutor pelo id")
+    @DisplayName("Teste Unitário: buscar tutor por ID com sucesso")
     void testFindByIdValidOk() throws Exception {
-
         Mockito.when(tutorService.findById(any())).thenReturn(tutor);
 
-        //Where E O Then
-        mockMvc.perform(get("http://localhost:8080/tutores/1"))
+        mockMvc.perform(get("/tutores/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(tutorJson));
-
     }
 
     @Test
-    @DisplayName("Esse TEste Deve Retornar um tutor pelo id")
+    @DisplayName("Teste Unitário: buscar tutor por ID que não existe")
     void testFindByIdValidError() throws Exception {
+        Mockito.when(tutorService.findById(any()))
+                .thenThrow(new EntityNotFoundException("Nenhum Tutor Com esse Id"));
 
-        Mockito.when(tutorService.findById(any())).thenThrow(new EntityNotFoundException("Nenhum Tutor Com esse Id"));
-
-        //Where E O Then
         mockMvc.perform(get("/tutores/1"))
                 .andDo(print())
                 .andExpect(status().is5xxServerError())
@@ -142,9 +126,8 @@ public class TutorControllerTest {
     }
 
     @Test
-    @DisplayName("Esse teste deve retornar uma lista com os tutores cadastrados no banco")
+    @DisplayName("Teste Unitário: listar todos os tutores cadastrados")
     void testFindAllOk() throws Exception {
-
         Mockito.when(tutorService.findAll()).thenReturn(tutores);
 
         var respostaLista = mockMvc.perform(get("/tutores/findAll"))
@@ -152,16 +135,14 @@ public class TutorControllerTest {
                 .andDo(print())
                 .andReturn().getResponse().getContentAsString();
 
-        List<Tutor> listaRetornada = objectMapper.readValue(respostaLista, new TypeReference<List<Tutor>>() {
-        });
+        List<Tutor> listaRetornada = objectMapper.readValue(respostaLista, new TypeReference<List<Tutor>>() {});
         Assertions.assertEquals(listaRetornada.size(), tutores.size());
         Assertions.assertEquals(listaRetornada.get(0).getNome(), tutores.get(0).getNome());
     }
 
     @Test
-    @DisplayName("Esse teste deve retornar uma lista com os tutores cadastrados no banco")
+    @DisplayName("Teste Unitário: listar tutores quando não há registros")
     void testFindAllEmptyList() throws Exception {
-
         Mockito.when(tutorService.findAll()).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/tutores/findAll"))
@@ -171,9 +152,8 @@ public class TutorControllerTest {
     }
 
     @Test
-    @DisplayName("Esse Teste vai deletar pelo id")
+    @DisplayName("Teste Unitário: deletar tutor com sucesso")
     void testDeleteTutorOk() throws Exception {
-
         Mockito.when(tutorService.delete(tutor.getId()))
                 .thenReturn("Usuário com id " + tutor.getId() + " foi excluído com sucesso.");
 
@@ -181,27 +161,14 @@ public class TutorControllerTest {
                 .andExpect(status().isNoContent());
     }
 
-    //Erro
-//    @Test
-//    @DisplayName("Esse Teste vai retornar uma exceção da service e na controller no content")
-//    void testDeleteTutorError() throws Exception {
-//
-//        Mockito.when(tutorService.delete(tutor.getId()))
-//                .thenThrow(new EntityNotFoundException("Usuário com id " + tutor.getId() + " não encontrado."));
-//
-//        mockMvc.perform(delete("/tutores/1"))
-//                .andExpect(status().isNoContent());
-//    }
-
     @Test
-    @DisplayName("esse teste vai atualizar um tutor")
-    void testUpdateTutor() throws Exception{
-
+    @DisplayName("Teste Unitário: atualizar tutor com sucesso")
+    void testUpdateTutor() throws Exception {
         Mockito.when(tutorService.update(eq(1L), any(Tutor.class))).thenReturn(tutor);
 
         mockMvc.perform(put("/tutores/1")
-                .contentType("application/json")
-                .content(outroTutorJson))
+                        .contentType("application/json")
+                        .content(outroTutorJson))
                 .andExpect(status().isOk())
                 .andExpect(content().json(tutorJson))
                 .andDo(print());
@@ -210,10 +177,10 @@ public class TutorControllerTest {
     }
 
     @Test
-    @DisplayName("esse teste vai lançar uma exceção para manter integridade de dados")
-    void testUpdateTutorErrorNotId() throws Exception{
+    @DisplayName("Teste Unitário: atualizar tutor que não existe")
+    void testUpdateTutorErrorNotId() throws Exception {
         Mockito.when(tutorService.update(eq(3L), any(Tutor.class)))
-                .thenThrow(new EntityNotFoundException("Usuário com id " + 3 + " não encontrado."));
+                .thenThrow(new EntityNotFoundException("Usuário com id 3 não encontrado."));
 
         mockMvc.perform(put("/tutores/3")
                         .contentType("application/json")
@@ -223,12 +190,11 @@ public class TutorControllerTest {
                 .andDo(print());
 
         Mockito.verify(tutorService, Mockito.times(1)).update(any(), any());
-
     }
 
     @Test
-    @DisplayName("esse teste vai lançar uma exceção para manter integridade de dados")
-    void testUpdateTutorErrorCpfIntegrity() throws Exception{
+    @DisplayName("Teste Unitário: falha ao atualizar tutor por CPF duplicado")
+    void testUpdateTutorErrorCpfIntegrity() throws Exception {
         Mockito.when(tutorService.update(eq(1L), any(Tutor.class)))
                 .thenThrow(new IllegalArgumentException("Já existe um usuário com este CPF."));
 
@@ -243,8 +209,8 @@ public class TutorControllerTest {
     }
 
     @Test
-    @DisplayName("esse teste vai lançar uma exceção para manter integridade de dados")
-    void testUpdateTutorErrorTelefoneIntegrity() throws Exception{
+    @DisplayName("Teste Unitário: falha ao atualizar tutor por telefone duplicado")
+    void testUpdateTutorErrorTelefoneIntegrity() throws Exception {
         Mockito.when(tutorService.update(eq(1L), any(Tutor.class)))
                 .thenThrow(new IllegalArgumentException("Já existe um usuário com este telefone."));
 
@@ -259,89 +225,77 @@ public class TutorControllerTest {
     }
 
     @Test
-    @DisplayName("deve retornar um tutor pelo seu nome")
-    void testFindByNomeOk() throws Exception{
-
+    @DisplayName("Teste Unitário: buscar tutor por nome com sucesso")
+    void testFindByNomeOk() throws Exception {
         Mockito.when(tutorService.findByNome("Miguel")).thenReturn(tutor);
 
         mockMvc.perform(get("/tutores/findByNome")
-                .param("nome", "Miguel"))
+                        .param("nome", "Miguel"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(tutorJson)
-                );
+                .andExpect(content().json(tutorJson));
     }
 
-
     @Test
-    @DisplayName("deve retornar um erro ao buscar tutor pelo nome")
-    void testFindByNomeError() throws Exception{
-        Mockito.when(tutorService.findByNome("Miguel")).thenThrow(new EntityNotFoundException("Nenhum usuário encontrado com o nome informado"));
+    @DisplayName("Teste Unitário: falha ao buscar tutor por nome inexistente")
+    void testFindByNomeError() throws Exception {
+        Mockito.when(tutorService.findByNome("Miguel"))
+                .thenThrow(new EntityNotFoundException("Nenhum usuário encontrado com o nome informado"));
 
         mockMvc.perform(get("/tutores/findByNome")
                         .param("nome", "Miguel"))
                 .andExpect(status().is5xxServerError())
-                .andExpect(jsonPath("$.message").value("Nenhum usuário encontrado com o nome informado")
-                );
+                .andExpect(jsonPath("$.message").value("Nenhum usuário encontrado com o nome informado"));
     }
 
     @Test
-    @DisplayName("deve retornar um tutor pelo seu cpf")
-    void testFindByCpfOk() throws Exception{
-
+    @DisplayName("Teste Unitário: buscar tutor por CPF com sucesso")
+    void testFindByCpfOk() throws Exception {
         Mockito.when(tutorService.findByCPF("466.027.230-30")).thenReturn(tutor);
 
         mockMvc.perform(get("/tutores/findByCPF")
                         .param("cpf", "466.027.230-30"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(tutorJson)
-                );
+                .andExpect(content().json(tutorJson));
     }
 
     @Test
-    @DisplayName("deve retornar um erro ao buscar tutor pelo cpf")
-    void testFindByCpfError() throws Exception{
-
-        Mockito.when(tutorService.findByCPF("466.027.230-30")).thenThrow(new EntityNotFoundException("Nenhum usuário encontrado com o CPF informado"));
+    @DisplayName("Teste Unitário: falha ao buscar tutor por CPF inexistente")
+    void testFindByCpfError() throws Exception {
+        Mockito.when(tutorService.findByCPF("466.027.230-30"))
+                .thenThrow(new EntityNotFoundException("Nenhum usuário encontrado com o CPF informado"));
 
         mockMvc.perform(get("/tutores/findByCPF")
                         .param("cpf", "466.027.230-30"))
                 .andExpect(status().is5xxServerError())
-                .andExpect(jsonPath("$.message").value("Nenhum usuário encontrado com o CPF informado")
-                );
+                .andExpect(jsonPath("$.message").value("Nenhum usuário encontrado com o CPF informado"));
     }
 
-
-
     @Test
-    @DisplayName("deve retornar um tutor pelo seu email")
-    void testFindByEmailOk() throws Exception{
-
+    @DisplayName("Teste Unitário: buscar tutor por email com sucesso")
+    void testFindByEmailOk() throws Exception {
         Mockito.when(tutorService.findByEmail(tutor.getEmail())).thenReturn(tutor);
 
         mockMvc.perform(get("/tutores/findByEmail")
                         .param("email", tutor.getEmail()))
                 .andExpect(status().isOk())
-                .andExpect(content().json(tutorJson)
-                );
+                .andExpect(content().json(tutorJson));
     }
 
     @Test
-    @DisplayName("deve retornar um erro ao buscar tutor pelo email")
-    void testFindByEmailError() throws Exception{
-
-        Mockito.when(tutorService.findByEmail("miguel@example.com")).thenThrow(new EntityNotFoundException("Nenhum usuário encontrado com o email informado"));
+    @DisplayName("Teste Unitário: falha ao buscar tutor por email inexistente")
+    void testFindByEmailError() throws Exception {
+        Mockito.when(tutorService.findByEmail("miguel@example.com"))
+                .thenThrow(new EntityNotFoundException("Nenhum usuário encontrado com o email informado"));
 
         mockMvc.perform(get("/tutores/findByEmail")
                         .param("email", "miguel@example.com"))
                 .andExpect(status().is5xxServerError())
-                .andExpect(jsonPath("$.message").value("Nenhum usuário encontrado com o email informado")
-                );
+                .andExpect(jsonPath("$.message").value("Nenhum usuário encontrado com o email informado"));
     }
 
     @Test
-    @DisplayName("esse test deve liberar um login")
-    void testLoginOk() throws Exception{
-
+    @DisplayName("Teste Unitário: login de tutor com sucesso")
+    void testLoginOk() throws Exception {
         Mockito.when(tutorService.login(tutor.getEmail(), tutor.getSenha())).thenReturn(true);
 
         mockMvc.perform(get("/tutores/login")
@@ -352,9 +306,8 @@ public class TutorControllerTest {
     }
 
     @Test
-    @DisplayName("esse test deve lançar uma exceção ao realizar um login")
-    void testLoginError() throws Exception{
-
+    @DisplayName("Teste Unitário: falha ao realizar login")
+    void testLoginError() throws Exception {
         Mockito.when(tutorService.login("email@example.com", "senha123")).thenReturn(false);
 
         mockMvc.perform(get("/tutores/login")
@@ -365,9 +318,8 @@ public class TutorControllerTest {
     }
 
     @Test
-    @DisplayName("esse test deve retornar o usuario atual ")
-    void testGetCurrentUser() throws Exception{
-
+    @DisplayName("Teste Unitário: obter usuário atual com sucesso")
+    void testGetCurrentUser() throws Exception {
         Mockito.when(tutorService.getCurrentUser()).thenReturn(tutor);
 
         mockMvc.perform(get("/tutores/current-user"))
@@ -376,32 +328,23 @@ public class TutorControllerTest {
     }
 
     @Test
-    @DisplayName("esse test deve lançar uma exceção ao buscar um usuario atual ")
-    void testGetCurrentUserError() throws Exception{
-
+    @DisplayName("Teste Unitário: falha ao obter usuário atual")
+    void testGetCurrentUserError() throws Exception {
         Mockito.when(tutorService.getCurrentUser()).thenReturn(null);
 
         mockMvc.perform(get("/tutores/current-user"))
                 .andExpect(status().isUnauthorized());
     }
 
-
     @Test
-    @DisplayName("esse test deve realizar o logout do usuario atual ")
-    void testLogout() throws Exception{
-
+    @DisplayName("Teste Unitário: logout do usuário atual")
+    void testLogout() throws Exception {
         Mockito.doNothing().when(tutorService).logout();
 
         mockMvc.perform(post("/tutores/logout"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Logout realizado com sucesso!"));
     }
-
-
-
-
-
-
 
 }
 

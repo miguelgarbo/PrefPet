@@ -345,13 +345,12 @@ class EntidadeServiceTest {
     @DisplayName("findByCPF retorna lista de entidades quando encontra resultados")
     void findByCpfSucesso() {
         when(entidadeRepository.findByCpf("12345678900"))
-                .thenReturn(Optional.of(List.of(entidade)));
+                .thenReturn(Optional.of((entidade)));
 
-        List<Entidade> resultado = entidadeService.findByCPF("12345678900");
+        var resultado = entidadeService.findByCPF("12345678900");
 
         assertNotNull(resultado);
-        assertEquals(1, resultado.size());
-        assertEquals("12345678900", resultado.get(0).getCpf());
+        assertEquals("12345678900", resultado.getCpf());
         verify(entidadeRepository, times(1)).findByCpf("12345678900");
     }
 
@@ -397,13 +396,12 @@ class EntidadeServiceTest {
     @DisplayName("findByEmail retorna lista de entidades quando encontra resultados")
     void findByEmailSucesso() {
         when(entidadeRepository.findByEmail("prefeitura@foz.com"))
-                .thenReturn(Optional.of(List.of(entidade)));
+                .thenReturn(Optional.of((entidade)));
 
-        List<Entidade> resultado = entidadeService.findByEmail("prefeitura@foz.com");
+        Entidade resultado = entidadeService.findByEmail("prefeitura@foz.com");
 
         assertNotNull(resultado);
-        assertEquals(1, resultado.size());
-        assertEquals("prefeitura@foz.com", resultado.get(0).getEmail());
+        assertEquals("prefeitura@foz.com", resultado.getEmail());
         verify(entidadeRepository, times(1)).findByEmail("prefeitura@foz.com");
     }
 
