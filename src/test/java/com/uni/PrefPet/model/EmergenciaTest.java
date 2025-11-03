@@ -7,17 +7,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.List;
-
-
 @ExtendWith(MockitoExtension.class)
 class EmergenciaTest {
-
     Emergencia emergencia = new Emergencia();
 
     Contato contato = new Contato();
-
 
     @BeforeEach
     void setUp(){
@@ -34,7 +28,6 @@ class EmergenciaTest {
     @Test
     @DisplayName("TESTE UNITARIO: esse teste deve adicionar um contato de emergencia")
     void addContato() {
-
         emergencia.addContato(contato);
         Assertions.assertEquals(1,emergencia.getContatos().size());
     }
@@ -42,12 +35,10 @@ class EmergenciaTest {
     @Test
     @DisplayName("TESTE UNITARIO: esse teste deve remover um contato de emergencia")
     void removeContato() {
-
         emergencia.addContato(contato);
         Assertions.assertEquals(1,emergencia.getContatos().size());
 
         emergencia.removeContato(contato);
         Assertions.assertEquals(0,emergencia.getContatos().size());
-
     }
 }
