@@ -22,7 +22,7 @@ public class JwtServiceGenerator {
 
 	///////////////////////////////////////////////////////
 	//Parâmetros para geração do token
-	public static final String SECRET_KEY = "JVDq6OxAdoyrj16LIq371XhWGIcMoLPZ7H7D55857tv";
+	public static final String SECRET_KEY = ".";
 	public static final SignatureAlgorithm ALGORITMO_ASSINATURA = SignatureAlgorithm.HS256;
 	public static final int HORAS_EXPIRACAO_TOKEN = 1;
 

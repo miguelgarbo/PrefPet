@@ -40,10 +40,15 @@ public class SecurityConfig {
 		.csrf(AbstractHttpConfigurer::disable)
 		.cors(AbstractHttpConfigurer::disable)
 		.authorizeHttpRequests((requests) -> requests
+				//end points publicos
 				.requestMatchers("/login").permitAll()
 				.requestMatchers("/users/register/tutor").permitAll()
 				.requestMatchers("/users/register/veterinario").permitAll()
 				.requestMatchers("/users/register/entidade").permitAll()
+				.requestMatchers("/emergencias/findAll").permitAll()
+				.requestMatchers("/tutores/1").permitAll()
+
+
 				.anyRequest().authenticated())
 		.authenticationProvider(authenticationProvider)
 				//aqui definimos a forma de autenticação
@@ -68,8 +73,5 @@ public class SecurityConfig {
 		bean.setOrder(-102);
 		return bean;
 	}
-	
-	
-
 
 }
