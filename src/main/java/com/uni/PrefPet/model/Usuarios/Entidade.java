@@ -1,9 +1,9 @@
 package com.uni.PrefPet.model.Usuarios;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.uni.PrefPet.model.Enum.Role;
 import com.uni.PrefPet.model.Enum.TipoEntidade;
 import com.uni.PrefPet.model.Publicacao;
-import com.uni.PrefPet.model.Usuario;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,4 +17,9 @@ public class Entidade extends Usuario {
     @OneToMany(mappedBy = "entidade")
     @JsonIgnore
     List<Publicacao> publicacoes;
+
+    public Entidade(){
+        setRole(Role.ENTIDADE);
+    }
+
 }

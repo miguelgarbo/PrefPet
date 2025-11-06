@@ -1,11 +1,10 @@
 package com.uni.PrefPet.model.Usuarios;
 
 import com.uni.PrefPet.model.AplicacaoVacina;
-import com.uni.PrefPet.model.Usuario;
+import com.uni.PrefPet.model.Enum.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import org.apache.catalina.LifecycleState;
 
 import java.util.List;
 
@@ -21,4 +20,9 @@ public class Veterinario extends Usuario {
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<AplicacaoVacina> aplicacoes;
+
+    public Veterinario(){
+        setRole(Role.VETERINARIO);
+    }
+
 }

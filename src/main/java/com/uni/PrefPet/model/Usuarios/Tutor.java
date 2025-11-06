@@ -2,13 +2,14 @@ package com.uni.PrefPet.model.Usuarios;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.uni.PrefPet.model.Animal;
+import com.uni.PrefPet.model.Enum.Role;
 import com.uni.PrefPet.model.Notificacao;
-import com.uni.PrefPet.model.Usuario;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import lombok.Data;
 import lombok.ToString;
+
 import java.util.List;
 
 @Entity
@@ -30,5 +31,7 @@ public class Tutor extends Usuario {
     @JsonIgnore
     private List<Notificacao> notificacoesEnviadas;
 
-
+    public Tutor(){
+        setRole(Role.TUTOR);
+    }
 }

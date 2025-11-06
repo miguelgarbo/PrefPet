@@ -1,16 +1,12 @@
 package com.uni.PrefPet.service;
 
-import com.uni.PrefPet.model.Imagem;
 import com.uni.PrefPet.model.Publicacao;
-import com.uni.PrefPet.model.Usuario;
 import com.uni.PrefPet.model.Usuarios.Entidade;
-import com.uni.PrefPet.repository.ImagemRepository;
 import com.uni.PrefPet.repository.PublicacaoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service

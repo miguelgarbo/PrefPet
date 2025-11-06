@@ -1,5 +1,7 @@
-package com.uni.PrefPet.exception;
+package com.uni.PrefPet.config;
 
+import com.uni.PrefPet.exception.DeniedAcessException;
+import com.uni.PrefPet.exception.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;

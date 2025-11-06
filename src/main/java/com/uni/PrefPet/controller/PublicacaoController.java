@@ -1,8 +1,6 @@
 package com.uni.PrefPet.controller;
 
 import com.uni.PrefPet.model.Publicacao;
-import com.uni.PrefPet.model.Usuario;
-import com.uni.PrefPet.model.Usuarios.Entidade;
 import com.uni.PrefPet.service.PublicacaoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -23,11 +20,10 @@ public class PublicacaoController {
 
     @PostMapping
     public ResponseEntity<Publicacao> save(@RequestBody @Valid Publicacao publicacao) {
-        
             var result = publicacaoService.save(publicacao);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
-
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<Publicacao> findById(@PathVariable Long id) {
         
