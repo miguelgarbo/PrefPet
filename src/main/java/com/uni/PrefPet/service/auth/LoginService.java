@@ -1,7 +1,7 @@
 //AuthenticationService.java
-package com.uni.PrefPet.service;
+package com.uni.PrefPet.service.auth;
 
-import com.uni.PrefPet.repository.UsuarioRepository;
+import com.uni.PrefPet.repository.auth.UsuarioRepository;
 import com.uni.PrefPet.config.JwtServiceGenerator;
 import com.uni.PrefPet.model.Usuarios.Usuario;
 import com.uni.PrefPet.model.dtos.Login;
@@ -24,6 +24,7 @@ public class LoginService {
 	private AuthenticationManager authenticationManager;
 	
 	public String logar(Login login) {
+
 		String token = this.gerarToken(login);
 		return token;
 	}

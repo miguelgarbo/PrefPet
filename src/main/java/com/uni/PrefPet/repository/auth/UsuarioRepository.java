@@ -1,4 +1,4 @@
-package com.uni.PrefPet.repository;
+package com.uni.PrefPet.repository.auth;
 
 import com.uni.PrefPet.model.Usuarios.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;

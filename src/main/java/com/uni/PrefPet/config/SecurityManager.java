@@ -1,7 +1,7 @@
 package com.uni.PrefPet.config;
 
 
-import com.uni.PrefPet.repository.UsuarioRepository;
+import com.uni.PrefPet.repository.auth.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,6 +24,8 @@ public class SecurityManager {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+
+
 
 	@Bean
 	public AuthenticationProvider authenticationProvider() {

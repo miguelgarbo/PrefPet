@@ -1,6 +1,6 @@
-package com.uni.PrefPet.controller;
+package com.uni.PrefPet.controller.auth;
 
-import com.uni.PrefPet.service.LoginService;
+import com.uni.PrefPet.service.auth.LoginService;
 import com.uni.PrefPet.model.dtos.Login;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,6 @@ public class LoginController {
 
     @PostMapping
     public ResponseEntity<String> logar(@RequestBody Login login){
-
         var token = loginService.logar(login);
         return new ResponseEntity<>(token, HttpStatus.OK);
     }

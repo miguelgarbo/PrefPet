@@ -4,6 +4,7 @@ import com.uni.PrefPet.model.Usuarios.Entidade;
 import com.uni.PrefPet.model.Usuarios.Tutor;
 import com.uni.PrefPet.model.Usuarios.Usuario;
 import com.uni.PrefPet.model.Usuarios.Veterinario;
+import com.uni.PrefPet.repository.auth.UsuarioRepository;
 import com.uni.PrefPet.service.EntidadeService;
 import com.uni.PrefPet.service.TutorService;
 import com.uni.PrefPet.service.UsuarioService;
@@ -11,14 +12,16 @@ import com.uni.PrefPet.service.VeterinarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
 public class UsuarioController {
+
+    @Autowired
+    UsuarioService usuarioService;
 
     @Autowired
     TutorService tutorService;
@@ -48,6 +51,16 @@ public class UsuarioController {
         return new ResponseEntity<>(resposta, HttpStatus.CREATED);
     }
 
+    @GetMapping("/findAll")
+    public ResponseEntity<List<Usuario>> findAll(){
+        var resposta = usuarioService.findAll();
+        return new ResponseEntity<>(resposta, HttpStatus.OK);
+    }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Usuario> findById(@PathVariable Long id){
+        var resposta = usuarioService.findById(id);
+        return new ResponseEntity<>(resposta, HttpStatus.OK);
+    }
 
 }

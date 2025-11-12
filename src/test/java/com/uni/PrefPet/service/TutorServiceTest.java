@@ -87,13 +87,13 @@ public class TutorServiceTest {
         var resposta = tutorService.save(tutor);
 
         assertEquals(tutor, resposta);
+        Assertions.assertNotNull(resposta.getId());
         Mockito.verify(tutorRepository, Mockito.times(1)).save(any());
     }
 
     @Test
     @DisplayName("teste de cadastro invalido, email ja existe")
     void testTutorSaveErrorEmailDuplicate(){
-
         Mockito.when(tutorRepository.existsByEmail(any())).thenReturn(true);
 
         var exception = assertThrows(IllegalArgumentException.class, ()->{
@@ -101,6 +101,8 @@ public class TutorServiceTest {
         });
 
         assertEquals(exception.getMessage(),"Já existe um usuário com este email.");
+        Mockito.verify(tutorRepository, Mockito.times(0)).save(any());
+
     }
 
     @Test
@@ -132,7 +134,7 @@ public class TutorServiceTest {
 
 
     @Test
-    @DisplayName("teste de procurar tutor por id valido")
+    @DisplayName("Teste Unitario teste de procurar tutor por id valido")
     void testTutorFindTutorByIdValid(){
 
         Mockito.when(tutorRepository.findById(1L)).thenReturn(Optional.of(tutor));

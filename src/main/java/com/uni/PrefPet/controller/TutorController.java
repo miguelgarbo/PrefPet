@@ -23,7 +23,6 @@ public class TutorController {
     public ResponseEntity<Tutor> save(@RequestBody @Valid Tutor tutor) {
             var result = tutorService.save(tutor);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
-
     }
     @GetMapping("/{id}")
     public ResponseEntity<Tutor> findById(@PathVariable Long id) {

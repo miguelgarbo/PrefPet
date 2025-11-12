@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,7 +37,6 @@ public class VeterinarioController {
     public ResponseEntity<String> delete(@PathVariable Long id) {
             var mensagem = veterinarioService.delete(id);
             return new ResponseEntity<>(mensagem,HttpStatus.NO_CONTENT);
-
     }
 
     @PutMapping("/{id}")

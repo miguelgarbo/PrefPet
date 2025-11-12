@@ -41,12 +41,21 @@ public class SecurityConfig {
 		.cors(AbstractHttpConfigurer::disable)
 		.authorizeHttpRequests((requests) -> requests
 				//end points publicos
+				.requestMatchers("/**").hasRole("ADMIN")
 				.requestMatchers("/login").permitAll()
-				.requestMatchers("/users/register/tutor").permitAll()
+                .requestMatchers("/users/").hasAnyRole("USER", "ADMIN")
+				.requestMatchers("/animais**").hasAnyRole("USER", "ADMIN")
+                .requestMatchers("/users/register/tutor").permitAll()
 				.requestMatchers("/users/register/veterinario").permitAll()
 				.requestMatchers("/users/register/entidade").permitAll()
 				.requestMatchers("/emergencias/findAll").permitAll()
-				.requestMatchers("/tutores/1").permitAll()
+//				.requestMatchers("/users/findAll").permitAll()
+//				.requestMatchers("/users/1").permitAll()
+//				.requestMatchers("/users/").permitAll()
+//				.requestMatchers("/users/5").permitAll()
+
+
+
 
 
 				.anyRequest().authenticated())
