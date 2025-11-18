@@ -20,13 +20,12 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
-public class JwtServiceGenerator {  
+public class JwtServiceGenerator {
 
+	//Parâmetros para geração do token
 	@Value("${secret_key}")
 	public String SECRET_KEY;
 	///////////////////////////////////////////////////////
-	//Parâmetros para geração do token
-//	public static final String SECRET_KEY = ".";
 	public static final SignatureAlgorithm ALGORITMO_ASSINATURA = SignatureAlgorithm.HS256;
 	public static final int HORAS_EXPIRACAO_TOKEN = 1;
 

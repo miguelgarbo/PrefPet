@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -41,28 +42,33 @@ public class SecurityConfig {
 		.cors(AbstractHttpConfigurer::disable)
 		.authorizeHttpRequests((requests) -> requests
 				//end points publicos
-				.requestMatchers("/**").hasRole("ADMIN")
 				.requestMatchers("/login").permitAll()
-                .requestMatchers("/users/").hasAnyRole("USER", "ADMIN")
-				.requestMatchers("/animais**").hasAnyRole("USER", "ADMIN")
+				.requestMatchers("/tutores/**").hasAuthority("TUTOR")
+				.requestMatchers("/users/").hasAnyAuthority("TUTOR", "ADMIN")
+				.requestMatchers("/animais/**").permitAll()
                 .requestMatchers("/users/register/tutor").permitAll()
 				.requestMatchers("/users/register/veterinario").permitAll()
 				.requestMatchers("/users/register/entidade").permitAll()
 				.requestMatchers("/emergencias/findAll").permitAll()
-//				.requestMatchers("/users/findAll").permitAll()
-//				.requestMatchers("/users/1").permitAll()
-//				.requestMatchers("/users/").permitAll()
-//				.requestMatchers("/users/5").permitAll()
-
-
-
-
-
+				.requestMatchers(HttpMethod.GET, "/notificacoes/{id}").permitAll()
 				.anyRequest().authenticated())
 		.authenticationProvider(authenticationProvider)
 				//aqui definimos a forma de autenticação
 		.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-		.sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+		.sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+		.exceptionHandling(ex -> ex
+				.authenticationEntryPoint((req, res, authException) -> {
+					res.setStatus(HttpStatus.UNAUTHORIZED.value());
+					res.setContentType("application/json");
+					res.getWriter().write("{\"error\":\"Não autenticado\",\"status\":401}");
+				})
+				.accessDeniedHandler((req, res, accessDeniedException) -> {
+					res.setStatus(HttpStatus.FORBIDDEN.value());
+					res.setContentType("application/json");
+					res.getWriter().write("{\"error\":\"Acesso negado\",\"status\":403}");
+				})
+		);
 
 		return http.build();
 	}

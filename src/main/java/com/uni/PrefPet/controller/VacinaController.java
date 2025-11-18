@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -21,6 +22,7 @@ public class VacinaController {
     @Autowired
     private VacinaService vacinaService;
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'VETERINARIO')")
     @PostMapping("/save")
     public ResponseEntity<Vacina> save(@RequestBody @Valid Vacina vacina) {
 
@@ -28,7 +30,7 @@ public class VacinaController {
             return new ResponseEntity<>(result, HttpStatus.CREATED);
 
     }
-
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'VETERINARIO', 'TUTOR')")
     @GetMapping("/findById/{id}")
     public ResponseEntity<Vacina> findById(@PathVariable Long id) {
 
@@ -37,6 +39,7 @@ public class VacinaController {
 
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'VETERINARIO', 'TUTOR')")
     @GetMapping("/findAll")
     public ResponseEntity<List<Vacina>> findAll() {
 
@@ -45,6 +48,7 @@ public class VacinaController {
 
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'VETERINARIO')")
     @PutMapping("/update/{id}")
     public ResponseEntity<Vacina> update(@PathVariable Long id, @RequestBody Vacina vacina) {
 
@@ -53,6 +57,7 @@ public class VacinaController {
 
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'VETERINARIO')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
 

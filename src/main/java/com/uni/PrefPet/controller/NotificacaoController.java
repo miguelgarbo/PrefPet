@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,37 +24,45 @@ public class NotificacaoController {
     private AplicacaoVacinaService aplicacaoVacinaService;
 
 //crud
-
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'VETERINARIO', 'ENTIDADE')")
     @PostMapping
     public ResponseEntity<Notificacao> save(@RequestBody @Valid Notificacao notificacao) {
         var result = notificacaoService.save(notificacao);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
+
+    //TA LIBERADO PRA TODOS NO SECURITY CONFIG
     @GetMapping("/{id}")
     public ResponseEntity<Notificacao> findById(@PathVariable Long id) {
         var result = notificacaoService.findById(id);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+
+    //apenas o admin e o proprio tutor podem apagar suas  notificacoes
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'TUTOR')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         var mensagem = notificacaoService.delete(id);
         return new ResponseEntity<>(mensagem,HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Notificacao> update(@PathVariable Long id, @RequestBody Notificacao notificacao) {
         var updatedNot = notificacaoService.update(id, notificacao);
         return new ResponseEntity<>(updatedNot, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/findAll")
     public ResponseEntity<List<Notificacao>> findAll() {
         var result = notificacaoService.findAll();
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN','TUTOR')")
     @GetMapping("/findByTutorId")
     public ResponseEntity<List<Notificacao>> findByTutorDestinatarioId(@RequestParam Long id) {
         var result = notificacaoService.findByTutorDestinatario(id);
@@ -62,8 +71,9 @@ public class NotificacaoController {
 
 //regras de  negocio
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     @GetMapping("/gerar")
-    public String gerarNotificacoes() {
+    public String gerarNotificacoesDoSistema() {
         var aplicacoes = aplicacaoVacinaService.findAll();
 
         for (var aplicacao : aplicacoes) {
@@ -76,7 +86,7 @@ public class NotificacaoController {
         return "Notificações geradas com sucesso!";
     }
 
-
+    @PreAuthorize("hasAnyAuthority('TUTOR','ADMIN')")
     @PostMapping("/gerarConvite")
     public ResponseEntity<Notificacao> gerarConvite(@RequestParam Long tutorDestinatario_id,
                                                     @RequestParam Long tutorRemetente_id,
@@ -86,6 +96,7 @@ public class NotificacaoController {
         return new ResponseEntity<>(convite, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyAuthority('TUTOR','ADMIN')")
     @PostMapping("/conviteAceito/{notificacaoId}")
     public ResponseEntity<String> conviteAceito(@PathVariable Long notificacaoId) {
         notificacaoService.conviteAceito(notificacaoId);

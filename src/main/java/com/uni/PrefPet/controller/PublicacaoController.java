@@ -6,8 +6,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -45,6 +45,8 @@ public class PublicacaoController {
             return new ResponseEntity<>(updatedPublicacao, HttpStatus.OK);
 
     }
+
+    @PreAuthorize("hasAuthority('TUTOR')")
     @GetMapping("/findAll")
     public ResponseEntity<List<Publicacao>> findAll() {
         
@@ -54,7 +56,7 @@ public class PublicacaoController {
     }
 
 
-
+    @PreAuthorize("hasAuthority('TUTOR')")
     @GetMapping("/byEntidadeNome")
     public ResponseEntity<List<Publicacao>> findByEntidadeNome(@RequestParam String nomeEntidade) {
         
@@ -64,20 +66,18 @@ public class PublicacaoController {
     }
 
 
-
+    @PreAuthorize("hasAuthority('TUTOR')")
     @GetMapping("/byTipoPublicacao")
     public ResponseEntity<List<Publicacao>> findByTipoPublicacao(@RequestParam String tipoPublicacao) {
-        
             var result = publicacaoService.findByTipoPublicacao(tipoPublicacao);
             return new ResponseEntity<>(result, HttpStatus.OK);
-
     }
+
+    @PreAuthorize("hasAuthority('TUTOR')")
     @GetMapping("/byDescricao")
     public ResponseEntity<List<Publicacao>> findByDescricao(@RequestParam String descricao) {
         
             var result = publicacaoService.findByDescricao(descricao);
             return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
-
 }
