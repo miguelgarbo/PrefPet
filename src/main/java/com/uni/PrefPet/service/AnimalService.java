@@ -13,6 +13,8 @@ public class AnimalService  {
 
     @Autowired
     private AnimalRepository animalRepository;
+
+    @Autowired
     private TutorRepository usuarioRepository;
 
     public Animal findById(Long id){

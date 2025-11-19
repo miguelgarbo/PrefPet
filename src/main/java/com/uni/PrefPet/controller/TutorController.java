@@ -68,32 +68,5 @@ public class TutorController {
             return new ResponseEntity<>(tutors, HttpStatus.OK);
     }
 
-    @GetMapping("/login")
-    public ResponseEntity<Boolean> login(@RequestParam String email, @RequestParam String senha) {
-        boolean result = tutorService.login(email, senha);
-
-        if (result) {
-            return ResponseEntity.ok(true); // 200 OK
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false); // 401
-        }
-    }
-
-
-    @GetMapping("/current-user")
-    public ResponseEntity<Tutor> getCurrentUser() {
-        Tutor currentUser = tutorService.getCurrentUser();
-        if (currentUser != null) {
-            return ResponseEntity.ok(currentUser);
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout() {
-        tutorService.logout();
-        return ResponseEntity.ok("Logout realizado com sucesso!");
-    }
 }
 
