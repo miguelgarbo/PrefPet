@@ -1,8 +1,6 @@
 package com.uni.PrefPet.service;
 
-import com.uni.PrefPet.model.Usuarios.Entidade;
-import com.uni.PrefPet.model.Usuarios.Veterinario;
-import com.uni.PrefPet.model.Usuarios.Veterinario;
+import com.uni.PrefPet.model.Usuarios.Tutor;
 import com.uni.PrefPet.model.Usuarios.Veterinario;
 import com.uni.PrefPet.repository.VeterinarioRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -16,10 +14,15 @@ public class VeterinarioService {
     @Autowired
     private VeterinarioRepository veterinarioRepository;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     public Veterinario save(Veterinario veterinario) {
 
+        usuarioService.preValidacaoUsuarioSave(veterinario);
+
         if (veterinarioRepository.existsByCRMV(veterinario.getCRMV())) {
-            throw new IllegalArgumentException("Já existe um usuário com este CRMV.");
+            throw new IllegalArgumentException("Já existe um Veterinário com este CRMV no Sistema");
         }
 
         return veterinarioRepository.save(veterinario);
@@ -29,37 +32,19 @@ public class VeterinarioService {
         return veterinarioRepository.findAll();
     }
 
-    public Veterinario update(Long id, Veterinario veterinarioAtualizado) {
-        Veterinario existente = veterinarioRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("Usuário com id " + id + " não encontrado."));
+    public Veterinario update(Long id, Veterinario vetAtualizado) {
 
-        if (veterinarioRepository.existsByCpf(veterinarioAtualizado.getCpf())) {
-            throw new IllegalArgumentException("Já existe um usuário com este CPF.");
-        }
+        Veterinario vetValidado = (Veterinario) usuarioService.preValidacaoUsuarioUpdate(id, vetAtualizado);
+        System.out.println("é pra ter o id: "+ vetValidado.getId());
 
-        if (veterinarioRepository.existsByTelefone(veterinarioAtualizado.getTelefone())) {
-            throw new IllegalArgumentException("Já existe um usuário com este telefone.");
-        }
+        vetValidado.setCRMV(vetAtualizado.getCRMV());
+        vetValidado.setAplicacoes(vetAtualizado.getAplicacoes());
 
-        if (veterinarioRepository.existsByCnpj(veterinarioAtualizado.getCnpj())) {
-            throw new IllegalArgumentException("Já existe um usuário com este cnpj.");
-        }
-        if (veterinarioRepository.existsByEmail(veterinarioAtualizado.getCnpj())) {
-            throw new IllegalArgumentException("Já existe um usuário com este email.");
-        }
-
-        existente.setEstado(veterinarioAtualizado.getEstado());
-        existente.setCidade(veterinarioAtualizado.getCidade());
-        existente.setCep(veterinarioAtualizado.getCep());
-        existente.setCnpj(veterinarioAtualizado.getCnpj());
-        existente.setNome(veterinarioAtualizado.getNome());
-        existente.setCpf(veterinarioAtualizado.getCpf());
-        existente.setTelefone(veterinarioAtualizado.getTelefone());
-        existente.setCRMV(veterinarioAtualizado.getCRMV());
-        return veterinarioRepository.save(existente);
+        return veterinarioRepository.save(vetValidado);
     }
-    
-    
+
+
+
     public Veterinario findById(Long id){
         return veterinarioRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o id informado"));

@@ -3,11 +3,13 @@ package com.uni.PrefPet.service;
 
 import com.uni.PrefPet.model.Enum.TipoEntidade;
 import com.uni.PrefPet.model.Usuarios.Entidade;
+import com.uni.PrefPet.model.Usuarios.Veterinario;
 import com.uni.PrefPet.repository.EntidadeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.annotation.ElementType;
 import java.util.List;
 
 @Service
@@ -16,55 +18,25 @@ public class EntidadeService {
     @Autowired
     private EntidadeRepository entidadeRepository;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     public Entidade save(Entidade entidade) {
 
-        if (entidadeRepository.existsByCnpj(entidade.getCnpj())) {
-            throw new IllegalArgumentException("Já existe um órgão com este CNPJ.");
-        }
-        if (entidadeRepository.existsByCpf(entidade.getCpf())) {
-            throw new IllegalArgumentException("Já existe um usuário com este CPF.");
-        }
-
-        if (entidadeRepository.existsByTelefone(entidade.getTelefone())) {
-            throw new IllegalArgumentException("Já existe um usuário com este telefone.");
-        }
-
-        if (entidadeRepository.existsByEmail(entidade.getEmail())) {
-            throw new IllegalArgumentException("Já existe um usuário com este email.");
-        }
-
+        usuarioService.preValidacaoUsuarioSave(entidade);
 
         return entidadeRepository.save(entidade);
     }
 
     public Entidade update(Long id, Entidade entidadeAtualizado) {
 
-        Entidade existente = entidadeRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("Entidade com id " + id + " não encontrado."));
+        Entidade entidadeValidada = (Entidade) usuarioService.preValidacaoUsuarioUpdate(id, entidadeAtualizado);
+        System.out.println("é pra ter o id: "+ entidadeValidada.getId());
 
+        entidadeValidada.setTipoEntidade(entidadeAtualizado.getTipoEntidade());
+        entidadeValidada.setPublicacoes(entidadeAtualizado.getPublicacoes());
 
-        if (entidadeRepository.existsByCpf(entidadeAtualizado.getCpf())) {
-            throw new IllegalArgumentException("Já existe um usuário com este CPF.");
-        }
-
-        if (entidadeRepository.existsByTelefone(entidadeAtualizado.getTelefone())) {
-            throw new IllegalArgumentException("Já existe um usuário com este telefone.");
-        }
-
-        if (entidadeRepository.existsByCnpj(entidadeAtualizado.getCnpj())) {
-            throw new IllegalArgumentException("Já existe um usuário com este cnpj.");
-        }
-
-        existente.setEstado(entidadeAtualizado.getEstado());
-        existente.setCidade(entidadeAtualizado.getCidade());
-        existente.setCep(entidadeAtualizado.getCep());
-        existente.setNome(entidadeAtualizado.getNome());
-        existente.setCpf(entidadeAtualizado.getCpf());
-        existente.setTelefone(entidadeAtualizado.getTelefone());
-        existente.setCnpj(entidadeAtualizado.getCnpj());
-        existente.setTipoEntidade(entidadeAtualizado.getTipoEntidade());
-
-        return entidadeRepository.save(existente);
+        return entidadeRepository.save(entidadeValidada);
     }
 
     public Entidade findById(Long id) {

@@ -19,7 +19,8 @@ public class TutorService {
     @Autowired
     private AnimalService animalService;
 
-    private Tutor currentUser;
+    @Autowired
+    private UsuarioService usuarioService;
 
     public List<Tutor> findAll() {
         return tutorRepository.findAll();
@@ -27,17 +28,8 @@ public class TutorService {
 
     public Tutor save(Tutor tutor) {
 
-        if (tutorRepository.existsByCpf(tutor.getCpf())) {
-            throw new IllegalArgumentException("Já existe um usuário com este CPF.");
-        }
+        usuarioService.preValidacaoUsuarioSave(tutor);
 
-        if (tutorRepository.existsByTelefone(tutor.getTelefone())) {
-            throw new IllegalArgumentException("Já existe um usuário com este telefone.");
-        }
-
-        if (tutorRepository.existsByEmail(tutor.getEmail())) {
-            throw new IllegalArgumentException("Já existe um usuário com este email.");
-        }
         return tutorRepository.save(tutor);
     }
 
@@ -47,40 +39,18 @@ public class TutorService {
     }
 
 
-
     public Tutor update(Long id, Tutor tutorAtualizado) {
-        Tutor existente = tutorRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Usuário com id " + id + " não encontrado."));
 
-        boolean cpfEmUso = tutorRepository.existsByCpfAndIdNot(tutorAtualizado.getCpf(), id);
-        if (cpfEmUso) {
-            throw new IllegalArgumentException("Já existe um usuário com este CPF.");
-        }
+        Tutor tutorValidado = (Tutor) usuarioService.preValidacaoUsuarioUpdate(id, tutorAtualizado);
+        System.out.println("é pra ter o id aqui :" + tutorValidado.getId());
 
-        boolean telefoneEmUso = tutorRepository.existsByTelefoneAndIdNot(tutorAtualizado.getTelefone(), id);
-        if (telefoneEmUso) {
-            throw new IllegalArgumentException("Já existe um usuário com este telefone.");
-        }
+        tutorValidado.setAnimais(tutorAtualizado.getAnimais());
+        tutorValidado.setNotificacoesRecebidas(tutorAtualizado.getNotificacoesRecebidas());
+        tutorValidado.setNotificacoesEnviadas(tutorAtualizado.getNotificacoesEnviadas());
 
-        boolean emailEmUso = tutorRepository.existsByEmailAndIdNot(tutorAtualizado.getEmail(), id);
-        if (emailEmUso) {
-            throw new IllegalArgumentException("Já existe um usuário com este email.");
-        }
-
-        existente.setEstado(tutorAtualizado.getEstado());
-        existente.setCidade(tutorAtualizado.getCidade());
-        existente.setCep(tutorAtualizado.getCep());
-        existente.setCnpj(tutorAtualizado.getCnpj());
-        existente.setNome(tutorAtualizado.getNome());
-        existente.setCpf(tutorAtualizado.getCpf());
-        existente.setTelefone(tutorAtualizado.getTelefone());
-        existente.setAnimais(tutorAtualizado.getAnimais());
-        existente.setImagemUrlPerfil(tutorAtualizado.getImagemUrlPerfil());
-        existente.setEmail(tutorAtualizado.getEmail());
-        existente.setSenha(tutorAtualizado.getSenha());
-
-        return tutorRepository.save(existente);
+        return tutorRepository.save(tutorValidado);
     }
+
 
 
     public String delete(Long id) {
@@ -109,27 +79,6 @@ public class TutorService {
     public Tutor findByEmail(String email) {
         return tutorRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o email informado"));
-    }
-
-
-
-    public boolean login(String email, String senha) {
-        for(Tutor tutor : tutorRepository.findAll()) {
-            if(email.equals(tutor.getEmail()) && senha.equals(tutor.getSenha())) {
-                currentUser = tutor;
-                return true;
-            }
-        }
-        throw new DeniedAcessException("Acesso Negado");
-//        return false;
-    }
-
-    public Tutor getCurrentUser(){
-        return currentUser;
-    }
-
-    public void logout() {
-        currentUser = null;
     }
 
     //fim dos serviços especificos

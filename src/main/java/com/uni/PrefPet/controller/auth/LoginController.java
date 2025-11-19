@@ -20,5 +20,4 @@ public class LoginController {
         var token = loginService.logar(login);
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
-
 }
