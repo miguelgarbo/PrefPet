@@ -26,7 +26,6 @@ public class SecurityManager {
 	}
 
 
-
 	@Bean
 	public AuthenticationProvider authenticationProvider() {
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();

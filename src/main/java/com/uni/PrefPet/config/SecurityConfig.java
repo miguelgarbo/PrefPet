@@ -55,21 +55,7 @@ public class SecurityConfig {
 		.authenticationProvider(authenticationProvider)
 				//aqui definimos a forma de autenticação
 		.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-		.sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
-		.exceptionHandling(ex -> ex
-				.authenticationEntryPoint((req, res, authException) -> {
-					res.setStatus(HttpStatus.UNAUTHORIZED.value());
-					res.setContentType("application/json");
-					res.getWriter().write("{\"error\":\"Não autenticado\",\"status\":401}");
-				})
-				.accessDeniedHandler((req, res, accessDeniedException) -> {
-					res.setStatus(HttpStatus.FORBIDDEN.value());
-					res.setContentType("application/json");
-					res.getWriter().write("{\"error\":\"Acesso negado\",\"status\":403}");
-				})
-		);
-
+		.sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		return http.build();
 	}
 
