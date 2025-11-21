@@ -118,11 +118,14 @@ public class UsuarioService {
             throw new IllegalArgumentException("Esse Telefone Já Possui uma Conta no Sistema");
         }
 
-        var cnpjExiste = usuarioRepository.existsByCnpjAndIdNot(usuario.getCnpj(), id);
+        if (usuario.getCnpj() != null) {
+            boolean cnpjExiste = usuarioRepository.existsByCnpjAndIdNot(usuario.getCnpj(), id);
 
-        if (cnpjExiste) {
-            throw new IllegalArgumentException("Esse CNPJ Já Possui uma Conta no Sistema");
+            if (cnpjExiste) {
+                throw new IllegalArgumentException("Esse CNPJ já possui uma conta no sistema");
+            }
         }
+
 
         //update part
         usuarioParaAtualizar.setEstado(usuario.getEstado());
