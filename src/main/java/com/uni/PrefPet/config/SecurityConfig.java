@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .requestMatchers("/users/register/tutor").permitAll()
 				.requestMatchers("/users/register/veterinario").permitAll()
 				.requestMatchers("/users/register/entidade").permitAll()
-				.requestMatchers("/emergencias/findAll").permitAll()
+				.requestMatchers("/emergencia/**", "/contatos/**").permitAll()
 				.requestMatchers(HttpMethod.GET, "/notificacoes/{id}").permitAll()
 				.anyRequest().authenticated())
 		.authenticationProvider(authenticationProvider)

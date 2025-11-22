@@ -19,7 +19,7 @@ public class Emergencia {
     private Long id;
     private String nome; // MAUS_TRATOS ou ANIMAL_SILVESTRE
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "emergencia_contato",
             joinColumns = @JoinColumn(name = "emergencia_id"),
