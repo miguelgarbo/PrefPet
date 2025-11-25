@@ -1,5 +1,6 @@
 package com.uni.PrefPet.service;
 
+import com.uni.PrefPet.model.Contato;
 import com.uni.PrefPet.model.Emergencia;
 import com.uni.PrefPet.repository.ContatoRepository;
 import com.uni.PrefPet.repository.EmergenciaRepository;
@@ -13,6 +14,7 @@ public class EmergenciaService {
 
     @Autowired
     private EmergenciaRepository emergenciaRepository;
+    private ContatoRepository contatoRepository;
 
 //    @Autowired
 //    private ContatoRepository contatoRepository;
@@ -79,5 +81,22 @@ public class EmergenciaService {
         return emergenciaRepository.findByNome(nome).orElseThrow(()->
                 new EntityNotFoundException("Tipo de Emergencia Não Encontrada"));
     }
+
+    public void desvincular(Long idEmergencia, Long idContato) {//aqui nós desvinculamos as duas tabelas, para que elas possam ser excluidas separadamentes
+        Emergencia emergencia = emergenciaRepository.findById(idEmergencia)
+                .orElseThrow();
+
+        Contato contato = contatoRepository.findById(idContato)
+                .orElseThrow();
+
+        // Remove de ambos os lados
+        emergencia.getContatos().remove(contato);
+        contato.getEmergencias().remove(emergencia);
+
+        // Mantém o banco sincronizado
+        emergenciaRepository.save(emergencia);
+        contatoRepository.save(contato);
+    }
+
 
 }
