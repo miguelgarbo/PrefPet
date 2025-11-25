@@ -57,4 +57,14 @@ public class EmergenciaController {
 
     }
 
+    @DeleteMapping("/{idEmergencia}/contato/{idContato}")
+    public ResponseEntity<Void> desvincular(
+            @PathVariable Long idEmergencia,
+            @PathVariable Long idContato) {
+
+        emergenciaService.desvincular(idEmergencia, idContato);
+        return ResponseEntity.noContent().build();
+    }
+
+
 }
