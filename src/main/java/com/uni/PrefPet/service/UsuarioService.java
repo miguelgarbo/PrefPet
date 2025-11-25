@@ -20,6 +20,10 @@ public class UsuarioService {
 
     private final PasswordEncoder passwordEncoder;
 
+    private static final String imgPerfilPadrao =
+            "https://cdn-icons-png.flaticon.com/512/12225/12225881.png";
+
+
     public UsuarioService(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
@@ -85,11 +89,19 @@ public class UsuarioService {
             throw new IllegalArgumentException("Esse Telefone Já Possui uma Conta no Sistema, Tente o Login");
         }
 
-        var cnpjExiste = usuarioRepository.existsByCnpj(usuario.getCnpj());
 
-        if (cnpjExiste) {
-            throw new IllegalArgumentException("Esse CNPJ Já Possui uma Conta no Sistema, Tente o Login");
+        if (usuario.getCnpj() != null) {
+            boolean cnpjExiste = usuarioRepository.existsByCnpj(usuario.getCnpj());
+
+            if (cnpjExiste) {
+                throw new IllegalArgumentException("Esse CNPJ já possui uma conta no sistema");
+            }
         }
+
+        if (usuario.getImagemUrlPerfil() == null || usuario.getImagemUrlPerfil().isBlank()) {
+            usuario.setImagemUrlPerfil(imgPerfilPadrao);
+        }
+
 
         usuario.setSenha(gerarHashSenha(usuario.getSenha()));
 
@@ -125,8 +137,6 @@ public class UsuarioService {
                 throw new IllegalArgumentException("Esse CNPJ já possui uma conta no sistema");
             }
         }
-
-
         //update part
         usuarioParaAtualizar.setEstado(usuario.getEstado());
         usuarioParaAtualizar.setCidade(usuario.getCidade());
