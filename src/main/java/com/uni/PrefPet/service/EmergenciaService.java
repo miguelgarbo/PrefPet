@@ -14,6 +14,7 @@ public class EmergenciaService {
 
     @Autowired
     private EmergenciaRepository emergenciaRepository;
+    @Autowired
     private ContatoRepository contatoRepository;
 
 //    @Autowired

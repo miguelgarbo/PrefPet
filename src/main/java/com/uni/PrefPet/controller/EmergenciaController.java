@@ -38,8 +38,8 @@ public class EmergenciaController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
 
-        var mensagem = emergenciaService.delete(id);
-        return new ResponseEntity<>(mensagem,HttpStatus.OK);
+        emergenciaService.delete(id);
+        return ResponseEntity.noContent().build(); // 204
 
     }
     @PutMapping("/{id}")
