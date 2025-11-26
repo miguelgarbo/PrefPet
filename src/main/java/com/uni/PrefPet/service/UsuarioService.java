@@ -4,6 +4,7 @@ import com.uni.PrefPet.model.Enum.Role;
 import com.uni.PrefPet.model.Usuarios.Tutor;
 import com.uni.PrefPet.model.Usuarios.Usuario;
 import com.uni.PrefPet.repository.auth.UsuarioRepository;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,16 +24,33 @@ public class UsuarioService {
     private static final String imgPerfilPadrao =
             "https://cdn-icons-png.flaticon.com/512/12225/12225881.png";
 
+    Usuario usuario = new Tutor();
 
     public UsuarioService(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
-
-
     public Usuario findById(Long id){
         return  usuarioRepository.findById(id).orElseThrow(()->
                 new EntityNotFoundException("Usuario Nao Encontrado"));
+    }
+
+
+    public Usuario registrarAdmin(){
+
+        usuario.setNome("ADMIN");
+        usuario.setRole(Role.ADMIN);
+        usuario.setCep("85867-518");
+        usuario.setCidade("Foz do Iguaçu");
+        usuario.setEstado("PR");
+        usuario.setImagemUrlPerfil("https://img.freepik.com/vetores-gratis/siga-me-design-de-tema-social-e-de-negocios_24877-50426.jpg?semt=ais_hybrid&w=740&q=80");
+        usuario.setEmail("miguelggarbo@gmail.com");
+        usuario.setCpf("113.029.390-41");
+        usuario.setTelefone("45988366777");
+        //admin
+        usuario.setSenha("$2a$12$FbfdxMqC432Ya85cQaCKgeUHN/Jf6nGx1VKZDLX5zHURAS2mbJOPu");
+
+        return usuarioRepository.save(usuario);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

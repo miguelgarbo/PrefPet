@@ -4,7 +4,6 @@ import com.uni.PrefPet.model.Usuarios.Entidade;
 import com.uni.PrefPet.model.Usuarios.Tutor;
 import com.uni.PrefPet.model.Usuarios.Usuario;
 import com.uni.PrefPet.model.Usuarios.Veterinario;
-import com.uni.PrefPet.repository.auth.UsuarioRepository;
 import com.uni.PrefPet.service.EntidadeService;
 import com.uni.PrefPet.service.TutorService;
 import com.uni.PrefPet.service.UsuarioService;
@@ -48,6 +47,13 @@ public class UsuarioController {
     @PostMapping("/register/veterinario")
     public ResponseEntity<Veterinario> save(@RequestBody Veterinario veterinario){
         var resposta = veterinarioService.save(veterinario);
+        return new ResponseEntity<>(resposta, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/register/admin")
+    public ResponseEntity<Usuario> save(){
+
+        var resposta = usuarioService.registrarAdmin();
         return new ResponseEntity<>(resposta, HttpStatus.CREATED);
     }
 
