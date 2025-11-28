@@ -13,12 +13,15 @@ public class AplicacaoVacina {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long id;
+    private Long id;
 
-    @NotNull(message = "Data de aplicação não deve ser nula")
+
     private LocalDate dataAplicacao;
 
     private LocalDate dataValidade;
+
+
+    private LocalDate dataPrevista;
 
     @NotBlank(message = "Lote é um campo obrigatório")
     private String lote;

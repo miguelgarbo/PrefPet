@@ -2,7 +2,6 @@ package com.uni.PrefPet.service;
 
 import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.AplicacaoVacina;
-import com.uni.PrefPet.model.Notificacao;
 import com.uni.PrefPet.model.Vacina;
 
 import com.uni.PrefPet.repository.AnimalRepository;
@@ -26,9 +25,11 @@ public class AplicacaoVacinaService {
     @Autowired
     private AnimalRepository animalRepository;
 
-    /// crud basico
+
+    //CRUD BÁSICO//
 
     public AplicacaoVacina save(AplicacaoVacina aplicacaoVacina, int meses) {
+
         Vacina vacina = vacinaRepository.findById(aplicacaoVacina.getVacina().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Vacina não encontrada"));
 
@@ -42,15 +43,28 @@ public class AplicacaoVacinaService {
         aplicacaoVacina.setAnimal(animal);
         aplicacaoVacina.setVacina(vacina);
 
-        LocalDate validade = aplicacaoVacina.getDataAplicacao().plusMonths(meses);
-        aplicacaoVacina.setDataValidade(validade);
+
+        //ADIÇÃO: DATA PREVISTA
+        if (aplicacaoVacina.getDataAplicacao() == null) {
+            aplicacaoVacina.setDataPrevista(LocalDate.now().plusMonths(meses));
+        } else {
+            aplicacaoVacina.setDataPrevista(aplicacaoVacina.getDataAplicacao().plusMonths(meses));
+        }
+
+
+        // ---------------------- VALIDADE (mantido) ----------------------
+        if (aplicacaoVacina.getDataAplicacao() != null) {
+            LocalDate validade = aplicacaoVacina.getDataAplicacao().plusMonths(meses);
+            aplicacaoVacina.setDataValidade(validade);
+        }
 
         return aplicacaoVacinaRepository.save(aplicacaoVacina);
     }
 
+
     public AplicacaoVacina findById(Long id) {
         return aplicacaoVacinaRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException("AplicacaoVacina Não Encontradaa")
+                new EntityNotFoundException("AplicacaoVacina Não Encontrada")
         );
     }
 
@@ -58,11 +72,13 @@ public class AplicacaoVacinaService {
         return aplicacaoVacinaRepository.findAll();
     }
 
+
     public String delete(Long id) {
         existById(id);
         aplicacaoVacinaRepository.deleteById(id);
         return "AplicacaoVacina Deletada com Sucesso";
     }
+
 
     public boolean existById(Long id) {
         if (!aplicacaoVacinaRepository.existsById(id)) {
@@ -71,23 +87,29 @@ public class AplicacaoVacinaService {
         return true;
     }
 
+
     public AplicacaoVacina update(Long id, AplicacaoVacina aplicacaoVacinaAtualizada) {
 
         AplicacaoVacina aplicacaoVacinaSelecionada = aplicacaoVacinaRepository.findById(id).orElseThrow(() ->
                 new EntityNotFoundException("AplicacaoVacina Não Encontrada")
         );
 
+        // mantém funcionalidade existente
         if (aplicacaoVacinaAtualizada.getDataAplicacao() != null) {
             aplicacaoVacinaSelecionada.setDataAplicacao(aplicacaoVacinaAtualizada.getDataAplicacao());
         }
 
+        // ---------------------- ADIÇÃO: DATA PREVISTA ----------------------
+        if (aplicacaoVacinaAtualizada.getDataPrevista() != null) {
+            aplicacaoVacinaSelecionada.setDataPrevista(aplicacaoVacinaAtualizada.getDataPrevista());
+        }
+
+        // mantém todo o restante como estava
         return aplicacaoVacinaRepository.save(aplicacaoVacinaSelecionada);
     }
 
-    ///fim crud basico
 
-
-
+    //  BUSCAS  //
 
     public AplicacaoVacina findByLote(String lote) {
         return aplicacaoVacinaRepository.findByLote(lote)
@@ -102,17 +124,20 @@ public class AplicacaoVacinaService {
                         "Nenhuma aplicacaoVacina encontrada para a data de aplicação informada"));
     }
 
+
     public List<AplicacaoVacina> findByDataAplicacaoAfter(LocalDate data) {
         return aplicacaoVacinaRepository.findByDataAplicacaoAfter(data)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Nenhuma aplicacaoVacina encontrada aplicada após a data informada"));
     }
 
+
     public List<AplicacaoVacina> findByValidadeBefore(LocalDate data) {
         return aplicacaoVacinaRepository.findByDataValidadeBefore(data)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Nenhuma aplicacaoVacina encontrada com validade anterior à data informada"));
     }
+
 
     public List<AplicacaoVacina> findByValidadeAfter(LocalDate data) {
         return aplicacaoVacinaRepository.findByDataValidadeAfter(data)
@@ -121,7 +146,8 @@ public class AplicacaoVacinaService {
     }
 
 
-    /// Validação de datas
+
+
 
     public void validarDataAplicacaoEValidade(LocalDate dataAplicacao, LocalDate dataValidade) {
         if (!dataAplicacao.isBefore(dataValidade)) {
@@ -133,11 +159,11 @@ public class AplicacaoVacinaService {
         return dataAplicacao.plusMonths(meses);
     }
 
+
     public List<AplicacaoVacina> findByAnimal(Long animal_id) {
         return aplicacaoVacinaRepository.findByAnimalId(animal_id)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Nenhuma aplicacaoVacina com esse animal "));
     }
-
 
 }
