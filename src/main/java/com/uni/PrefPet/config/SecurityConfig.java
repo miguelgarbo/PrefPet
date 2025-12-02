@@ -43,15 +43,17 @@ public class SecurityConfig {
 		.authorizeHttpRequests((requests) -> requests
 				//end points publicos
 				.requestMatchers("/login").permitAll()
-				.requestMatchers("/tutores/**").hasAnyAuthority("TUTOR", "VETERINARIO","ADMIN")
-				.requestMatchers("/users/").hasAnyAuthority("TUTOR", "ADMIN", "VETERINARIO")
-				.requestMatchers("/animais/**").permitAll()
-                .requestMatchers("/users/register/tutor").permitAll()
-				.requestMatchers("/users/register/veterinario").permitAll()
-				.requestMatchers("/users/register/admin").permitAll()
-				.requestMatchers("/users/register/entidade").permitAll()
-				.requestMatchers("/emergencia/**", "/contatos/**").permitAll()
-				.requestMatchers(HttpMethod.GET, "/notificacoes/{id}").permitAll()
+				.requestMatchers("/users/**").permitAll()
+				.requestMatchers(HttpMethod.PUT,"/tutores/**").hasAnyAuthority("TUTOR","ADMIN")
+				.requestMatchers(HttpMethod.DELETE,"/tutores").hasAnyAuthority("TUTOR","ADMIN")
+				.requestMatchers(HttpMethod.GET,"/tutores/**").hasAnyAuthority("TUTOR", "ADMIN", "VETERINARIO",'ENTIDADE')
+				.requestMatchers(HttpMethod.POST,"/animais/**").hasAnyAuthority("TUTOR", "ADMIN")
+				.requestMatchers(HttpMethod.PUT,"/animais/**").hasAnyAuthority("TUTOR", "ADMIN")
+				.requestMatchers(HttpMethod.GET,"/animais/**").hasAnyAuthority("TUTOR", "ADMIN", "VETERINARIO")
+				.requestMatchers(HttpMethod.DELETE,"/animais/**").hasAnyAuthority("TUTOR", "ADMIN")
+				.requestMatchers(HttpMethod.GET,"/contatos/**").permitAll()
+				.requestMatchers(HttpMethod.GET, "/notificacoes/{id}").hasAnyAuthority("TUTOR","ADMIN")
+				.requestMatchers(HttpMethod.GET, "/emergencia/**")
 				.anyRequest().authenticated())
 		.authenticationProvider(authenticationProvider)
 				//aqui definimos a forma de autenticação
@@ -59,7 +61,6 @@ public class SecurityConfig {
 		.sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		return http.build();
 	}
-
 	///////////////////////////////////////////////////////
 	@Bean
 	public FilterRegistrationBean<CorsFilter> corsFilter() {
