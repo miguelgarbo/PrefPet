@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -23,7 +24,7 @@ public class AplicacaoVacinaController {
 
 
     //  SAVE  //
-
+    @PreAuthorize("hasAnyAuthority('VETERINARIO','ADMIN')")
     @PostMapping(consumes = "application/json", produces = "application/json")
     public ResponseEntity<AplicacaoVacina> save(
             @RequestBody AplicacaoVacina aplicacaoVacina,
@@ -36,7 +37,7 @@ public class AplicacaoVacinaController {
 
 
     //  FIND BY ID  //
-
+    @PreAuthorize("hasAnyAuthority('VETERINARIO', 'TUTOR','ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<AplicacaoVacina> findById(@PathVariable Long id) {
         var result = aplicacaoVacinaService.findById(id);
@@ -45,7 +46,7 @@ public class AplicacaoVacinaController {
 
 
     //  FIND ALL  //
-
+    @PreAuthorize("hasAnyAuthority('VETERINARIO','ADMIN')")
     @GetMapping("/findAll")
     public ResponseEntity<List<AplicacaoVacina>> findAll() {
 
@@ -55,7 +56,7 @@ public class AplicacaoVacinaController {
 
 
     //  UPDATE  //
-
+    @PreAuthorize("hasAnyAuthority('VETERINARIO','ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<AplicacaoVacina> update(
             @PathVariable Long id,
@@ -68,7 +69,7 @@ public class AplicacaoVacinaController {
 
 
     //  DELETE  //
-
+    @PreAuthorize("hasAnyAuthority('VETERINARIO','ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
 
@@ -77,6 +78,7 @@ public class AplicacaoVacinaController {
 
     }
 
+    @PreAuthorize("hasAnyAuthority('VETERINARIO','ADMIN','TUTOR')")
     @GetMapping("/findByAnimalId/{animal_id}")
     public ResponseEntity<List<AplicacaoVacina>> findByAnimalId(@PathVariable Long animal_id) {
         var result = aplicacaoVacinaService.findByAnimal(animal_id);
@@ -84,24 +86,30 @@ public class AplicacaoVacinaController {
     }
 
 
-    @GetMapping("/by-lote")
-    public ResponseEntity<AplicacaoVacina> findByLote(@RequestParam String lote) {
-
-        AplicacaoVacina result = aplicacaoVacinaService.findByLote(lote);
-        return ResponseEntity.ok(result);
-
+//    @GetMapping("/by-lote")
+//    public ResponseEntity<AplicacaoVacina> findByLote(@RequestParam String lote) {
+//
+//        AplicacaoVacina result = aplicacaoVacinaService.findByLote(lote);
+//        return ResponseEntity.ok(result);
+//
+//    }
+    @PreAuthorize("hasAnyAuthority('VETERINARIO','ADMIN')")
+    @GetMapping("/findByVeterinarioId/{veterinario_id}")
+    public ResponseEntity<List<AplicacaoVacina>> findByVetId(@PathVariable Long veterinario_id) {
+        var result = aplicacaoVacinaService.findByVeterinarioId(veterinario_id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyAuthority('VETERINARIO','ADMIN','TUTOR')")
     @GetMapping("/validade-before")
     public ResponseEntity<List<AplicacaoVacina>> findByValidadeBefore(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data
     ) {
         List<AplicacaoVacina> result = aplicacaoVacinaService.findByValidadeBefore(data);
         return ResponseEntity.ok(result);
-
     }
 
-
+    @PreAuthorize("hasAnyAuthority('VETERINARIO','ADMIN','TUTOR')")
     @GetMapping("/validade-after")
     public ResponseEntity<List<AplicacaoVacina>> findByValidadeAfter(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data
@@ -113,7 +121,7 @@ public class AplicacaoVacinaController {
 
 
 
-
+    @PreAuthorize("hasAnyAuthority('VETERINARIO','ADMIN','TUTOR')")
     @GetMapping("/aplicacaoData")
     public ResponseEntity<List<AplicacaoVacina>> findByDataAplicacao(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data
@@ -123,7 +131,7 @@ public class AplicacaoVacinaController {
 
     }
 
-
+    @PreAuthorize("hasAnyAuthority('VETERINARIO','ADMIN','TUTOR')")
     @GetMapping("/aplicacao-after")
     public ResponseEntity<List<AplicacaoVacina>> findByDataAplicacaoAfter(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data

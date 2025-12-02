@@ -37,6 +37,11 @@ public class VeterinarioService {
         Veterinario vetValidado = (Veterinario) usuarioService.preValidacaoUsuarioUpdate(id, vetAtualizado);
         System.out.println("é pra ter o id: "+ vetValidado.getId());
 
+        var crmvExiste = veterinarioRepository.existsByCRMVAndIdNot(vetAtualizado.getCRMV(), id);
+
+        if (crmvExiste){
+            throw new IllegalArgumentException("Esse CRMV Já Possui uma Conta no Sistema");
+        }
         vetValidado.setCRMV(vetAtualizado.getCRMV());
         vetValidado.setAplicacoes(vetAtualizado.getAplicacoes());
 
@@ -83,7 +88,8 @@ public class VeterinarioService {
         return veterinarioRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Nenhum usuário encontrado com o email informado"));
     }
-    
+
+
     
 }
 

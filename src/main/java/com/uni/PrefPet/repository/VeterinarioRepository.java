@@ -13,6 +13,9 @@ public interface VeterinarioRepository extends JpaRepository<Veterinario, Long> 
 
     //especialistas
     boolean existsByCRMV(String cnpj);
+
+    boolean existsByCRMVAndIdNot(String CRMV, Long id);
+
     Optional<Veterinario> findByCRMV(String crmv);
 
     //padrao

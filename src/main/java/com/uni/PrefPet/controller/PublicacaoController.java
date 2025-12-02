@@ -25,7 +25,7 @@ public class PublicacaoController {
             return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAnyAuthority('TUTOR','ADMIN', 'ENTIDADE')")
+    @PreAuthorize("hasAnyAuthority('TUTOR','ADMIN', 'ENTIDADE','VETERINARIO')")
     @GetMapping("/{id}")
     public ResponseEntity<Publicacao> findById(@PathVariable Long id) {
             var result = publicacaoService.findById(id);
@@ -50,7 +50,7 @@ public class PublicacaoController {
 
     }
 
-    @PreAuthorize("hasAnyAuthority('TUTOR','ADMIN', 'ENTIDADE')")
+    @PreAuthorize("hasAnyAuthority('TUTOR','ADMIN', 'ENTIDADE','VETERINARIO')")
     @GetMapping("/findAll")
     public ResponseEntity<List<Publicacao>> findAll() {
         
@@ -67,14 +67,14 @@ public class PublicacaoController {
             return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyAuthority('TUTOR','ADMIN', 'ENTIDADE')")
+    @PreAuthorize("hasAnyAuthority('TUTOR','ADMIN', 'ENTIDADE','VETERINARIO')")
     @GetMapping("/byTipoPublicacao")
     public ResponseEntity<List<Publicacao>> findByTipoPublicacao(@RequestParam String tipoPublicacao) {
             var result = publicacaoService.findByTipoPublicacao(tipoPublicacao);
             return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyAuthority('TUTOR','ADMIN', 'ENTIDADE')")
+    @PreAuthorize("hasAnyAuthority('TUTOR','ADMIN', 'ENTIDADE','VETERINARIO')")
     @GetMapping("/byDescricao")
     public ResponseEntity<List<Publicacao>> findByDescricao(@RequestParam String descricao) {
         

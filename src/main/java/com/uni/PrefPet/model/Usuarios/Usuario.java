@@ -29,6 +29,86 @@ public abstract class Usuario implements UserDetails{
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(unique = true)
+    @Pattern(regexp = "\\+?\\d{10,15}", message = "Telefone inválido")
+    private String telefone;
+
+    @NotBlank(message = "O Cep é obrigatório")
+    private String cep;
+
+    @NotBlank(message = "Cpf Não pode estar vazio")
+    @Column(unique = true)
+    @CPF(message = "CPF INVALIDO")
+    private String cpf;
+
+    private String cidade;
+
+    private String estado;
+
+    @CNPJ(message = "CNPJ inválido")
+    @Column(unique = true)
+    private String cnpj;
+
+    @NotBlank(message = "A Senha é obrigatória")
+    private String senha;
+
+    @NotBlank(message = "Email é obrigatório")
+    @Column(unique = true)
+    @Email
+    private String email;
+
+    private String imagemUrlPerfil;
+
+    //metodos sobrescritos da userDetails
+    //essencias pro processo de roles funcionar
+
+    @Override
+    @JsonIgnore
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(this.role.name()));
+        return authorities;
+    }
+
+    @Override
+    @JsonIgnore
+    public String getPassword() {
+        return senha;
+    }
+
+    @Override
+    @JsonIgnore
+    public String getUsername() {
+        return email;
+    }
+
+    //funções padroes que o userDetails permite
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+
+    @Override
+    @JsonIgnore
+    public boolean isEnabled() {
+        return true;
+    }
+
+
     public Long getId() {
         return id;
     }
@@ -124,81 +204,4 @@ public abstract class Usuario implements UserDetails{
     public void setImagemUrlPerfil(String imagemUrlPerfil) {
         this.imagemUrlPerfil = imagemUrlPerfil;
     }
-
-    @Column(unique = true)
-    @Pattern(regexp = "\\+?\\d{10,15}", message = "Telefone inválido")
-    private String telefone;
-
-    @NotBlank(message = "O Cep é obrigatório")
-    private String cep;
-
-    @NotBlank(message = "Cpf Não pode estar vazio")
-    @Column(unique = true)
-    @CPF(message = "CPF INVALIDO")
-    private String cpf;
-
-    private String cidade;
-
-    private String estado;
-
-    @CNPJ(message = "CNPJ inválido")
-    @Column(unique = true)
-    private String cnpj;
-
-    @NotBlank(message = "A Senha é obrigatória")
-    private String senha;
-
-    @NotBlank(message = "Email é obrigatório")
-    @Column(unique = true)
-    @Email
-    private String email;
-
-    private String imagemUrlPerfil;
-
-    //metodos sobrescritos da userDetails
-    //essencias pro processo de roles funcionar
-
-    @Override
-    @JsonIgnore
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(this.role.name()));
-        return authorities;
-    }
-
-    @Override
-    public String getPassword() {
-        return senha;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    //funções padroes que o userDetails permite
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
-
-
-
-
-
 }

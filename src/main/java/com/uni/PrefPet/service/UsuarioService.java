@@ -54,7 +54,6 @@ public class UsuarioService {
     public List<Usuario> findAll(){
         return usuarioRepository.findAll();
     }
-
     public String deleteUserGlobal(Long id, Long idCurrentUser) {
 
         if(id == null || idCurrentUser == null){
