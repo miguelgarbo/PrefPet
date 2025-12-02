@@ -23,11 +23,14 @@ public class EmergenciaController {
     @Autowired
     private ContatoService contatoService;
 
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping
     public ResponseEntity<Emergencia> save(@RequestBody @Valid Emergencia emergencia) {
         var result = emergenciaService.save(emergencia);
         return new ResponseEntity<>(result, HttpStatus.CREATED);}
 
+    //acesso permit all no security config
     @GetMapping("/{id}")
     public ResponseEntity<Emergencia> findById(@PathVariable Long id) {
 
@@ -35,6 +38,8 @@ public class EmergenciaController {
         return new ResponseEntity<>(result, HttpStatus.OK);
 
     }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
 
@@ -42,6 +47,8 @@ public class EmergenciaController {
         return ResponseEntity.noContent().build(); // 204
 
     }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Emergencia> update(@PathVariable Long id, @RequestBody Emergencia emergencia) {
 
@@ -49,6 +56,8 @@ public class EmergenciaController {
         return new ResponseEntity<>(updatedEmergencia, HttpStatus.OK);
 
     }
+
+    //acesso permit all no security config
     @GetMapping("/findAll")
     public ResponseEntity<List<Emergencia>> findAll() {
 
@@ -57,6 +66,7 @@ public class EmergenciaController {
 
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{idEmergencia}/contato/{idContato}")
     public ResponseEntity<Void> desvincular(
             @PathVariable Long idEmergencia,
