@@ -63,14 +63,20 @@ public class AplicacaoVacinaController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-
-    @GetMapping("/by-lote")
-    public ResponseEntity<AplicacaoVacina> findByLote(@RequestParam String lote) {
-
-        AplicacaoVacina result = aplicacaoVacinaService.findByLote(lote);
-        return ResponseEntity.ok(result);
-
+    @GetMapping("/findByVeterinarioId/{veterinario_id}")
+    public ResponseEntity<List<AplicacaoVacina>> findByVetId(@PathVariable Long veterinario_id) {
+        var result = aplicacaoVacinaService.findByVeterinarioId(veterinario_id);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+
+//    @GetMapping("/by-lote")
+//    public ResponseEntity<AplicacaoVacina> findByLote(@RequestParam String lote) {
+//
+//        AplicacaoVacina result = aplicacaoVacinaService.findByLote(lote);
+//        return ResponseEntity.ok(result);
+//
+//    }
 
     @GetMapping("/validade-before")
     public ResponseEntity<List<AplicacaoVacina>> findByValidadeBefore(

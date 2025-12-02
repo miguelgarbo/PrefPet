@@ -18,19 +18,21 @@ public class PublicacaoController {
     @Autowired
     private PublicacaoService publicacaoService;
 
+    @PreAuthorize("hasAnyAuthority('ENTIDADE')")
     @PostMapping
     public ResponseEntity<Publicacao> save(@RequestBody @Valid Publicacao publicacao) {
             var result = publicacaoService.save(publicacao);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyAuthority('TUTOR','ADMIN', 'ENTIDADE')")
     @GetMapping("/{id}")
     public ResponseEntity<Publicacao> findById(@PathVariable Long id) {
-        
             var result = publicacaoService.findById(id);
             return new ResponseEntity<>(result, HttpStatus.OK);
-
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'ENTIDADE')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         
@@ -38,6 +40,8 @@ public class PublicacaoController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'ENTIDADE')")
     @PutMapping("{id}")
     public ResponseEntity<Publicacao> update(@PathVariable Long id, @RequestBody Publicacao publicacao) {
         
@@ -46,7 +50,7 @@ public class PublicacaoController {
 
     }
 
-    @PreAuthorize("hasAuthority('TUTOR')")
+    @PreAuthorize("hasAnyAuthority('TUTOR','ADMIN', 'ENTIDADE')")
     @GetMapping("/findAll")
     public ResponseEntity<List<Publicacao>> findAll() {
         
@@ -56,24 +60,21 @@ public class PublicacaoController {
     }
 
 
-    @PreAuthorize("hasAuthority('TUTOR')")
+    @PreAuthorize("hasAnyAuthority('TUTOR','ADMIN', 'ENTIDADE')")
     @GetMapping("/byEntidadeNome")
     public ResponseEntity<List<Publicacao>> findByEntidadeNome(@RequestParam String nomeEntidade) {
-        
             var result = publicacaoService.findByEntidadeNome(nomeEntidade);
             return new ResponseEntity<>(result, HttpStatus.OK);
-
     }
 
-
-    @PreAuthorize("hasAuthority('TUTOR')")
+    @PreAuthorize("hasAnyAuthority('TUTOR','ADMIN', 'ENTIDADE')")
     @GetMapping("/byTipoPublicacao")
     public ResponseEntity<List<Publicacao>> findByTipoPublicacao(@RequestParam String tipoPublicacao) {
             var result = publicacaoService.findByTipoPublicacao(tipoPublicacao);
             return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAuthority('TUTOR')")
+    @PreAuthorize("hasAnyAuthority('TUTOR','ADMIN', 'ENTIDADE')")
     @GetMapping("/byDescricao")
     public ResponseEntity<List<Publicacao>> findByDescricao(@RequestParam String descricao) {
         

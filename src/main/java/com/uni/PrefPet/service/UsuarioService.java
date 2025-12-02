@@ -4,13 +4,11 @@ import com.uni.PrefPet.model.Enum.Role;
 import com.uni.PrefPet.model.Usuarios.Tutor;
 import com.uni.PrefPet.model.Usuarios.Usuario;
 import com.uni.PrefPet.repository.auth.UsuarioRepository;
-import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -34,7 +32,6 @@ public class UsuarioService {
         return  usuarioRepository.findById(id).orElseThrow(()->
                 new EntityNotFoundException("Usuario Nao Encontrado"));
     }
-
 
     public Usuario registrarAdmin(){
 

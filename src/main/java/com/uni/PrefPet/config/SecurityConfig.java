@@ -43,7 +43,7 @@ public class SecurityConfig {
 		.authorizeHttpRequests((requests) -> requests
 				//end points publicos
 				.requestMatchers("/login").permitAll()
-				.requestMatchers("/tutores/**").hasAnyAuthority("TUTOR", "VETERINARIO","ADMIN")
+				.requestMatchers("/tutores/**").hasAnyAuthority("TUTOR", "VETERINARIO","ADMIN", "ENTIDADE")
 				.requestMatchers("/users/").hasAnyAuthority("TUTOR", "ADMIN", "VETERINARIO")
 				.requestMatchers("/animais/**").permitAll()
                 .requestMatchers("/users/register/tutor").permitAll()

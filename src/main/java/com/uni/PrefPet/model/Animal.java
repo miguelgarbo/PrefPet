@@ -92,6 +92,126 @@ public class Animal {
             registroGeral = gerarRg();
         }
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getRegistroGeral() {
+        return registroGeral;
+    }
+
+    public void setRegistroGeral(String registroGeral) {
+        this.registroGeral = registroGeral;
+    }
+
+    public String getEspecie() {
+        return especie;
+    }
+
+    public void setEspecie(String especie) {
+        this.especie = especie;
+    }
+
+    public Tutor getTutor() {
+        return tutor;
+    }
+
+    public void setTutor(Tutor tutor) {
+        this.tutor = tutor;
+    }
+
+    public Boolean getCastrado() {
+        return castrado;
+    }
+
+    public void setCastrado(Boolean castrado) {
+        this.castrado = castrado;
+    }
+
+    public String getCor() {
+        return cor;
+    }
+
+    public void setCor(String cor) {
+        this.cor = cor;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public Boolean getMicrochip() {
+        return microchip;
+    }
+
+    public void setMicrochip(Boolean microchip) {
+        this.microchip = microchip;
+    }
+
+    public String getNumeroMicrochip() {
+        return numeroMicrochip;
+    }
+
+    public void setNumeroMicrochip(String numeroMicrochip) {
+        this.numeroMicrochip = numeroMicrochip;
+    }
+
+    public LocalDate getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public String getNaturalidade() {
+        return naturalidade;
+    }
+
+    public void setNaturalidade(String naturalidade) {
+        this.naturalidade = naturalidade;
+    }
+
+    public String getImagemUrl() {
+        return imagemUrl;
+    }
+
+    public void setImagemUrl(String imagemUrl) {
+        this.imagemUrl = imagemUrl;
+    }
+
+    public List<Notificacao> getNotificacoes() {
+        return notificacoes;
+    }
+
+    public void setNotificacoes(List<Notificacao> notificacoes) {
+        this.notificacoes = notificacoes;
+    }
+
+    public List<AplicacaoVacina> getAplicacoes() {
+        return aplicacoes;
+    }
+
+    public void setAplicacoes(List<AplicacaoVacina> aplicacoes) {
+        this.aplicacoes = aplicacoes;
+    }
 }
 
 

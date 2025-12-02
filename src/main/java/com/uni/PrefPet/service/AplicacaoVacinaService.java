@@ -27,7 +27,6 @@ public class AplicacaoVacinaService {
     private AnimalRepository animalRepository;
 
     /// crud basico
-
     public AplicacaoVacina save(AplicacaoVacina aplicacaoVacina, int meses) {
         Vacina vacina = vacinaRepository.findById(aplicacaoVacina.getVacina().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Vacina não encontrada"));
@@ -39,9 +38,9 @@ public class AplicacaoVacinaService {
         long doseAnterior = aplicacaoVacinaRepository.countByAnimalAndVacina(animal, vacina);
         aplicacaoVacina.setNumeroDose((int) doseAnterior + 1);
 
+        aplicacaoVacina.setDataAplicacao(LocalDate.now());
         aplicacaoVacina.setAnimal(animal);
         aplicacaoVacina.setVacina(vacina);
-
         LocalDate validade = aplicacaoVacina.getDataAplicacao().plusMonths(meses);
         aplicacaoVacina.setDataValidade(validade);
 
@@ -87,13 +86,11 @@ public class AplicacaoVacinaService {
     ///fim crud basico
 
 
-
-
-    public AplicacaoVacina findByLote(String lote) {
-        return aplicacaoVacinaRepository.findByLote(lote)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Nenhuma aplicacaoVacina encontrada com o lote informado"));
-    }
+//    public AplicacaoVacina findByLote(String lote) {
+//        return aplicacaoVacinaRepository.findByLote(lote)
+//                .orElseThrow(() -> new EntityNotFoundException(
+//                        "Nenhuma aplicacaoVacina encontrada com o lote informado"));
+//    }
 
 
     public List<AplicacaoVacina> findByDataAplicacao(LocalDate dataAplicacao) {
@@ -137,6 +134,13 @@ public class AplicacaoVacinaService {
         return aplicacaoVacinaRepository.findByAnimalId(animal_id)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Nenhuma aplicacaoVacina com esse animal "));
+    }
+
+    public List<AplicacaoVacina> findByVeterinarioId(Long id){
+
+        return aplicacaoVacinaRepository.findByVeterinarioId(id).orElseThrow(()->
+                new EntityNotFoundException("Nenhuma aplicacaoVacina desse veterinario selecionado"));
+
     }
 
 

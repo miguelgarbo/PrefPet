@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface AplicacaoVacinaRepository extends JpaRepository<AplicacaoVacina, Long> {
 
-    Optional<AplicacaoVacina> findByLote(String lote);
+//    Optional<AplicacaoVacina> findByLote(String lote);
 
     Optional<List<AplicacaoVacina>> findByDataAplicacao(LocalDate dataAplicacao);
 
@@ -27,4 +27,8 @@ public interface AplicacaoVacinaRepository extends JpaRepository<AplicacaoVacina
     long countByAnimalAndVacina(Animal animal, Vacina vacina);
 
     Optional<List<AplicacaoVacina>> findByAnimalId(Long animal_id);
+
+
+    Optional<List<AplicacaoVacina>> findByVeterinarioId(Long idVeterinario);
+
 }
