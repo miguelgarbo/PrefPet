@@ -86,7 +86,7 @@ public class NotificacaoController {
         return "Notificações geradas com sucesso!";
     }
 
-    @PreAuthorize("hasAnyAuthority('TUTOR','ADMIN')")
+    @PreAuthorize("hasAnyAuthority('TUTOR')")
     @PostMapping("/gerarConvite")
     public ResponseEntity<Notificacao> gerarConvite(@RequestParam Long tutorDestinatario_id,
                                                     @RequestParam Long tutorRemetente_id,
@@ -96,7 +96,7 @@ public class NotificacaoController {
         return new ResponseEntity<>(convite, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAnyAuthority('TUTOR','ADMIN')")
+    @PreAuthorize("hasAnyAuthority('TUTOR')")
     @PostMapping("/conviteAceito/{notificacaoId}")
     public ResponseEntity<String> conviteAceito(@PathVariable Long notificacaoId) {
         notificacaoService.conviteAceito(notificacaoId);

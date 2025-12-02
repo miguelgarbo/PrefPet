@@ -27,6 +27,7 @@ public class AplicacaoVacinaService {
     private AnimalRepository animalRepository;
 
     /// crud basico
+
     public AplicacaoVacina save(AplicacaoVacina aplicacaoVacina, int meses) {
         Vacina vacina = vacinaRepository.findById(aplicacaoVacina.getVacina().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Vacina não encontrada"));
@@ -41,8 +42,21 @@ public class AplicacaoVacinaService {
         aplicacaoVacina.setDataAplicacao(LocalDate.now());
         aplicacaoVacina.setAnimal(animal);
         aplicacaoVacina.setVacina(vacina);
-        LocalDate validade = aplicacaoVacina.getDataAplicacao().plusMonths(meses);
-        aplicacaoVacina.setDataValidade(validade);
+
+
+        //ADIÇÃO: DATA PREVISTA
+        if (aplicacaoVacina.getDataAplicacao() == null) {
+            aplicacaoVacina.setDataPrevista(LocalDate.now().plusMonths(meses));
+        } else {
+            aplicacaoVacina.setDataPrevista(aplicacaoVacina.getDataAplicacao().plusMonths(meses));
+        }
+
+
+        // ---------------------- VALIDADE (mantido) ----------------------
+        if (aplicacaoVacina.getDataAplicacao() != null) {
+            LocalDate validade = aplicacaoVacina.getDataAplicacao().plusMonths(meses);
+            aplicacaoVacina.setDataValidade(validade);
+        }
 
         return aplicacaoVacinaRepository.save(aplicacaoVacina);
     }
@@ -86,11 +100,13 @@ public class AplicacaoVacinaService {
     ///fim crud basico
 
 
-//    public AplicacaoVacina findByLote(String lote) {
-//        return aplicacaoVacinaRepository.findByLote(lote)
-//                .orElseThrow(() -> new EntityNotFoundException(
-//                        "Nenhuma aplicacaoVacina encontrada com o lote informado"));
-//    }
+
+
+    public AplicacaoVacina findByLote(String lote) {
+        return aplicacaoVacinaRepository.findByLote(lote)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Nenhuma aplicacaoVacina encontrada com o lote informado"));
+    }
 
 
     public List<AplicacaoVacina> findByDataAplicacao(LocalDate dataAplicacao) {
@@ -134,13 +150,6 @@ public class AplicacaoVacinaService {
         return aplicacaoVacinaRepository.findByAnimalId(animal_id)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Nenhuma aplicacaoVacina com esse animal "));
-    }
-
-    public List<AplicacaoVacina> findByVeterinarioId(Long id){
-
-        return aplicacaoVacinaRepository.findByVeterinarioId(id).orElseThrow(()->
-                new EntityNotFoundException("Nenhuma aplicacaoVacina desse veterinario selecionado"));
-
     }
 
 

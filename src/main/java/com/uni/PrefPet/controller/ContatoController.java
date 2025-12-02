@@ -20,6 +20,7 @@ public class ContatoController {
     @Autowired
     private ContatoService contatoService;
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/save")
     public ResponseEntity<Contato> save(@RequestBody @Valid Contato contato) {
        
@@ -28,6 +29,7 @@ public class ContatoController {
        
     }
 
+    // acesso permit all no security config
     @GetMapping("/findById/{id}")
     public ResponseEntity<Contato> findById(@PathVariable Long id) {
             var result = contatoService.findById(id);
@@ -43,6 +45,7 @@ public class ContatoController {
        
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/update/{id}")
     public ResponseEntity<Contato> update(@PathVariable Long id, @RequestBody Contato contato) {
             var updated = contatoService.update(id, contato);
@@ -50,6 +53,7 @@ public class ContatoController {
        
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         
@@ -58,14 +62,8 @@ public class ContatoController {
        
     }
 
-    @GetMapping("/existsByEmail/{email}")
-    public ResponseEntity<Boolean> existsByEmail(@PathVariable String email) {
-        
-            boolean exists = contatoService.existsByEmail(email);
-            return new ResponseEntity<>(exists, HttpStatus.OK);
-       
-    }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN','TUTOR','VETERINARIO', 'ENTIDADE')")
     @GetMapping("/findByEmail/{email}")
     public ResponseEntity<List<Contato>> findByEmail(@PathVariable String email) {
         
@@ -74,9 +72,7 @@ public class ContatoController {
 
     }
 
-
-
-
+    @PreAuthorize("hasAnyAuthority('ADMIN','TUTOR','VETERINARIO', 'ENTIDADE')")
     @GetMapping("/findByNomeOrgao/{nomeOrgao}")
     public ResponseEntity<List<Contato>> findByNomeOrgaoContainingIgnoreCase(@PathVariable String nomeOrgao) {
         
@@ -85,7 +81,8 @@ public class ContatoController {
             return new ResponseEntity<>(result, HttpStatus.OK);
 
     }
-
+    
+    @PreAuthorize("hasAnyAuthority('ADMIN','TUTOR','VETERINARIO', 'ENTIDADE')")
     @GetMapping("/findByTelefone/{telefone}")
     public ResponseEntity<List<Contato>> findByTelefone(@PathVariable String telefone) {
         

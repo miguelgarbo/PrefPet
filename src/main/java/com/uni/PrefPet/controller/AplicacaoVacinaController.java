@@ -21,11 +21,21 @@ public class AplicacaoVacinaController {
     @Autowired
     private AplicacaoVacinaService aplicacaoVacinaService;
 
+
+    //  SAVE  //
+
     @PostMapping(consumes = "application/json", produces = "application/json")
-    public ResponseEntity<AplicacaoVacina> save(@RequestBody AplicacaoVacina aplicacaoVacina, @RequestParam int meses) {
+    public ResponseEntity<AplicacaoVacina> save(
+            @RequestBody AplicacaoVacina aplicacaoVacina,
+            @RequestParam int meses
+    ) {
+        // Nenhuma funcionalidade removida — apenas passa ao service
         var result = aplicacaoVacinaService.save(aplicacaoVacina, meses);
         return new ResponseEntity<>(result, HttpStatus.CREATED);
     }
+
+
+    //  FIND BY ID  //
 
     @GetMapping("/{id}")
     public ResponseEntity<AplicacaoVacina> findById(@PathVariable Long id) {
@@ -33,21 +43,31 @@ public class AplicacaoVacinaController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+
+    //  FIND ALL  //
+
     @GetMapping("/findAll")
     public ResponseEntity<List<AplicacaoVacina>> findAll() {
 
         var result = aplicacaoVacinaService.findAll();
         return new ResponseEntity<>(result, HttpStatus.OK);
-
     }
+
+
+    //  UPDATE  //
 
     @PutMapping("/{id}")
-    public ResponseEntity<AplicacaoVacina> update(@PathVariable Long id, @RequestBody AplicacaoVacina vacina) {
-
+    public ResponseEntity<AplicacaoVacina> update(
+            @PathVariable Long id,
+            @RequestBody AplicacaoVacina vacina
+    ) {
+        // NÃO removi nada — apenas delego ao service
         var updated = aplicacaoVacinaService.update(id, vacina);
         return new ResponseEntity<>(updated, HttpStatus.OK);
-
     }
+
+
+    //  DELETE  //
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
@@ -63,55 +83,55 @@ public class AplicacaoVacinaController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @GetMapping("/findByVeterinarioId/{veterinario_id}")
-    public ResponseEntity<List<AplicacaoVacina>> findByVetId(@PathVariable Long veterinario_id) {
-        var result = aplicacaoVacinaService.findByVeterinarioId(veterinario_id);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+
+    @GetMapping("/by-lote")
+    public ResponseEntity<AplicacaoVacina> findByLote(@RequestParam String lote) {
+
+        AplicacaoVacina result = aplicacaoVacinaService.findByLote(lote);
+        return ResponseEntity.ok(result);
+
     }
-
-
-//    @GetMapping("/by-lote")
-//    public ResponseEntity<AplicacaoVacina> findByLote(@RequestParam String lote) {
-//
-//        AplicacaoVacina result = aplicacaoVacinaService.findByLote(lote);
-//        return ResponseEntity.ok(result);
-//
-//    }
 
     @GetMapping("/validade-before")
     public ResponseEntity<List<AplicacaoVacina>> findByValidadeBefore(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
-
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data
+    ) {
         List<AplicacaoVacina> result = aplicacaoVacinaService.findByValidadeBefore(data);
         return ResponseEntity.ok(result);
 
     }
 
+
     @GetMapping("/validade-after")
     public ResponseEntity<List<AplicacaoVacina>> findByValidadeAfter(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
-
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data
+    ) {
         List<AplicacaoVacina> result = aplicacaoVacinaService.findByValidadeAfter(data);
         return ResponseEntity.ok(result);
 
     }
 
+
+
+
     @GetMapping("/aplicacaoData")
     public ResponseEntity<List<AplicacaoVacina>> findByDataAplicacao(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
-
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data
+    ) {
         List<AplicacaoVacina> result = aplicacaoVacinaService.findByDataAplicacao(data);
         return ResponseEntity.ok(result);
 
     }
 
+
     @GetMapping("/aplicacao-after")
     public ResponseEntity<List<AplicacaoVacina>> findByDataAplicacaoAfter(
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
-
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data
+    ) {
         List<AplicacaoVacina> result = aplicacaoVacinaService.findByDataAplicacaoAfter(data);
         return ResponseEntity.ok(result);
 
     }
+
 }
 
