@@ -23,8 +23,6 @@ public class Veterinario extends Usuario {
     @JsonIgnore
     private List<AplicacaoVacina> aplicacoes;
 
-
-
     public Veterinario(){
         setRole(Role.VETERINARIO);
     }

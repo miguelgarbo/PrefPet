@@ -2,8 +2,10 @@ package com.uni.PrefPet.service;
 import com.uni.PrefPet.exception.DeniedAcessException;
 import com.uni.PrefPet.model.Animal;
 import com.uni.PrefPet.model.Usuarios.Tutor;
+import com.uni.PrefPet.model.dtos.TutorDTO;
 import com.uni.PrefPet.repository.TutorRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.keycloak.admin.client.Keycloak;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +28,25 @@ public class TutorService {
         return tutorRepository.findAll();
     }
 
-    public Tutor save(Tutor tutor) {
+    public Tutor save(TutorDTO dto) {
+
+        Tutor tutor = new Tutor();
+
+        tutor.setNome(dto.getNome());
+        tutor.setEmail(dto.getEmail());
+        tutor.setCpf(dto.getCpf());
+        tutor.setTelefone(dto.getTelefone());
+
+        tutor.setCidade(dto.getCidade());
+        tutor.setEstado(dto.getEstado());
+        tutor.setCep(dto.getCep());
 
         usuarioService.preValidacaoUsuarioSave(tutor);
+
+        usuarioService.criarKeycloakUser(
+                tutor,
+                dto.getSenha()
+        );
 
         return tutorRepository.save(tutor);
     }

@@ -1,5 +1,6 @@
 package com.uni.PrefPet.repository;
 
+import com.uni.PrefPet.model.Usuarios.Usuario;
 import com.uni.PrefPet.model.Usuarios.Veterinario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -17,6 +18,7 @@ public interface VeterinarioRepository extends JpaRepository<Veterinario, Long> 
     boolean existsByCRMVAndIdNot(String CRMV, Long id);
 
     Optional<Veterinario> findByCRMV(String crmv);
+    Optional<Veterinario> findByKeycloakId(String keycloakId);
 
     //padrao
     boolean existsByCnpj(String cnpj);

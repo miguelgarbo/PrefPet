@@ -3,6 +3,7 @@ package com.uni.PrefPet.repository;
 import com.uni.PrefPet.model.Enum.TipoEntidade;
 import com.uni.PrefPet.model.Usuarios.Entidade;
 import com.uni.PrefPet.model.Usuarios.Entidade;
+import com.uni.PrefPet.model.Usuarios.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +16,7 @@ public interface EntidadeRepository extends JpaRepository<Entidade, Long> {
     //especialistas
     Optional<List<Entidade>> findByTipoEntidade(TipoEntidade tipoEntidade);
 
+    Optional<Entidade> findByKeycloakId(String keycloakId);
 
     //padrao
     boolean existsByCnpj(String cnpj);

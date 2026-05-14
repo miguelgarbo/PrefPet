@@ -2,6 +2,7 @@ package com.uni.PrefPet.controller;
 
 import com.uni.PrefPet.model.Enum.TipoEntidade;
 import com.uni.PrefPet.model.Usuarios.Entidade;
+import com.uni.PrefPet.model.dtos.EntidadeDTO;
 import com.uni.PrefPet.service.EntidadeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class EntidadeController {
     private EntidadeService entidadeService;
 
     @PostMapping
-    public ResponseEntity<Entidade> save(@RequestBody @Valid Entidade entidade) {
+    public ResponseEntity<Entidade> save(@RequestBody @Valid EntidadeDTO entidade) {
         
             var result = entidadeService.save(entidade);
             return new ResponseEntity<>(result, HttpStatus.CREATED);

@@ -1,13 +1,17 @@
 package com.uni.PrefPet.service;
 
 import com.uni.PrefPet.model.Enum.Role;
+import com.uni.PrefPet.model.Usuarios.Entidade;
 import com.uni.PrefPet.model.Usuarios.Tutor;
 import com.uni.PrefPet.model.Usuarios.Usuario;
+import com.uni.PrefPet.model.Usuarios.Veterinario;
+import com.uni.PrefPet.repository.EntidadeRepository;
+import com.uni.PrefPet.repository.TutorRepository;
+import com.uni.PrefPet.repository.VeterinarioRepository;
 import com.uni.PrefPet.repository.auth.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -17,37 +21,61 @@ public class UsuarioService {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    private final PasswordEncoder passwordEncoder;
+    @Autowired
+    VeterinarioRepository veterinarioRepository;
+
+    @Autowired
+    EntidadeRepository entidadeRepository;
+
+    @Autowired
+    TutorRepository tutorRepository;
+
+    @Autowired
+    KeycloakService keycloakService;
 
     private static final String imgPerfilPadrao =
             "https://cdn-icons-png.flaticon.com/512/12225/12225881.png";
 
     Usuario usuario = new Tutor();
 
-    public UsuarioService(PasswordEncoder passwordEncoder) {
-        this.passwordEncoder = passwordEncoder;
+
+    public Tutor findByTutorKeycloakId(String keycloakId) {
+        return tutorRepository
+                .findByKeycloakId(keycloakId)
+                .orElseThrow(() -> new EntityNotFoundException("Tutor não encontrado"));
     }
+
+    public Veterinario findByVeterinarioKeycloakId(String keycloakId) {
+        return veterinarioRepository
+                .findByKeycloakId(keycloakId)
+                .orElseThrow(() -> new EntityNotFoundException("Veterinario não encontrado"));
+    }
+
+    public Entidade findByEntidadeKeycloakId(String keycloakId) {
+        return entidadeRepository
+                .findByKeycloakId(keycloakId)
+                .orElseThrow(() -> new EntityNotFoundException("Entidade não encontrado"));
+    }
+
+
+
+
+
 
     public Usuario findById(Long id){
         return  usuarioRepository.findById(id).orElseThrow(()->
                 new EntityNotFoundException("Usuario Nao Encontrado"));
     }
 
-    public Usuario registrarAdmin(){
+    public void criarKeycloakUser(
+            Usuario usuario, String senha) {
 
-        usuario.setNome("ADMIN");
-        usuario.setRole(Role.ADMIN);
-        usuario.setCep("85867-518");
-        usuario.setCidade("Foz do Iguaçu");
-        usuario.setEstado("PR");
-        usuario.setImagemUrlPerfil("https://img.freepik.com/vetores-gratis/siga-me-design-de-tema-social-e-de-negocios_24877-50426.jpg?semt=ais_hybrid&w=740&q=80");
-        usuario.setEmail("miguelggarbo@gmail.com");
-        usuario.setCpf("113.029.390-41");
-        usuario.setTelefone("45988366777");
-        //admin
-        usuario.setSenha("$2a$12$FbfdxMqC432Ya85cQaCKgeUHN/Jf6nGx1VKZDLX5zHURAS2mbJOPu");
+        String keycloakId = keycloakService.criarUsuario(
+                usuario.getEmail(),
+                senha, usuario.getRole(), usuario.getNome()
+        );
 
-        return usuarioRepository.save(usuario);
+        usuario.setKeycloakId(keycloakId);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -77,11 +105,10 @@ public class UsuarioService {
         usuarioRepository.deleteById(id);
         return "Usuário com id " + id + " foi excluído com sucesso.";    }
 
-
-    public String gerarHashSenha(String senha){
-        var hashSenha = passwordEncoder.encode(senha);
-        return hashSenha;
-    }
+//    public String gerarHashSenha(String senha){
+//        var hashSenha = passwordEncoder.encode(senha);
+//        return hashSenha;
+//    }
 
     public Usuario preValidacaoUsuarioSave(Usuario usuario) {
 
@@ -115,9 +142,6 @@ public class UsuarioService {
         if (usuario.getImagemUrlPerfil() == null || usuario.getImagemUrlPerfil().isBlank()) {
             usuario.setImagemUrlPerfil(imgPerfilPadrao);
         }
-
-
-        usuario.setSenha(gerarHashSenha(usuario.getSenha()));
 
         return usuario;
     }
@@ -161,7 +185,7 @@ public class UsuarioService {
         usuarioParaAtualizar.setTelefone(usuario.getTelefone());
         usuarioParaAtualizar.setImagemUrlPerfil(usuario.getImagemUrlPerfil());
         usuarioParaAtualizar.setEmail(usuario.getEmail());
-        usuarioParaAtualizar.setSenha(usuario.getSenha());
+//        usuarioParaAtualizar.setSenha(usuario.getSenha());
 
         return usuarioParaAtualizar;
     }

@@ -2,6 +2,7 @@ package com.uni.PrefPet.controller;
 
 
 import com.uni.PrefPet.model.Usuarios.Tutor;
+import com.uni.PrefPet.model.dtos.TutorDTO;
 import com.uni.PrefPet.service.TutorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class TutorController {
     private TutorService tutorService;
 
     @PostMapping
-    public ResponseEntity<Tutor> save(@RequestBody @Valid Tutor tutor) {
+    public ResponseEntity<Tutor> save(@RequestBody @Valid TutorDTO tutor) {
             var result = tutorService.save(tutor);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
     }

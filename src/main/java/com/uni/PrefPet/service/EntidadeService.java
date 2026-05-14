@@ -1,15 +1,11 @@
 package com.uni.PrefPet.service;
-
-
 import com.uni.PrefPet.model.Enum.TipoEntidade;
 import com.uni.PrefPet.model.Usuarios.Entidade;
-import com.uni.PrefPet.model.Usuarios.Veterinario;
+import com.uni.PrefPet.model.dtos.EntidadeDTO;
 import com.uni.PrefPet.repository.EntidadeRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.lang.annotation.ElementType;
 import java.util.List;
 
 @Service
@@ -21,9 +17,29 @@ public class EntidadeService {
     @Autowired
     private UsuarioService usuarioService;
 
-    public Entidade save(Entidade entidade) {
+    public Entidade save(EntidadeDTO dto) {
+
+        Entidade entidade = new Entidade();
+
+        entidade.setNome(dto.getNome());
+        entidade.setEmail(dto.getEmail());
+        entidade.setCpf(dto.getCpf());
+        entidade.setTelefone(dto.getTelefone());
+
+        entidade.setCidade(dto.getCidade());
+        entidade.setEstado(dto.getEstado());
+        entidade.setCep(dto.getCep());
+
+        entidade.setCnpj(dto.getCnpj());
+
+        entidade.setTipoEntidade(dto.getTipoEntidade());
 
         usuarioService.preValidacaoUsuarioSave(entidade);
+
+        usuarioService.criarKeycloakUser(
+                entidade,
+                dto.getSenha()
+        );
 
         return entidadeRepository.save(entidade);
     }
@@ -31,7 +47,6 @@ public class EntidadeService {
     public Entidade update(Long id, Entidade entidadeAtualizado) {
 
         Entidade entidadeValidada = (Entidade) usuarioService.preValidacaoUsuarioUpdate(id, entidadeAtualizado);
-        System.out.println("é pra ter o id: "+ entidadeValidada.getId());
 
         entidadeValidada.setTipoEntidade(entidadeAtualizado.getTipoEntidade());
         entidadeValidada.setPublicacoes(entidadeAtualizado.getPublicacoes());

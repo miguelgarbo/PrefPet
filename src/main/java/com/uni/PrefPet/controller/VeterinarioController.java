@@ -1,6 +1,7 @@
 package com.uni.PrefPet.controller;
 
 import com.uni.PrefPet.model.Usuarios.Veterinario;
+import com.uni.PrefPet.model.dtos.VeterinarioDTO;
 import com.uni.PrefPet.service.VeterinarioService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class VeterinarioController {
     private VeterinarioService veterinarioService;
 
     @PostMapping
-    public ResponseEntity<Veterinario> save(@RequestBody @Valid Veterinario veterinario) {
+    public ResponseEntity<Veterinario> save(@RequestBody @Valid VeterinarioDTO veterinario) {
             var result = veterinarioService.save(veterinario);
             return new ResponseEntity<>(result, HttpStatus.CREATED);
 

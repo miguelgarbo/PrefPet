@@ -2,6 +2,7 @@ package com.uni.PrefPet.service;
 
 import com.uni.PrefPet.model.Usuarios.Tutor;
 import com.uni.PrefPet.model.Usuarios.Veterinario;
+import com.uni.PrefPet.model.dtos.VeterinarioDTO;
 import com.uni.PrefPet.repository.VeterinarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,34 @@ public class VeterinarioService {
     @Autowired
     private UsuarioService usuarioService;
 
-    public Veterinario save(Veterinario veterinario) {
+    public Veterinario save(VeterinarioDTO dto) {
+
+        Veterinario veterinario = new Veterinario();
+
+        veterinario.setNome(dto.getNome());
+        veterinario.setEmail(dto.getEmail());
+        veterinario.setCpf(dto.getCpf());
+        veterinario.setTelefone(dto.getTelefone());
+
+        veterinario.setCidade(dto.getCidade());
+        veterinario.setEstado(dto.getEstado());
+        veterinario.setCep(dto.getCep());
+
+        veterinario.setCnpj(dto.getCnpj());
+
+        veterinario.setCRMV(dto.getCRMV());
 
         usuarioService.preValidacaoUsuarioSave(veterinario);
 
+        usuarioService.criarKeycloakUser(
+                veterinario,
+                dto.getSenha()
+        );
+
         if (veterinarioRepository.existsByCRMV(veterinario.getCRMV())) {
-            throw new IllegalArgumentException("Já existe um Veterinário com este CRMV no Sistema");
+            throw new IllegalArgumentException(
+                    "Já existe um Veterinário com este CRMV no Sistema"
+            );
         }
 
         return veterinarioRepository.save(veterinario);
