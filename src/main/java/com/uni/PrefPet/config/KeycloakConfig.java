@@ -29,7 +29,7 @@ public class KeycloakConfig {
     public Keycloak keycloak() {
         return KeycloakBuilder.builder()
                 .serverUrl(serverUrl)
-                .realm("master") // 🔥 login admin SEMPRE no master
+                .realm("master")
                 .clientId(clientId)
                 .username(username)
                 .password(password)

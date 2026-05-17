@@ -41,13 +41,19 @@ public class SecurityConfig {
 		converter.setJwtGrantedAuthoritiesConverter(jwt -> {
 			Collection<GrantedAuthority> authorities = new ArrayList<>();
 
-			Map<String, Object> realmAccess = jwt.getClaim("realm_access");
+			Map<String, Object> resourceAccess = jwt.getClaim("resource_access");
 
-			if (realmAccess != null && realmAccess.containsKey("roles")) {
-				List<String> roles = (List<String>) realmAccess.get("roles");
+			if (resourceAccess != null) {
+				Map<String, Object> clientAccess =
+//						# client configuration
+						(Map<String, Object>) resourceAccess.get("prefpet");
 
-				for (String role : roles) {
-					authorities.add(new SimpleGrantedAuthority(role));
+				if (clientAccess != null && clientAccess.containsKey("roles")) {
+					List<String> roles = (List<String>) clientAccess.get("roles");
+
+					for (String role : roles) {
+						authorities.add(new SimpleGrantedAuthority(role));
+					}
 				}
 			}
 
@@ -57,23 +63,8 @@ public class SecurityConfig {
 		return converter;
 	}
 
-	///////////////////////////////////////////////////////
-	///
-	/// @Bean
-	/// public CorsConfigurationSource corsConfigurationSource() {
-	///     CorsConfiguration config = new CorsConfiguration();
-	///
-	///     config.setAllowedOrigins(List.of("http://localhost:4200"));
-	///     config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-	///     config.setAllowedHeaders(List.of("*"));
-	///     config.setAllowCredentials(true);
-	///
-	///     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-	///     source.registerCorsConfiguration("/**", config);
-	///
-	///     return source;
-	/// }
-	///
+
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http    

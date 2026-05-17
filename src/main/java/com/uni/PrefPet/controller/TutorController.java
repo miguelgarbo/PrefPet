@@ -52,7 +52,6 @@ public class TutorController {
     public ResponseEntity<Tutor> findByNome(@RequestParam String nome) {
             Tutor tutor = tutorService.findByNome(nome);
             return new ResponseEntity<>(tutor, HttpStatus.OK);
-
     }
 
     @GetMapping("/findByCPF")
