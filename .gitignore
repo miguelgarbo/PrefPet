@@ -37,3 +37,4 @@ certificado.p12
 server.xml
 .env
 entrypoint.sh
+*.jks
