@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+client_truststore.jks
+certificado.p12
+entrypoint.sh
+server.xml
