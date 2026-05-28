@@ -34,5 +34,6 @@ build/
 
 client_truststore.jks
 certificado.p12
-entrypoint.sh
 server.xml
+.env
+entrypoint.sh
